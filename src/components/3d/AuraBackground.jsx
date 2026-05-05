@@ -1,143 +1,156 @@
 import { useRef, useMemo } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Float, MeshTransmissionMaterial } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// --- Glass Prism Shape ---
-function GlassPrism({ position, rotation, scale, speed = 0.3, geometry = 'torus' }) {
-  const meshRef = useRef();
+// --- Lightweight wireframe shape ---
+function WireShape({ position, scale, speed, rotAxis, geometry }) {
+  const ref = useRef();
 
   useFrame((state) => {
-    if (!meshRef.current) return;
+    if (!ref.current) return;
     const t = state.clock.elapsedTime * speed;
-    meshRef.current.rotation.x = rotation[0] + t * 0.5;
-    meshRef.current.rotation.y = rotation[1] + t * 0.3;
-    meshRef.current.rotation.z = rotation[2] + t * 0.2;
-  });
-
-  const geo = useMemo(() => {
-    switch (geometry) {
-      case 'torus':
-        return <torusGeometry args={[1, 0.4, 32, 64]} />;
-      case 'sphere':
-        return <sphereGeometry args={[1, 64, 64]} />;
-      case 'octahedron':
-        return <octahedronGeometry args={[1, 0]} />;
-      case 'icosahedron':
-        return <icosahedronGeometry args={[1, 0]} />;
-      case 'torusKnot':
-        return <torusKnotGeometry args={[0.8, 0.3, 128, 32]} />;
-      default:
-        return <sphereGeometry args={[1, 64, 64]} />;
-    }
-  }, [geometry]);
-
-  return (
-    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={1.5}>
-      <mesh ref={meshRef} position={position} scale={scale}>
-        {geo}
-        <MeshTransmissionMaterial
-          backside
-          samples={6}
-          thickness={0.5}
-          chromaticAberration={0.15}
-          anisotropy={0.2}
-          distortion={0.3}
-          distortionScale={0.5}
-          temporalDistortion={0.1}
-          ior={1.5}
-          color="#d4c7a1"
-          attenuationColor="#C2B280"
-          attenuationDistance={0.6}
-          roughness={0.1}
-          transmission={0.95}
-          transparent
-          opacity={0.7}
-        />
-      </mesh>
-    </Float>
-  );
-}
-
-// --- Soft Aura Orb ---
-function AuraOrb({ position, color, size = 2, speed = 0.5 }) {
-  const meshRef = useRef();
-  const materialRef = useRef();
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    const t = state.clock.elapsedTime * speed;
-    meshRef.current.position.x = position[0] + Math.sin(t * 0.7) * 0.5;
-    meshRef.current.position.y = position[1] + Math.cos(t * 0.5) * 0.4;
-    meshRef.current.position.z = position[2] + Math.sin(t * 0.3) * 0.3;
-
-    if (materialRef.current) {
-      materialRef.current.opacity = 0.15 + Math.sin(t) * 0.05;
-    }
+    ref.current.rotation.x = rotAxis[0] * t;
+    ref.current.rotation.y = rotAxis[1] * t;
+    ref.current.rotation.z = rotAxis[2] * t;
   });
 
   return (
-    <mesh ref={meshRef} position={position} scale={size}>
-      <sphereGeometry args={[1, 32, 32]} />
+    <mesh ref={ref} position={position} scale={scale}>
+      {geometry}
       <meshBasicMaterial
-        ref={materialRef}
-        color={color}
+        color="#2d2a20"
+        wireframe
         transparent
-        opacity={0.15}
+        opacity={0.06}
         depthWrite={false}
       />
     </mesh>
   );
 }
 
-// --- Mouse-reactive camera ---
-function CameraRig() {
-  const { camera } = useThree();
-  const mouse = useRef({ x: 0, y: 0 });
+// --- Soft floating orb ---
+function SoftOrb({ position, size, color, speed, offset }) {
+  const ref = useRef();
 
-  useFrame(() => {
-    camera.position.x += (mouse.current.x * 0.5 - camera.position.x) * 0.02;
-    camera.position.y += (mouse.current.y * 0.3 - camera.position.y) * 0.02;
-    camera.lookAt(0, 0, 0);
+  useFrame((state) => {
+    if (!ref.current) return;
+    const t = state.clock.elapsedTime * speed + offset;
+    ref.current.position.x = position[0] + Math.sin(t * 0.7) * 0.8;
+    ref.current.position.y = position[1] + Math.cos(t * 0.5) * 0.6;
   });
 
-  // Listen for mouse move
-  useMemo(() => {
-    const handler = (e) => {
-      mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener('mousemove', handler);
-    return () => window.removeEventListener('mousemove', handler);
-  }, []);
-
-  return null;
+  return (
+    <mesh ref={ref} position={position} scale={size}>
+      <sphereGeometry args={[1, 16, 16]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={0.08}
+        depthWrite={false}
+      />
+    </mesh>
+  );
 }
 
-// --- Main Scene ---
+// --- Thin ring ---
+function FloatingRing({ position, scale, speed, axis }) {
+  const ref = useRef();
+
+  useFrame((state) => {
+    if (!ref.current) return;
+    const t = state.clock.elapsedTime * speed;
+    ref.current.rotation.x = axis[0] * t;
+    ref.current.rotation.y = axis[1] * t;
+  });
+
+  return (
+    <mesh ref={ref} position={position} scale={scale}>
+      <torusGeometry args={[1, 0.02, 16, 64]} />
+      <meshBasicMaterial
+        color="#2d2a20"
+        transparent
+        opacity={0.08}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+}
+
+// --- Scattered dots (instanced for performance) ---
+function ScatteredDots({ count = 60 }) {
+  const meshRef = useRef();
+
+  const { positions, scales } = useMemo(() => {
+    const pos = [];
+    const sc = [];
+    for (let i = 0; i < count; i++) {
+      pos.push(
+        (Math.random() - 0.5) * 30,
+        (Math.random() - 0.5) * 20,
+        (Math.random() - 0.5) * 15 - 5
+      );
+      sc.push(0.02 + Math.random() * 0.04);
+    }
+    return { positions: pos, scales: sc };
+  }, [count]);
+
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  useFrame((state) => {
+    if (!meshRef.current) return;
+    const t = state.clock.elapsedTime;
+    for (let i = 0; i < count; i++) {
+      const x = positions[i * 3] + Math.sin(t * 0.2 + i) * 0.3;
+      const y = positions[i * 3 + 1] + Math.cos(t * 0.15 + i * 0.5) * 0.2;
+      const z = positions[i * 3 + 2];
+      dummy.position.set(x, y, z);
+      dummy.scale.setScalar(scales[i]);
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh ref={meshRef} args={[null, null, count]}>
+      <sphereGeometry args={[1, 8, 8]} />
+      <meshBasicMaterial color="#2d2a20" transparent opacity={0.12} depthWrite={false} />
+    </instancedMesh>
+  );
+}
+
+// --- Scene ---
 function Scene() {
   return (
     <>
-      <CameraRig />
+      {/* Minimal ambient */}
+      <ambientLight intensity={0.5} />
 
-      {/* Warm ambient light */}
-      <ambientLight intensity={0.8} color="#f0ebd8" />
-      <directionalLight position={[5, 5, 5]} intensity={0.5} color="#ffffff" />
-      <directionalLight position={[-3, -3, 2]} intensity={0.3} color="#d4c7a1" />
+      {/* Wireframe shapes — spread across the whole viewport */}
+      <WireShape position={[-8, 4, -6]} scale={2.5} speed={0.08} rotAxis={[0.3, 0.5, 0.1]} geometry={<icosahedronGeometry args={[1, 0]} />} />
+      <WireShape position={[9, -3, -8]} scale={3} speed={0.06} rotAxis={[0.2, 0.3, 0.4]} geometry={<octahedronGeometry args={[1, 0]} />} />
+      <WireShape position={[-5, -5, -4]} scale={1.8} speed={0.1} rotAxis={[0.5, 0.2, 0.3]} geometry={<dodecahedronGeometry args={[1, 0]} />} />
+      <WireShape position={[6, 5, -10]} scale={2.2} speed={0.07} rotAxis={[0.1, 0.4, 0.2]} geometry={<tetrahedronGeometry args={[1, 0]} />} />
+      <WireShape position={[0, -7, -5]} scale={2} speed={0.09} rotAxis={[0.4, 0.1, 0.5]} geometry={<icosahedronGeometry args={[1, 1]} />} />
+      <WireShape position={[-10, 0, -7]} scale={1.5} speed={0.12} rotAxis={[0.2, 0.6, 0.1]} geometry={<octahedronGeometry args={[1, 0]} />} />
+      <WireShape position={[12, 2, -9]} scale={2.8} speed={0.05} rotAxis={[0.3, 0.2, 0.3]} geometry={<dodecahedronGeometry args={[1, 0]} />} />
+      <WireShape position={[-3, 7, -6]} scale={1.6} speed={0.11} rotAxis={[0.6, 0.3, 0.2]} geometry={<tetrahedronGeometry args={[1, 0]} />} />
 
-      {/* Glass Prisms — scattered around */}
-      <GlassPrism position={[-4, 2, -3]} rotation={[0.5, 0.3, 0]} scale={0.8} speed={0.2} geometry="torus" />
-      <GlassPrism position={[4, -1, -4]} rotation={[0.2, 0.8, 0.1]} scale={0.6} speed={0.25} geometry="octahedron" />
-      <GlassPrism position={[0, 3, -5]} rotation={[0.1, 0.5, 0.3]} scale={0.7} speed={0.15} geometry="icosahedron" />
-      <GlassPrism position={[-3, -2, -2]} rotation={[0.8, 0.2, 0.5]} scale={0.5} speed={0.3} geometry="sphere" />
-      <GlassPrism position={[3, 1.5, -6]} rotation={[0.3, 0.6, 0.2]} scale={0.9} speed={0.18} geometry="torusKnot" />
+      {/* Thin floating rings */}
+      <FloatingRing position={[-7, -2, -5]} scale={2} speed={0.15} axis={[0.5, 0.3]} />
+      <FloatingRing position={[8, 3, -7]} scale={3} speed={0.1} axis={[0.3, 0.5]} />
+      <FloatingRing position={[2, -6, -4]} scale={1.5} speed={0.18} axis={[0.4, 0.2]} />
+      <FloatingRing position={[-11, 5, -8]} scale={2.5} speed={0.08} axis={[0.2, 0.4]} />
 
-      {/* Aura Orbs — background glow */}
-      <AuraOrb position={[-3, 1, -8]} color="#C2B280" size={4} speed={0.3} />
-      <AuraOrb position={[4, -2, -10]} color="#d4c7a1" size={5} speed={0.2} />
-      <AuraOrb position={[0, 3, -12]} color="#a19365" size={6} speed={0.15} />
-      <AuraOrb position={[-5, -1, -6]} color="#E6DFC7" size={3.5} speed={0.4} />
-      <AuraOrb position={[2, 0, -9]} color="#8b7d4b" size={4.5} speed={0.25} />
+      {/* Soft aura orbs — very faint, large, spread out */}
+      <SoftOrb position={[-6, 3, -12]} size={5} color="#a19365" speed={0.2} offset={0} />
+      <SoftOrb position={[7, -4, -14]} size={6} color="#C2B280" speed={0.15} offset={2} />
+      <SoftOrb position={[0, 6, -10]} size={4} color="#d4c7a1" speed={0.25} offset={4} />
+      <SoftOrb position={[-9, -3, -11]} size={5.5} color="#8b7d4b" speed={0.18} offset={1} />
+      <SoftOrb position={[10, 1, -13]} size={4.5} color="#C2B280" speed={0.22} offset={3} />
+
+      {/* Instanced scattered dots */}
+      <ScatteredDots count={50} />
     </>
   );
 }
@@ -145,19 +158,19 @@ function Scene() {
 // --- Exported Component ---
 export default function AuraBackground() {
   return (
-    <div
-      className="fixed inset-0 z-0"
-      style={{ pointerEvents: 'none' }}
-    >
+    <div className="fixed inset-0 z-0" style={{ pointerEvents: 'none' }}>
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 45 }}
+        camera={{ position: [0, 0, 12], fov: 50 }}
         dpr={[1, 1.5]}
         gl={{
-          antialias: true,
+          antialias: false,
           alpha: true,
           powerPreference: 'high-performance',
+          stencil: false,
+          depth: false,
         }}
         style={{ background: 'transparent' }}
+        frameloop="always"
       >
         <Scene />
       </Canvas>
