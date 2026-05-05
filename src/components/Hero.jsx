@@ -1,10 +1,7 @@
-import { lazy, Suspense } from 'react';
 import { ArrowRight, Code } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import MagneticButton from './ui/MagneticButton';
 import AnimateIn from './ui/AnimateIn';
-
-const Scene3D = lazy(() => import('./three/Scene3D'));
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 40 },
@@ -18,12 +15,7 @@ export default function Hero({ onStartLearning, onBrowseChapters }) {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* 3D Scene */}
-      <Suspense fallback={null}>
-        <Scene3D className="z-[1]" />
-      </Suspense>
-
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-surface">
       <div className="relative z-[2] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full text-center">
         <motion.div style={{ y, opacity }} className="max-w-4xl mx-auto flex flex-col items-center">
           

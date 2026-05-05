@@ -1,341 +1,137 @@
 const chapter3 = {
   id: 3,
-  title: 'Control Flow Statements',
-  description: 'Master decision-making with if-else, switch-case, and iteration with for, while, and do-while loops.',
-  icon: 'GitBranch',
-  color: 'from-emerald-500 to-green-600',
+  title: 'Functions and Modularity',
+  description: 'Break down complex programs into smaller, manageable, and reusable blocks of code known as functions. Learn about scope, parameters, and recursion.',
   topics: [
     {
-      id: '3.1',
-      title: 'if, if-else, and Nested if',
-      explanation: `The 'if' statement executes code when a condition is true. 'if-else' provides an alternative path. 'else if' chains multiple conditions. Nested if places one if inside another. The ternary operator (condition ? expr1 : expr2) is a shorthand for simple if-else.`,
+      title: 'Function Definition, Declaration, and Calling',
+      explanation: 'A function is a group of statements that together perform a task. Every C++ program has at least one function, which is `main()`, and all the most trivial programs can define additional functions.\n\nModularity: Functions divide code into logical blocks. This makes the code easier to read, debug, and maintain. Reusability is a key benefit: write a function once, use it multiple times.\n\nDeclaration (Prototype): Tells the compiler about a function\'s name, return type, and parameters. It allows the function to be called before it is fully defined. Usually placed above `main()` or in header files.\n\nDefinition: Provides the actual body of the function. It contains the code that executes when the function is called.\n\nCalling: Executing a function by writing its name followed by parentheses containing any necessary arguments. If the function returns a value, the call can be used as an expression.\n\nReturn Type: The data type of the value the function sends back to the caller. If it sends nothing back, the return type must be `void`.',
       examples: [
         {
-          title: 'if-else Statement',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int num = -5;
-    
-    if (num > 0) {
-        cout << num << " is positive" << endl;
-    } else if (num < 0) {
-        cout << num << " is negative" << endl;
-    } else {
-        cout << num << " is zero" << endl;
-    }
-    return 0;
-}`,
-          output: '-5 is negative'
+          title: 'Basic Function Structure',
+          description: 'A simple function that prints a greeting.',
+          code: `#include <iostream>\nusing namespace std;\n\n// Function definition\nvoid sayHello() {\n    cout << "Hello from the function!" << endl;\n}\n\nint main() {\n    sayHello(); // Function call\n    return 0;\n}`
         },
         {
-          title: 'Nested if for Grade Calculation',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int marks = 78;
-    char grade;
-    
-    if (marks >= 90) grade = 'A';
-    else if (marks >= 80) grade = 'B';
-    else if (marks >= 70) grade = 'C';
-    else if (marks >= 60) grade = 'D';
-    else grade = 'F';
-    
-    cout << "Marks: " << marks << endl;
-    cout << "Grade: " << grade << endl;
-    return 0;
-}`,
-          output: `Marks: 78
-Grade: C`
+          title: 'Function Prototypes',
+          description: 'Declaring a function before main and defining it after.',
+          code: `#include <iostream>\nusing namespace std;\n\n// Function prototype\nint add(int a, int b);\n\nint main() {\n    int result = add(5, 10);\n    cout << "Sum: " << result << endl;\n    return 0;\n}\n\n// Function definition\nint add(int a, int b) {\n    return a + b;\n}`
         },
         {
-          title: 'Ternary Operator',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int a = 15, b = 27;
-    int max = (a > b) ? a : b;
-    string result = (a % 2 == 0) ? "even" : "odd";
-    
-    cout << "Max of " << a << " and " << b << " = " << max << endl;
-    cout << a << " is " << result << endl;
-    return 0;
-}`,
-          output: `Max of 15 and 27 = 27
-15 is odd`
+          title: 'Functions Returning Values',
+          description: 'Calculating the square of a number and returning it.',
+          code: `#include <iostream>\nusing namespace std;\n\nint square(int num) {\n    return num * num;\n}\n\nint main() {\n    int sq = square(7);\n    cout << "Square of 7 is " << sq << endl;\n    return 0;\n}`
+        },
+        {
+          title: 'Void Functions with Return',
+          description: 'Using an empty return statement to exit a void function early.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid checkPositive(int n) {\n    if (n <= 0) {\n        cout << "Not positive." << endl;\n        return; // Exits the function early\n    }\n    cout << "Positive!" << endl;\n}\n\nint main() {\n    checkPositive(-5);\n    checkPositive(10);\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'What is the purpose of a function prototype?',
+          answer: 'It informs the compiler about the function\'s name, return type, and parameters before its actual definition is encountered, allowing the function to be called earlier in the code.'
+        },
+        {
+          question: 'Can a function return multiple values in C++?',
+          answer: 'Directly, a function can only return one value. However, you can return multiple values by returning an object, a struct, a std::pair/std::tuple, or by passing arguments by reference.'
+        },
+        {
+          question: 'What does a return type of `void` signify?',
+          answer: 'It signifies that the function performs an action but does not return any value back to the caller.'
+        },
+        {
+          question: 'What happens if a non-void function does not have a return statement?',
+          answer: 'It leads to undefined behavior. The compiler might warn you, but if executed, it can return garbage values or crash.'
         }
       ]
     },
     {
-      id: '3.2',
-      title: 'switch-case Statement',
-      explanation: `The switch statement selects one of many code blocks to execute based on the value of an expression. Each case compares against a constant value. The 'break' keyword prevents fall-through to the next case. The 'default' case handles unmatched values. switch works with int, char, and enum types.`,
+      title: 'Parameters: Pass by Value vs Pass by Reference',
+      explanation: 'When calling functions, you pass data to them via arguments. C++ provides two primary ways to pass arguments to functions:\n\n1. Pass by Value: The default mechanism. A copy of the actual argument is created and passed to the function. Any modifications made to the parameter inside the function do NOT affect the original variable in the caller\'s scope. This is safe but can be inefficient for large data structures like massive objects or arrays (which decay to pointers anyway).\n\n2. Pass by Reference: Instead of a copy, a reference (an alias) to the original variable is passed. This is done by appending an ampersand (`&`) to the parameter type. Modifications made to the reference parameter directly modify the original variable. This is highly efficient and allows a function to effectively "return" multiple values by modifying the arguments passed to it.\n\n3. Pass by Const Reference: Used when you want the efficiency of passing by reference (no copying) but want to guarantee that the function will not modify the original value. Syntax: `const Type& var`.',
       examples: [
         {
-          title: 'Day of the Week',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int day = 3;
-    
-    switch (day) {
-        case 1: cout << "Monday" << endl; break;
-        case 2: cout << "Tuesday" << endl; break;
-        case 3: cout << "Wednesday" << endl; break;
-        case 4: cout << "Thursday" << endl; break;
-        case 5: cout << "Friday" << endl; break;
-        case 6: cout << "Saturday" << endl; break;
-        case 7: cout << "Sunday" << endl; break;
-        default: cout << "Invalid day" << endl;
-    }
-    return 0;
-}`,
-          output: 'Wednesday'
+          title: 'Pass by Value',
+          description: 'Modifying the parameter does not change the original variable.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid modifyValue(int x) {\n    x = 100; // Only changes the local copy\n}\n\nint main() {\n    int a = 5;\n    modifyValue(a);\n    cout << "a is still: " << a << endl; // Outputs 5\n    return 0;\n}`
         },
         {
-          title: 'Simple Calculator',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    double a = 12, b = 4;
-    char op = '*';
-    
-    switch (op) {
-        case '+': cout << a + b << endl; break;
-        case '-': cout << a - b << endl; break;
-        case '*': cout << a * b << endl; break;
-        case '/':
-            if (b != 0) cout << a / b << endl;
-            else cout << "Division by zero!" << endl;
-            break;
-        default: cout << "Invalid operator" << endl;
-    }
-    return 0;
-}`,
-          output: '48'
+          title: 'Pass by Reference',
+          description: 'Using & to modify the original variable.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid modifyReference(int &x) {\n    x = 100; // Changes the original variable\n}\n\nint main() {\n    int a = 5;\n    modifyReference(a);\n    cout << "a is now: " << a << endl; // Outputs 100\n    return 0;\n}`
         },
         {
-          title: 'Grouping Cases (Fall-through)',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    char ch = 'B';
-    
-    switch (ch) {
-        case 'A': case 'E': case 'I':
-        case 'O': case 'U':
-        case 'a': case 'e': case 'i':
-        case 'o': case 'u':
-            cout << ch << " is a vowel" << endl;
-            break;
-        default:
-            cout << ch << " is a consonant" << endl;
-    }
-    return 0;
-}`,
-          output: 'B is a consonant'
+          title: 'Swapping Two Numbers',
+          description: 'A classic example where pass by reference is mandatory.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid swap(int &a, int &b) {\n    int temp = a;\n    a = b;\n    b = temp;\n}\n\nint main() {\n    int x = 10, y = 20;\n    swap(x, y);\n    cout << "x: " << x << ", y: " << y << endl; // x: 20, y: 10\n    return 0;\n}`
+        },
+        {
+          title: 'Pass by Const Reference',
+          description: 'Passing large data efficiently without risking modification.',
+          code: `#include <iostream>\n#include <string>\nusing namespace std;\n\nvoid printString(const string &str) {\n    // str += " modified"; // ERROR: str is const\n    cout << str << endl;\n}\n\nint main() {\n    string msg = "Super long and heavy string...";\n    printString(msg);\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'What is the primary disadvantage of pass by value?',
+          answer: 'It creates a copy of the argument, which consumes additional memory and CPU cycles, making it highly inefficient for large data structures like structs, classes, or vectors.'
+        },
+        {
+          question: 'How do you specify that a parameter is passed by reference?',
+          answer: 'By placing an ampersand (&) next to the data type in the parameter list (e.g., `void func(int &x)`).'
+        },
+        {
+          question: 'Why use `const` reference instead of standard pass by value?',
+          answer: 'It combines the performance benefits of pass by reference (avoiding the overhead of copying) with the safety of pass by value (the function cannot alter the original data).'
+        },
+        {
+          question: 'If a function needs to alter the caller\'s variable, which passing mechanism must be used?',
+          answer: 'Pass by reference (or pass by pointer).'
         }
       ]
     },
     {
-      id: '3.3',
-      title: 'for Loop',
-      explanation: `The for loop repeats code a known number of times. Syntax: for(init; condition; update). The initialization runs once, the condition is checked before each iteration, and the update runs after each iteration. Range-based for (C++11) iterates over containers directly.`,
+      title: 'Function Overloading and Default Arguments',
+      explanation: 'Function Overloading: C++ allows you to specify more than one function of the same name in the same scope. These functions are called overloaded functions. The compiler determines which function to call based on the number, types, and sequence of arguments passed. Note: You cannot overload functions distinguished by return type alone.\n\nDefault Arguments: C++ allows you to assign default values to function parameters. If a caller omits an argument for a parameter with a default value, the default value is used. If the caller provides a value, the default is overridden.\n\nRules for Default Arguments:\n1. Default arguments must be assigned from right to left. You cannot have a non-default parameter following a default parameter.\n2. Default arguments should generally be defined in the function prototype (header), not the definition, to avoid redefinition errors.\n\nCombining Both: Be careful when combining function overloading and default arguments, as it can lead to ambiguous function calls where the compiler cannot decide which version to use.',
       examples: [
         {
-          title: 'Multiplication Table',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int n = 5;
-    cout << "Multiplication table of " << n << ":" << endl;
-    for (int i = 1; i <= 10; i++) {
-        cout << n << " x " << i << " = " << n * i << endl;
-    }
-    return 0;
-}`,
-          output: `Multiplication table of 5:
-5 x 1 = 5
-5 x 2 = 10
-5 x 3 = 15
-5 x 4 = 20
-5 x 5 = 25
-5 x 6 = 30
-5 x 7 = 35
-5 x 8 = 40
-5 x 9 = 45
-5 x 10 = 50`
+          title: 'Function Overloading by Type',
+          description: 'Having multiple add functions for different data types.',
+          code: `#include <iostream>\nusing namespace std;\n\nint add(int a, int b) {\n    return a + b;\n}\n\ndouble add(double a, double b) {\n    return a + b;\n}\n\nint main() {\n    cout << add(5, 10) << endl;       // Calls int version\n    cout << add(3.5, 2.1) << endl;    // Calls double version\n    return 0;\n}`
         },
         {
-          title: 'Sum of First N Natural Numbers',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int n = 10, sum = 0;
-    for (int i = 1; i <= n; i++) {
-        sum += i;
-    }
-    cout << "Sum of 1 to " << n << " = " << sum << endl;
-    return 0;
-}`,
-          output: 'Sum of 1 to 10 = 55'
+          title: 'Function Overloading by Number of Arguments',
+          description: 'Same type, different parameter count.',
+          code: `#include <iostream>\nusing namespace std;\n\nint multiply(int a, int b) {\n    return a * b;\n}\n\nint multiply(int a, int b, int c) {\n    return a * b * c;\n}\n\nint main() {\n    cout << multiply(2, 3) << endl;       // Outputs 6\n    cout << multiply(2, 3, 4) << endl;    // Outputs 24\n    return 0;\n}`
         },
         {
-          title: 'Nested for Loop (Pattern)',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int rows = 5;
-    for (int i = 1; i <= rows; i++) {
-        for (int j = 1; j <= i; j++) {
-            cout << "* ";
-        }
-        cout << endl;
-    }
-    return 0;
-}`,
-          output: `* 
-* * 
-* * * 
-* * * * 
-* * * * *`
-        }
-      ]
-    },
-    {
-      id: '3.4',
-      title: 'while and do-while Loops',
-      explanation: `The while loop repeats as long as a condition is true — it checks the condition before each iteration, so it may execute zero times. The do-while loop checks the condition after each iteration, guaranteeing at least one execution. Use while when the number of iterations is unknown.`,
-      examples: [
-        {
-          title: 'while Loop — Digit Counter',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int num = 98765, digits = 0;
-    int temp = num;
-    
-    while (temp > 0) {
-        digits++;
-        temp /= 10;
-    }
-    cout << num << " has " << digits << " digits" << endl;
-    return 0;
-}`,
-          output: '98765 has 5 digits'
+          title: 'Default Arguments',
+          description: 'Providing fallback values.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid greet(string name, string greeting = "Hello") {\n    cout << greeting << ", " << name << "!" << endl;\n}\n\nint main() {\n    greet("Alice");                 // Uses default "Hello"\n    greet("Bob", "Good morning");   // Overrides default\n    return 0;\n}`
         },
         {
-          title: 'do-while Loop — Menu',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int choice;
-    do {
-        cout << "1. Greet  2. Info  3. Exit" << endl;
-        cout << "Choice: ";
-        choice = 3;  // Simulated input
-        cout << choice << endl;
-        
-        switch (choice) {
-            case 1: cout << "Hello!" << endl; break;
-            case 2: cout << "C++ Academy" << endl; break;
-            case 3: cout << "Goodbye!" << endl; break;
+          title: 'Right-to-Left Rule',
+          description: 'Demonstrating valid default argument placement.',
+          code: `#include <iostream>\nusing namespace std;\n\n// Valid: Default arguments are at the end\nvoid configure(int id, int retries = 3, int timeout = 30) {\n    cout << "ID: " << id << " Retries: " << retries << " Timeout: " << timeout << endl;\n}\n\n// Invalid: void invalidConfig(int id = 1, int max) {}\n\nint main() {\n    configure(101);\n    configure(102, 5);\n    return 0;\n}`
         }
-    } while (choice != 3);
-    return 0;
-}`,
-          output: `1. Greet  2. Info  3. Exit
-Choice: 3
-Goodbye!`
+      ],
+      questions: [
+        {
+          question: 'Can two functions be overloaded if they differ only in their return type?',
+          answer: 'No. The compiler cannot determine which function to call based solely on what the return value will be assigned to (or if it\'s ignored entirely). The parameter lists must differ.'
         },
         {
-          title: 'Reverse a Number',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int num = 1234, reversed = 0;
-    
-    while (num > 0) {
-        reversed = reversed * 10 + num % 10;
-        num /= 10;
-    }
-    cout << "Reversed: " << reversed << endl;
-    return 0;
-}`,
-          output: 'Reversed: 4321'
-        }
-      ]
-    },
-    {
-      id: '3.5',
-      title: 'break and continue',
-      explanation: `'break' immediately exits the innermost loop or switch. 'continue' skips the rest of the current iteration and jumps to the next one. Both are useful for controlling loop flow based on conditions. Avoid overusing them as they can make logic harder to follow.`,
-      examples: [
-        {
-          title: 'break — Find First Multiple',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    for (int i = 1; i <= 100; i++) {
-        if (i % 7 == 0 && i % 5 == 0) {
-            cout << "First number divisible by 7 and 5: " << i << endl;
-            break;
-        }
-    }
-    return 0;
-}`,
-          output: 'First number divisible by 7 and 5: 35'
+          question: 'What is the rule for placing default arguments in a parameter list?',
+          answer: 'Default arguments must be specified from right to left. Once a parameter has a default argument, all subsequent parameters to its right must also have default arguments.'
         },
         {
-          title: 'continue — Skip Odd Numbers',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Even numbers from 1 to 10: ";
-    for (int i = 1; i <= 10; i++) {
-        if (i % 2 != 0) continue;
-        cout << i << " ";
-    }
-    cout << endl;
-    return 0;
-}`,
-          output: 'Even numbers from 1 to 10: 2 4 6 8 10'
+          question: 'What is an ambiguous function call?',
+          answer: 'It occurs when the compiler finds two or more overloaded functions that could match a function call equally well (often due to implicit type conversions or default arguments), making it impossible to determine which one to execute.'
         },
         {
-          title: 'break in Nested Loops',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    for (int i = 1; i <= 5; i++) {
-        for (int j = 1; j <= 5; j++) {
-            if (j > i) break;  // Only breaks inner loop
-            cout << j << " ";
-        }
-        cout << endl;
-    }
-    return 0;
-}`,
-          output: `1 
-1 2 
-1 2 3 
-1 2 3 4 
-1 2 3 4 5`
+          question: 'If a default argument is defined in the function prototype, should it be repeated in the definition?',
+          answer: 'No, repeating it in the definition usually results in a compilation error. It should only be specified once, typically in the prototype.'
         }
       ]
     }

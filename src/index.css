@@ -7,18 +7,18 @@
   --color-accent: #ff3b30;
   --color-accent-light: #ff6b63;
   --color-amber: #ff9500;
-  --color-surface: #f5f5f7; /* Apple signature off-white */
-  --color-surface-alt: #ffffff;
-  --color-surface-card: rgba(255, 255, 255, 0.6);
-  --color-surface-glass: rgba(255, 255, 255, 0.7);
-  --color-card: rgba(255, 255, 255, 0.7);
-  --color-text: #1d1d1f; /* Apple dark text */
-  --color-text-secondary: #515154;
-  --color-text-muted: #86868b;
-  --color-border: rgba(0, 0, 0, 0.05);
-  --color-border-glow: rgba(0, 102, 204, 0.15);
-  --color-code-bg: #fbfbfd;
-  --color-code-text: #1d1d1f;
+  --color-surface: #f5f5f3; /* Pure eggshell */
+  --color-surface-alt: #fafafa;
+  --color-surface-card: rgba(245, 245, 243, 0.8);
+  --color-surface-glass: rgba(245, 245, 243, 0.9);
+  --color-card: rgba(245, 245, 243, 0.9);
+  --color-text: #1a1a1a;
+  --color-text-secondary: #4a4a4a;
+  --color-text-muted: #888888;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-glow: rgba(0, 0, 0, 0.05);
+  --color-code-bg: #eaeaea;
+  --color-code-text: #1a1a1a;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
 }
 
@@ -32,17 +32,18 @@
     background: var(--color-surface);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    cursor: none;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M4,4 L16,16 L12,16 L16,22 L14,23 L10,17 L6,21 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E"), auto;
     overflow-x: hidden;
   }
   ::selection {
     background: var(--color-primary-light);
     color: white;
   }
-  * { cursor: none !important; }
-  @media (max-width: 768px) {
-    body { cursor: auto; }
-    * { cursor: auto !important; }
+  * { 
+    cursor: inherit !important; 
+  }
+  a, button, [data-interactive] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M8,2 L14,2 L14,6 L18,6 L18,12 L14,12 L14,16 L8,16 L8,12 L4,12 L4,6 L8,6 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 8 2, pointer !important;
   }
 }
 

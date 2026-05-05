@@ -1,230 +1,166 @@
 const chapter1 = {
   id: 1,
-  title: 'Introduction to C++',
-  description: 'Learn the fundamentals: program structure, I/O operations, comments, and the compilation process.',
-  icon: 'BookOpen',
-  color: 'from-blue-500 to-cyan-500',
+  title: 'Introduction to C++ and Basic Syntax',
+  description: 'The foundation of C++ programming. Learn the core syntax, data types, operators, and basic I/O mechanisms required to begin your journey.',
   topics: [
     {
-      id: '1.1',
-      title: 'History and Features of C++',
-      explanation: `C++ was developed by Bjarne Stroustrup at Bell Labs in 1979 as an extension of C. It adds object-oriented features, strong type checking, and generic programming support. C++ is widely used in system software, game engines, embedded systems, and high-performance applications.
-
-Key features: compiled language, supports OOP, low-level memory manipulation, rich standard library, platform independent source code, and backward compatible with C.`,
+      title: 'Introduction to C++ & History',
+      explanation: 'C++ is a high-level, general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language, or "C with Classes". It has expanded significantly over time, and modern C++ now has object-oriented, generic, and functional features in addition to facilities for low-level memory manipulation.\n\nThe language was designed with an orientation toward system programming and embedded, resource-constrained software and large systems, with performance, efficiency, and flexibility of use as its design highlights. C++ has also been found useful in many other contexts, with key strengths being software infrastructure and resource-constrained applications, including desktop applications, video games, servers (e.g. e-commerce, Web search, or SQL servers), and performance-critical applications (e.g. telephone switches or space probes).\n\nC++ is standardized by the International Organization for Standardization (ISO), with the latest standard version ratified and published by ISO in December 2020 as ISO/IEC 14882:2020 (informally known as C++20).',
       examples: [
         {
-          title: 'Minimal C++ Program',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello, C++ World!" << endl;
-    return 0;
-}`,
-          output: 'Hello, C++ World!'
+          title: 'Hello World - The Standard Starting Point',
+          description: 'A simple program to output "Hello, World!" to the console. Notice the use of the iostream library.',
+          code: `#include <iostream>\n\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}`
         },
         {
-          title: 'Printing Multiple Lines',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "C++ was created in 1979" << endl;
-    cout << "Creator: Bjarne Stroustrup" << endl;
-    cout << "Originally called: C with Classes" << endl;
-    return 0;
-}`,
-          output: `C++ was created in 1979
-Creator: Bjarne Stroustrup
-Originally called: C with Classes`
+          title: 'Hello World with using namespace std',
+          description: 'A variation of the classic program that demonstrates how bringing the standard namespace into scope can shorten your code.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!" << endl;\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'Who is the creator of the C++ programming language?',
+          answer: 'Bjarne Stroustrup created C++ at Bell Labs in the early 1980s.'
         },
         {
-          title: 'Using Escape Characters',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Features of C++:\\n";
-    cout << "\\t1. Object-Oriented\\n";
-    cout << "\\t2. Compiled Language\\n";
-    cout << "\\t3. Platform Independent\\n";
-    return 0;
-}`,
-          output: `Features of C++:
-\t1. Object-Oriented
-\t2. Compiled Language
-\t3. Platform Independent`
+          question: 'What was the original name of C++?',
+          answer: 'The language was originally known as "C with Classes" before being renamed to C++ in 1983.'
+        },
+        {
+          question: 'What is the standard body that oversees C++ updates?',
+          answer: 'The International Organization for Standardization (ISO).'
+        },
+        {
+          question: 'What is the purpose of the #include <iostream> directive?',
+          answer: 'It includes the standard input/output stream library, allowing you to use std::cin and std::cout for console I/O.'
         }
       ]
     },
     {
-      id: '1.2',
-      title: 'Structure of a C++ Program',
-      explanation: `Every C++ program follows a basic structure: preprocessor directives (#include), namespace declaration, the main() function, and statements within curly braces. The main() function is the entry point where execution begins. The return 0 statement indicates successful execution to the operating system.`,
+      title: 'Variables and Data Types',
+      explanation: 'In C++, a variable is a named storage location in memory that holds a value. The type of value that a variable can hold is defined by its data type. C++ provides a rich set of built-in as well as user-defined data types.\n\nPrimitive (Built-in) Data Types:\n- int: Used for integer values (e.g., 5, -10, 1000). Typically takes 4 bytes of memory.\n- float: Single-precision floating-point numbers (e.g., 3.14f). Typically takes 4 bytes.\n- double: Double-precision floating-point numbers (e.g., 3.14159). Typically takes 8 bytes, offering higher precision.\n- char: Character data type (e.g., \'A\', \'z\'). Typically takes 1 byte.\n- bool: Boolean data type representing true or false.\n- void: Represents the absence of a type, typically used for functions that do not return a value.\n\nModifiers:\nData types can be modified using modifiers like signed, unsigned, short, and long to alter their storage size or range of values. For example, an unsigned int can only store non-negative values, effectively doubling its maximum positive limit compared to a standard signed int.\n\nInitialization:\nVariables should ideally be initialized when declared to avoid undefined behavior resulting from garbage values in memory. C++ supports C-style initialization (int a = 5;), constructor initialization (int a(5);), and modern uniform initialization (int a{5};).',
       examples: [
         {
-          title: 'Basic Program Structure',
-          code: `// Preprocessor directive
-#include <iostream>
-
-// Namespace declaration
-using namespace std;
-
-// Main function - entry point
-int main() {
-    // Program statements
-    cout << "Program structure demo" << endl;
-    
-    // Return success
-    return 0;
-}`,
-          output: 'Program structure demo'
+          title: 'Basic Data Types Initialization',
+          description: 'Declaring and initializing variables of various fundamental types.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int age = 25;\n    float height = 5.9f;\n    double pi = 3.1415926535;\n    char grade = 'A';\n    bool isStudent = true;\n\n    cout << "Age: " << age << endl;\n    cout << "Height: " << height << endl;\n    cout << "Grade: " << grade << endl;\n    return 0;\n}`
         },
         {
-          title: 'Without using namespace',
-          code: `#include <iostream>
-
-int main() {
-    // Using std:: prefix instead
-    std::cout << "Using std:: prefix" << std::endl;
-    std::cout << "More explicit approach" << std::endl;
-    return 0;
-}`,
-          output: `Using std:: prefix
-More explicit approach`
+          title: 'Using Modifiers',
+          description: 'Demonstrating the use of unsigned and long modifiers.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    unsigned int distance = 4000000000; // Large positive integer\n    long long population = 7800000000LL;\n\n    cout << "Distance: " << distance << endl;\n    cout << "Population: " << population << endl;\n    return 0;\n}`
         },
         {
-          title: 'Multiple Statements',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int x = 10;
-    int y = 20;
-    int sum = x + y;
-    cout << "Sum of " << x << " and " << y << " is " << sum << endl;
-    return 0;
-}`,
-          output: 'Sum of 10 and 20 is 30'
+          title: 'Uniform Initialization (C++11)',
+          description: 'Using curly braces for strict initialization.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int value{10};\n    double price{19.99};\n    \n    // int narrow{4.5}; // Error: prevents narrowing conversions\n    \n    cout << "Value: " << value << endl;\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'What is the difference between float and double?',
+          answer: 'float is a single-precision floating-point type usually taking 4 bytes, while double is a double-precision floating-point type usually taking 8 bytes, offering roughly twice the decimal precision.'
+        },
+        {
+          question: 'Why is uniform initialization (brace initialization) preferred in modern C++?',
+          answer: 'Because it prevents narrowing conversions (e.g., trying to initialize an int with a double value will cause a compiler error rather than silently truncating the value) and provides a consistent syntax.'
+        },
+        {
+          question: 'What does the unsigned modifier do?',
+          answer: 'It restricts the data type to only store non-negative values (0 and positive numbers), which doubles the maximum positive value the type can hold.'
+        },
+        {
+          question: 'What is the typical memory size of a char in C++?',
+          answer: '1 byte.'
         }
       ]
     },
     {
-      id: '1.3',
-      title: 'Input and Output (cin / cout)',
-      explanation: `C++ uses the iostream library for I/O operations. 'cout' (console output) with the insertion operator (<<) displays output. 'cin' (console input) with the extraction operator (>>) reads user input. Both belong to the std namespace. You can chain multiple << or >> operators in a single statement.`,
+      title: 'Operators and Expressions',
+      explanation: 'An operator is a symbol that tells the compiler to perform specific mathematical or logical manipulations. C++ is rich in built-in operators and provides the following types of operators:\n\n1. Arithmetic Operators: Used to perform mathematical operations (+, -, *, /, %). The modulo operator (%) returns the remainder of an integer division.\n\n2. Relational Operators: Used to compare two values (==, !=, >, <, >=, <=). They return a boolean result (true or false).\n\n3. Logical Operators: Used to combine conditional statements (&& [Logical AND], || [Logical OR], ! [Logical NOT]).\n\n4. Assignment Operators: Used to assign values to variables (=, +=, -=, *=, /=, %=).\n\n5. Bitwise Operators: Used to perform operations on the binary representations of integers (&, |, ^, ~, <<, >>). These are crucial for low-level system programming.\n\n6. Unary Operators: Operators that operate on a single operand, such as increment (++) and decrement (--). Note the difference between prefix (++a) and postfix (a++) forms: prefix increments the value before it is used in the expression, while postfix uses the current value and increments it afterward.\n\nExpressions are combinations of variables, constants, and operators that are evaluated to produce a value.',
       examples: [
         {
-          title: 'Reading Integer Input',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int age;
-    cout << "Enter your age: ";
-    cin >> age;
-    cout << "You are " << age << " years old." << endl;
-    return 0;
-}`,
-          output: `Enter your age: 20
-You are 20 years old.`
+          title: 'Arithmetic and Modulo',
+          description: 'Basic math operations including the remainder operator.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 10, b = 3;\n    cout << "Addition: " << a + b << endl;\n    cout << "Division: " << a / b << endl; // Integer division yields 3\n    cout << "Modulo: " << a % b << endl;   // Remainder is 1\n    return 0;\n}`
         },
         {
-          title: 'Reading Multiple Values',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int a, b;
-    cout << "Enter two numbers: ";
-    cin >> a >> b;
-    cout << "First: " << a << ", Second: " << b << endl;
-    cout << "Sum: " << a + b << endl;
-    return 0;
-}`,
-          output: `Enter two numbers: 5 3
-First: 5, Second: 3
-Sum: 8`
+          title: 'Relational and Logical Combinations',
+          description: 'Checking multiple conditions simultaneously.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int age = 20;\n    bool hasLicense = true;\n    \n    // Logical AND\n    if (age >= 18 && hasLicense) {\n        cout << "Can drive." << endl;\n    }\n    \n    // Logical OR\n    if (age < 18 || !hasLicense) {\n        cout << "Cannot drive." << endl;\n    }\n    return 0;\n}`
         },
         {
-          title: 'Reading a String',
-          code: `#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    string name;
-    cout << "Enter your name: ";
-    getline(cin, name);
-    cout << "Hello, " << name << "!" << endl;
-    return 0;
-}`,
-          output: `Enter your name: John Doe
-Hello, John Doe!`
+          title: 'Prefix vs Postfix Increment',
+          description: 'Understanding the order of evaluation in unary increment operators.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 5;\n    int y = x++; // y gets 5, then x becomes 6\n    cout << "x: " << x << ", y: " << y << endl;\n\n    int a = 5;\n    int b = ++a; // a becomes 6, then b gets 6\n    cout << "a: " << a << ", b: " << b << endl;\n    return 0;\n}`
+        },
+        {
+          title: 'Bitwise Operators',
+          description: 'Manipulating bits directly.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 5;  // 0101\n    int b = 9;  // 1001\n    cout << "a & b: " << (a & b) << endl; // 0001 (1)\n    cout << "a | b: " << (a | b) << endl; // 1101 (13)\n    cout << "a ^ b: " << (a ^ b) << endl; // 1100 (12)\n    cout << "a << 1: " << (a << 1) << endl; // 1010 (10)\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'What is the output of 15 % 4?',
+          answer: '3, because 15 divided by 4 is 3 with a remainder of 3.'
+        },
+        {
+          question: 'What is the difference between = and ==?',
+          answer: '= is the assignment operator used to assign a value to a variable. == is the relational equality operator used to compare if two values are equal.'
+        },
+        {
+          question: 'Explain the difference between prefix (++i) and postfix (i++).',
+          answer: 'Prefix (++i) increments the value of i and then returns the new value. Postfix (i++) returns the current value of i for the expression, and then increments i afterward.'
+        },
+        {
+          question: 'What does the bitwise left shift operator (<<) effectively do to an integer?',
+          answer: 'It shifts the bits to the left, which effectively multiplies the integer by 2 for each position shifted (assuming no overflow).'
         }
       ]
     },
     {
-      id: '1.4',
-      title: 'Comments and Preprocessor Directives',
-      explanation: `Comments are non-executable text for documentation. Single-line comments use //, multi-line comments use /* */. Preprocessor directives start with # and are processed before compilation. #include adds header files, #define creates macros, and #ifndef/#endif prevent double inclusion.`,
+      title: 'Basic Input and Output (I/O)',
+      explanation: 'C++ uses a stream-based I/O model. A stream is an entity where a program can either insert or extract characters. The `<iostream>` library provides the definitions for these streams.\n\n- `std::cout`: The standard output stream, typically corresponding to the monitor. Used with the insertion operator (`<<`).\n- `std::cin`: The standard input stream, typically corresponding to the keyboard. Used with the extraction operator (`>>`).\n- `std::cerr`: The standard error stream, used for outputting error messages immediately (unbuffered).\n- `std::clog`: The standard log stream, used for general logging (buffered).\n\nWhen using `cin`, whitespace (spaces, tabs, newlines) acts as a delimiter, meaning `cin >> stringVariable` will only read up to the first space. To read an entire line including spaces, the `getline()` function is used.\n\nFormatting Output:\nManipulators can be used to format output. Examples include `std::endl` (inserts a newline and flushes the buffer), `std::setw` (sets width), `std::setprecision` (sets floating-point precision), and `std::fixed` (forces standard decimal notation instead of scientific).',
       examples: [
         {
-          title: 'Types of Comments',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    // This is a single-line comment
-    
-    /* This is a
-       multi-line comment
-       spanning multiple lines */
-    
-    cout << "Comments are ignored by compiler" << endl;
-    
-    int x = 5; // Inline comment after code
-    cout << "x = " << x << endl;
-    return 0;
-}`,
-          output: `Comments are ignored by compiler
-x = 5`
+          title: 'Basic cin and cout',
+          description: 'Reading a single word or number and printing it.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int age;\n    cout << "Enter your age: ";\n    cin >> age;\n    cout << "You are " << age << " years old." << endl;\n    return 0;\n}`
         },
         {
-          title: 'Using #define Macro',
-          code: `#include <iostream>
-#define PI 3.14159
-#define SQUARE(x) ((x) * (x))
-using namespace std;
-
-int main() {
-    double radius = 5.0;
-    double area = PI * SQUARE(radius);
-    cout << "Radius: " << radius << endl;
-    cout << "Area: " << area << endl;
-    return 0;
-}`,
-          output: `Radius: 5
-Area: 78.5398`
+          title: 'Reading Full Lines with getline',
+          description: 'How to read strings that contain spaces.',
+          code: `#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string fullName;\n    cout << "Enter your full name: ";\n    getline(cin, fullName);\n    cout << "Hello, " << fullName << "!" << endl;\n    return 0;\n}`
         },
         {
-          title: 'Conditional Compilation',
-          code: `#include <iostream>
-#define DEBUG
-using namespace std;
-
-int main() {
-    int result = 42;
-    
-    #ifdef DEBUG
-    cout << "[DEBUG] result = " << result << endl;
-    #endif
-    
-    cout << "Final answer: " << result << endl;
-    return 0;
-}`,
-          output: `[DEBUG] result = 42
-Final answer: 42`
+          title: 'Formatting Output',
+          description: 'Using iomanip manipulators to control the display of numbers.',
+          code: `#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    double pi = 3.1415926535;\n    cout << "Default: " << pi << endl;\n    cout << "Fixed & Precision 2: " << fixed << setprecision(2) << pi << endl;\n    cout << "Width 10: " << setw(10) << pi << endl;\n    return 0;\n}`
+        },
+        {
+          title: 'Handling Multiple Inputs',
+          description: 'Chaining the extraction operator to read multiple variables.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y;\n    cout << "Enter two numbers separated by a space: ";\n    cin >> x >> y;\n    cout << "Sum: " << (x + y) << endl;\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'Why does `cin >> myString` fail to read a sentence like "Hello World"?',
+          answer: 'Because the extraction operator (>>) stops reading when it encounters whitespace. It will only read "Hello".'
+        },
+        {
+          question: 'What is the purpose of std::endl?',
+          answer: 'It inserts a newline character into the output stream and flushes the stream buffer to ensure all data is immediately written to the device.'
+        },
+        {
+          question: 'What header file must be included to use setprecision and setw?',
+          answer: 'The <iomanip> header.'
+        },
+        {
+          question: 'What is the difference between cout and cerr?',
+          answer: 'cout is for standard output and is buffered. cerr is for standard error output and is unbuffered, meaning it displays immediately even if the program crashes shortly after.'
         }
       ]
     }
