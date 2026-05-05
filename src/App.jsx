@@ -8,6 +8,7 @@ import ChapterCard from './components/chapter/ChapterCard';
 import ChapterViewer from './components/chapter/ChapterViewer';
 import AnimateIn from './components/ui/AnimateIn';
 import SpotlightSearch from './components/ui/SpotlightSearch';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
 const AuraBackground = lazy(() => import('./components/3d/AuraBackground'));
 
@@ -97,10 +98,12 @@ function App() {
         }
       />
 
-      {/* 3D Background — Lazy loaded */}
-      <Suspense fallback={null}>
-        <AuraBackground />
-      </Suspense>
+      {/* 3D Background — Lazy loaded, crash-safe */}
+      <ErrorBoundary>
+        <Suspense fallback={null}>
+          <AuraBackground />
+        </Suspense>
+      </ErrorBoundary>
 
       <AnimatePresence mode="wait">
         {selectedChapter ? (
