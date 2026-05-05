@@ -8,7 +8,6 @@ import QuestionCard from '../ui/QuestionCard';
 export default function ChapterViewer({ chapter, onBack }) {
   const [activeTopic, setActiveTopic] = useState(null);
   const [activeTab, setActiveTab] = useState('explanation');
-  const [level, setLevel] = useState('beginner');
   const modalRef = useRef(null);
 
   // Scroll to top when chapter changes
@@ -205,33 +204,11 @@ export default function ChapterViewer({ chapter, onBack }) {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="glass-card p-8 sm:p-12"
+                        className="glass-card p-8 sm:p-12 prose prose-slate max-w-none prose-headings:text-text prose-headings:font-bold prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:text-text-secondary prose-p:text-base prose-p:leading-relaxed prose-li:text-text-secondary prose-li:text-base prose-strong:text-text prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm"
                       >
-                        {/* Level Selector */}
-                        <div className="flex flex-wrap gap-2 mb-8 border-b border-black/5 pb-6">
-                          {['beginner', 'intermediate', 'advanced'].map((lvl) => (
-                            <button
-                              key={lvl}
-                              onClick={() => setLevel(lvl)}
-                              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all cursor-none ${
-                                level === lvl 
-                                  ? 'bg-primary text-white shadow-md' 
-                                  : 'bg-black/5 text-text-secondary hover:bg-black/10'
-                              }`}
-                              data-interactive
-                            >
-                              {lvl.toUpperCase()}
-                            </button>
-                          ))}
-                        </div>
-
-                        <div className="prose prose-slate max-w-none prose-headings:text-text prose-headings:font-bold prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:text-text-secondary prose-p:text-base prose-p:leading-relaxed prose-li:text-text-secondary prose-li:text-base prose-strong:text-text prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm">
-                          <ReactMarkdown>
-                            {typeof chapter.topics[activeTopic].explanation === 'object' 
-                              ? chapter.topics[activeTopic].explanation[level] 
-                              : chapter.topics[activeTopic].explanation}
-                          </ReactMarkdown>
-                        </div>
+                        <ReactMarkdown>
+                          {chapter.topics[activeTopic].explanation}
+                        </ReactMarkdown>
                       </motion.div>
                     )}
 

@@ -4,56 +4,72 @@ const chapter3 = {
   description: 'Learn how to give your programs a brain. Master relational operators to make choices, and repetitive loops to automate tasks.',
   topics: [
     {
-      id: "decision-making-intro",
-      title: "Making Decisions — if and else",
-      description: "Learn how to make your code branch in different directions based on conditions.",
-      explanation: {
-        beginner: `
-          Imagine you are a robot guard at a movie theater. Your instructions are: "If the person has a ticket, let them in. Else, tell them to buy one."
-          
-          This is exactly how **if** and **else** work. They allow your program to choose between different paths depending on whether something is true or false.
-        `,
-        intermediate: `
-          The **if** statement evaluates a boolean expression. If it is true, the block of code inside the curly braces \`{ }\` is executed. 
-          The **else** keyword provides an alternative block that runs only if the **if** condition is false.
-        `,
-        advanced: `
-          Branching in C++ is implemented using conditional jump instructions at the machine code level. The \`if-else\` construct is the fundamental control flow mechanism for selective execution. Performance can sometimes be affected by "branch misprediction" in modern CPUs, leading to optimizations like ternary operators or data-driven designs in tight loops.
-        `
-      },
+      id: "if-statement",
+      title: "Making Decisions — The if Statement",
+      description: "Learn how to make your code choose between different paths based on conditions.",
+      explanation: `Until now, our programs have run in a straight line from top to bottom. But real life requires choices. Imagine you are a robot guard at a movie theater. Your instructions are: "If the person has a ticket, let them in. Otherwise, tell them to buy one."
+
+This is exactly how **if** and **else** work. They allow your program to choose between different paths depending on whether something is true or false.
+
+### The \`if\` Statement (The Fork in the Road)
+The \`if\` statement is how we tell the computer to make a choice.
+* If the condition inside the parentheses is **True**, the computer enters the curly braces \`{}\` and runs the code inside.
+* If it is **False**, it ignores the braces entirely and skips to the next section.
+
+### The \`if...else\` Statement (Plan A and Plan B)
+Sometimes you want to say: *"If it's raining, take an umbrella. Otherwise, wear sunglasses."*
+* The \`if\` block is Plan A.
+* The \`else\` block is Plan B. Only one of them will ever execute — never both.
+
+An \`if\` statement can exist perfectly fine on its own. The \`else\` is only needed if you want a specific backup plan when the condition is false.`,
       examples: [
         {
-          level: "beginner",
-          title: "A Simple Decision",
-          code: `
-#include <iostream>
+          title: 'The Basic if Statement',
+          code: `#include <iostream>
 using namespace std;
 
 int main() {
-    int money = 10;
+    int speed = 80;
     
-    if (money >= 5) {
-        cout << "You can buy a snack!";
-    } else {
-        cout << "Not enough money.";
+    // The question: Is speed greater than 65?
+    if (speed > 65) {
+        // This only runs if the answer is True
+        cout << "You are speeding!" << endl;
     }
     
+    cout << "Drive safely." << endl;
     return 0;
-}
-          `,
-          explanation: "The program checks if 'money' is 5 or more. If yes, it prints the first message; otherwise, it prints the second."
+}`,
+          explanation: "A simple check. If the condition is false, the if-block is skipped entirely."
+        },
+        {
+          title: 'The if...else Statement',
+          code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int age;
+    cout << "Enter your age: ";
+    cin >> age;
+    
+    if (age >= 18) {
+        cout << "You are allowed to vote." << endl;
+    } else {
+        cout << "You are too young to vote." << endl;
+    }
+    return 0;
+}`,
+          explanation: "Providing a guaranteed Plan A or Plan B outcome."
         }
       ],
       questions: [
         {
-          difficulty: "easy",
-          question: "Which keyword is used for the 'Plan B' path in a decision?",
-          answer: "else"
+          question: 'What is the danger of using a single equal sign `=` inside an `if` statement? (e.g. `if(age = 18)`)',
+          answer: 'A single `=` assigns the value 18 to the variable `age`, instead of checking if it equals 18. This evaluates to true, causing a silent bug that forces the `if` block to always run.'
         },
         {
-          difficulty: "medium",
-          question: "What happens if an 'if' condition is false and there is no 'else' block?",
-          answer: "The program simply skips over the 'if' block and continues with the code below it."
+          question: 'Do you always need an `else` block after an `if` block?',
+          answer: 'No. An `if` statement can exist perfectly fine on its own. `else` is only needed if you want a specific "Plan B" to occur when the `if` is false.'
         }
       ]
     },
@@ -61,156 +77,231 @@ int main() {
       id: "relational-operators",
       title: "Comparing Things — Relational Operators",
       description: "Understand the symbols used to compare values: equal to, greater than, and more.",
-      explanation: {
-        beginner: `
-          To make decisions, we need to compare things. Is 10 bigger than 5? Does 'A' equal 'B'? 
-          In C++, we use special symbols called **Relational Operators** to ask these questions. 
-          The answer is always either **True** or **False**.
-        `,
-        intermediate: `
-          Common operators include:
-          - \`==\` (Equal to): Note the double equals!
-          - \`!=\` (Not equal to)
-          - \`>\` (Greater than)
-          - \`<\` (Less than)
-          - \`>=\` (Greater than or equal)
-          - \`<=\` (Less than or equal)
-        `,
-        advanced: `
-          Relational operators return a value of type \`bool\`. When comparing floating-point numbers (\`float\` or \`double\`), avoid using \`==\` due to precision issues; instead, check if the difference between numbers is less than a small epsilon value.
-        `
-      },
+      explanation: `To make decisions, we need to compare things. Is 10 bigger than 5? Does 'A' equal 'B'? In C++, we use special symbols called **Relational Operators** to ask these questions. The answer is always either **true** or **false**.
+
+Here are all the relational operators:
+
+* \`==\` (Equal to) — Note the **double** equals! A single \`=\` assigns a value; \`==\` compares values.
+* \`!=\` (Not equal to)
+* \`>\` (Greater than)
+* \`<\` (Less than)
+* \`>=\` (Greater than or equal to)
+* \`<=\` (Less than or equal to)
+
+These operators return a value of type \`bool\` — either \`true\` (1) or \`false\` (0). This boolean result is what the \`if\` statement uses to decide which path to take.
+
+One important caution: when comparing floating-point numbers (\`float\` or \`double\`), avoid using \`==\` directly. Due to how decimals are stored in binary, \`0.1 + 0.2\` might not equal exactly \`0.3\`. Instead, check if the difference between the two numbers is very small (less than a tiny epsilon value like 0.0001).`,
       examples: [
         {
-          level: "beginner",
-          title: "The Equality Test",
-          code: `
-int age = 18;
-bool isAdult = (age >= 18); // true
-bool isChild = (age < 18);  // false
+          title: 'All Relational Operators',
+          code: `#include <iostream>
+using namespace std;
 
-if (age == 18) {
-    // Note: use == to compare, not = 
-}
-          `,
-          explanation: "The symbols help us turn comparisons into True/False values that the 'if' statement can use."
+int main() {
+    int a = 10, b = 5;
+    
+    cout << (a == b) << endl;  // 0 (false)
+    cout << (a != b) << endl;  // 1 (true)
+    cout << (a > b) << endl;   // 1 (true)
+    cout << (a < b) << endl;   // 0 (false)
+    cout << (a >= 10) << endl; // 1 (true)
+    cout << (a <= 9) << endl;  // 0 (false)
+    
+    return 0;
+}`,
+          explanation: "Each comparison produces a true (1) or false (0) result."
         }
       ],
       questions: [
         {
-          difficulty: "easy",
-          question: "What symbol means 'Equal to' in C++?",
-          answer: "=="
-        },
-        {
-          difficulty: "easy",
-          question: "What symbol means 'Not equal to'?",
-          answer: "!="
-        },
-        {
-          difficulty: "medium",
           question: "What is the difference between '=' and '=='?",
-          answer: "'=' is used to assign a value to a variable; '==' is used to compare two values."
+          answer: "'=' is used to assign a value to a variable; '==' is used to compare two values and check if they are equal."
+        },
+        {
+          question: "What type of value do relational operators return?",
+          answer: "A bool value — either true (1) or false (0)."
         }
       ]
     },
     {
-      id: "multiple-conditions",
+      id: "else-if-switch",
       title: "Multiple Conditions — else if and switch",
       description: "Handle scenarios with many possible outcomes using ladders and switches.",
-      explanation: {
-        beginner: `
-          What if there are more than two choices? Like a traffic light: Green, Yellow, Red. 
-          You can use **else if** to add more branches to your decision tree.
-          If you have *many* exact options (like choosing a level 1, 2, 3, or 4), a **switch** is a cleaner way to write it.
-        `,
-        intermediate: `
-          The **else if** ladder checks conditions one by one until it finds a true one. 
-          The **switch** statement evaluates an expression and jumps directly to a matching **case**. Remember to use \`break\` to stop the execution from 'falling through' to the next case.
-        `,
-        advanced: `
-          A \`switch\` statement is often more efficient than an \`else if\` ladder because compilers can implement it using a **jump table**. However, \`switch\` only works with integral types (int, char, enum), whereas \`if-else if\` can handle any boolean expression.
-        `
-      },
+      explanation: `What if there are more than two choices? Like a traffic light: Green, Yellow, Red. You need more than just Plan A and Plan B — you need Plans C, D, and E.
+
+### The \`else if\` Ladder
+You can chain multiple conditions together. The computer checks them one by one from top to bottom. As soon as it finds a True condition, it runs that block and **skips the entire rest of the ladder**.
+
+### The \`switch\` Statement
+If you are checking one single variable against a list of exact matches (like "did the user pick option 1, 2, 3, or 4?"), the \`switch\` statement is a cleaner tool than a long if-else chain.
+
+* A \`switch\` looks at a variable and jumps directly to the matching **\`case\`**.
+* You must write **\`break;\`** at the end of each case. This tells the computer to stop and exit the switch. If you forget \`break;\`, the computer will "fall through" and run the code for the next cases too.
+* The **\`default\`** case acts as a catch-all "Plan B" if nothing else matches.
+
+One important limitation: \`switch\` statements only work with **integral types** (whole numbers, characters, and enums). They cannot compare strings or floating-point numbers. For those, use if-else.
+
+Compilers can often optimize \`switch\` statements using a **jump table**, making them faster than equivalent if-else ladders for many cases.`,
       examples: [
         {
-          level: "beginner",
-          title: "The Traffic Light",
-          code: `
-string color = "yellow";
+          title: 'The else if Ladder',
+          code: `#include <iostream>
+using namespace std;
 
-if (color == "red") {
-    cout << "Stop";
-} else if (color == "yellow") {
-    cout << "Slow down";
-} else {
-    cout << "Go";
-}
-          `,
-          explanation: "The program checks 'red', then 'yellow', and finally defaults to the last option."
+int main() {
+    int score = 85;
+    
+    // The computer checks from top to bottom.
+    // Once it finds a True statement, it skips the rest completely.
+    if (score >= 90) {
+        cout << "Grade: A" << endl;
+    } else if (score >= 80) {
+        cout << "Grade: B" << endl;
+    } else if (score >= 70) {
+        cout << "Grade: C" << endl;
+    } else {
+        cout << "Grade: F" << endl;
+    }
+    return 0;
+}`,
+          explanation: "Checking multiple conditions in a row until one is true."
+        },
+        {
+          title: 'The switch Statement',
+          code: `#include <iostream>
+using namespace std;
+
+int main() {
+    char direction = 'n';
+    
+    switch (direction) {
+        case 'n': 
+            cout << "Going North." << endl; 
+            break; // EXTREMELY IMPORTANT
+        case 's': 
+            cout << "Going South." << endl; 
+            break;
+        default:  // If nothing else matches
+            cout << "Invalid direction." << endl;
+    }
+    return 0;
+}`,
+          explanation: "A clean way to handle many specific options."
         }
       ],
       questions: [
         {
-          difficulty: "easy",
-          question: "In a switch statement, which keyword handles cases that don't match any others?",
-          answer: "default"
+          question: 'When multiple conditions are linked with `else if`, can more than one block execute?',
+          answer: 'No. Only one block will ever execute. As soon as the first true condition is found, its block runs, and the program skips past the entire rest of the ladder.'
         },
         {
-          difficulty: "medium",
-          question: "Why is the 'break' keyword important in a switch statement?",
-          answer: "It stops the program from running the code in the next case automatically (falling through)."
+          question: 'Can you use a `switch` statement to check if a string is equal to "Hello"?',
+          answer: 'No. In C++, `switch` statements only work with integral types (whole numbers, characters, and enums). They cannot evaluate strings or decimals.'
+        },
+        {
+          question: 'What is the purpose of the `default` case in a switch statement?',
+          answer: 'It acts as the catch-all "Plan B". If the variable doesn\'t match any of the provided case values, the code inside the default block executes.'
+        }
+      ]
+    },
+    {
+      id: "logical-operators",
+      title: "Combining Conditions — Logical Operators",
+      description: "Use AND, OR, and NOT to create complex decisions.",
+      explanation: `Sometimes decisions are complex. You don't just want to know if someone is 18. You want to know if they are 18 **AND** they have a driver's license.
+
+Logical operators let you combine multiple True/False questions into one big question:
+
+* **\`&&\` (AND):** The whole thing is true ONLY if **both** the left side and right side are true. Like a door with two locks — both must be unlocked to open it.
+
+* **\`||\` (OR):** The whole thing is true if **at least one** side is true. Like a door with two keys — either key can open it.
+
+* **\`!\` (NOT):** Reverses the answer. If it was true, it becomes false. If it was false, it becomes true.
+
+### Short-Circuit Evaluation
+C++ is clever about efficiency. When using \`&&\`, if the first condition is already false, C++ knows the whole thing must be false, so it **completely skips checking the second condition**. The same happens with \`||\` if the first condition is already true.
+
+This is not just a performance trick — it can prevent crashes. For example:
+\`if (ptr != nullptr && ptr->value > 10)\`
+If \`ptr\` is null, the second check is never reached, preventing a crash.`,
+      examples: [
+        {
+          title: 'Logical AND (&&) / OR (||)',
+          code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int age = 25;
+    bool hasLicense = true;
+    bool hasMoney = false;
+    
+    // Both must be true
+    if (age >= 18 && hasLicense == true) {
+        cout << "You are allowed to rent a car." << endl;
+    }
+    
+    // Only one needs to be true
+    if (hasMoney == true || hasLicense == true) {
+        cout << "You can get to work today." << endl;
+    }
+    return 0;
+}`,
+          explanation: "Combining conditions to make smart choices."
+        }
+      ],
+      questions: [
+        {
+          question: 'What is "short-circuit evaluation"?',
+          answer: 'When using `&&`, if the first condition is false, C++ knows the whole thing must be false, so it completely skips checking the second condition to save time. The same happens with `||` if the first condition is true.'
+        },
+        {
+          question: 'What does the `!` (NOT) operator do?',
+          answer: 'It reverses a boolean value. `!true` becomes `false`, and `!false` becomes `true`.'
         }
       ]
     },
     {
       id: "loops-intro",
-      title: "Repeating Things — Introduction to Loops",
+      title: "Introduction to Loops — Repeating Things",
       description: "Let the computer handle boring repetition using the power of loops.",
-      explanation: {
-        beginner: `
-          If you had to write "I will not talk in class" 100 times, your hand would hurt. 
-          A computer can do it in a microsecond. 
-          **Loops** allow you to run the same block of code over and over again until a specific goal is reached.
-        `,
-        intermediate: `
-          All loops have three main parts: 
-          1. **Initialization** (starting point)
-          2. **Condition** (keep going?)
-          3. **Update** (move toward the end)
-          C++ offers three types of loops: \`while\`, \`for\`, and \`do-while\`.
-        `,
-        advanced: `
-          Iteration is a fundamental concept in algorithm design. Loops can be controlled by counters (deterministic) or by events (non-deterministic). Efficient looping is key to performance, and techniques like "loop unrolling" are used by compilers to speed up execution.
-        `
-      },
+      explanation: `If you had to write "I will not talk in class" 100 times, your hand would hurt. A computer can do it in a microsecond. **Loops** allow you to run the same block of code over and over again until a specific goal is reached.
+
+All loops have three main ingredients:
+1. **Initialization** — Where do we start? (e.g., counter = 1)
+2. **Condition** — Should we keep going? (e.g., counter <= 100)
+3. **Update** — How do we move forward? (e.g., counter++)
+
+If you forget the update step, the condition will never become false, and your loop will run **forever**. This is called an **infinite loop**, and it will freeze your program until you force-close it.
+
+C++ offers three types of loops, each suited for different situations:
+* **\`while\`** — Best when you don't know how many times you'll loop.
+* **\`for\`** — Best when you know exactly how many times to loop.
+* **\`do-while\`** — Like while, but guarantees at least one execution.
+
+At a deeper level, iteration is a fundamental concept in algorithm design. Loops can be controlled by counters (deterministic — you know how many times) or by events (non-deterministic — you loop until something happens, like the user typing "quit"). Efficient looping is key to performance, and techniques like "loop unrolling" are used by compilers to speed up execution.`,
       examples: [
         {
-          level: "beginner",
-          title: "The Idea of a Loop",
-          code: `
-// Instead of this:
-cout << "Hi";
-cout << "Hi";
-cout << "Hi";
+          title: 'The Idea of a Loop',
+          code: `// Instead of this:
+cout << "Hi" << endl;
+cout << "Hi" << endl;
+cout << "Hi" << endl;
 
-// We do this:
-// (Loop 3 times)
-//    cout << "Hi";
-          `,
+// We write this:
+for (int i = 0; i < 3; i++) {
+    cout << "Hi" << endl;
+}`,
           explanation: "Loops turn multiple lines of repetitive code into one single instruction that repeats."
         }
       ],
       questions: [
         {
-          difficulty: "easy",
           question: "What is the main purpose of a loop?",
-          answer: "To repeat a block of code multiple times."
+          answer: "To repeat a block of code multiple times without writing it out each time."
         },
         {
-          difficulty: "medium",
-          question: "What is an 'infinite loop'?",
-          answer: "A loop that never stops because its 'keep going' condition is always true."
+          question: "What is an 'infinite loop' and how does it happen?",
+          answer: "An infinite loop is a loop that never stops because its condition never becomes false. It usually happens when the programmer forgets the update step (like forgetting to write i++)."
         }
       ]
     },
@@ -218,26 +309,21 @@ cout << "Hi";
       id: "while-loop",
       title: "The while Loop",
       description: "Master the most flexible loop that repeats as long as a condition is true.",
-      explanation: {
-        beginner: `
-          The **while** loop is like a "Repeat while..." instruction. 
-          "While you are hungry, keep eating." 
-          It checks the condition *first*. If you aren't hungry, you never start eating!
-        `,
-        intermediate: `
-          Syntax: \`while (condition) { code }\`. 
-          If the condition is false at the very beginning, the loop body is never executed. This is known as a **pre-test loop**.
-        `,
-        advanced: `
-          The \`while\` loop is ideal when the number of iterations is not known beforehand, such as reading lines from a file until EOF (End Of File) or waiting for a specific user flag. It is the most primitive form of iteration in C++.
-        `
-      },
+      explanation: `The **while** loop is like a "Repeat while..." instruction. "While you are hungry, keep eating." It checks the condition *first*, at the top. If the condition is false immediately, the loop body never runs even once. This is why it is called a **pre-test loop**.
+
+The syntax is simple:
+\`while (condition) { code }\`
+
+The while loop is ideal when the number of iterations is not known beforehand. For example:
+* Reading lines from a file until you reach the end
+* Waiting for a user to type the correct password
+* Running a game loop until the player quits
+
+**The most critical rule:** You must make sure the condition will eventually become false. If you have a counter, you must remember to increment it inside the loop. Otherwise, the condition is always true and you get an infinite loop.`,
       examples: [
         {
-          level: "beginner",
-          title: "Counting to 5",
-          code: `
-#include <iostream>
+          title: 'Counting to 5',
+          code: `#include <iostream>
 using namespace std;
 
 int main() {
@@ -245,23 +331,21 @@ int main() {
     
     while (count <= 5) {
         cout << count << " ";
-        count = count + 1; // Move to the next number
+        count = count + 1; // CRITICAL: Move to the next number
     }
     
+    cout << endl << "Done!" << endl;
     return 0;
-}
-          `,
+}`,
           explanation: "The loop checks if count is 5 or less. It prints the number and adds 1, repeating until count becomes 6."
         }
       ],
       questions: [
         {
-          difficulty: "easy",
-          question: "When does a while loop check its condition (top or bottom)?",
+          question: "When does a while loop check its condition — at the top or bottom?",
           answer: "At the top, before running any code inside."
         },
         {
-          difficulty: "hard",
           question: "What happens if the condition of a while loop is false before the first run?",
           answer: "The code inside the loop is skipped entirely and never runs."
         }
@@ -271,169 +355,156 @@ int main() {
       id: "for-loop",
       title: "The for Loop — Counting Made Easy",
       description: "The most common loop used for counting and iterating over ranges.",
-      explanation: {
-        beginner: `
-          The **for** loop is the favorite of many programmers. 
-          It's perfect for when you know exactly how many times you want to repeat (like "count from 1 to 10"). 
-          It packs the start, the stop rule, and the step into one neat line.
-        `,
-        intermediate: `
-          Syntax: \`for (init; condition; update) { code }\`. 
-          - **Init**: Happens once at the start.
-          - **Condition**: Checked before every run.
-          - **Update**: Happens after every run.
-        `,
-        advanced: `
-          The \`for\` loop is functionally equivalent to a \`while\` loop but localized initialization and update logic improve readability. In modern C++ (C++11 and later), we also have the "Range-based for loop" for iterating over collections like arrays and vectors.
-        `
-      },
+      explanation: `The **for** loop is the favorite of many programmers. It is perfect for when you know exactly how many times you want to repeat (like "count from 1 to 10"). It packs the start, the stop rule, and the step into one neat line.
+
+The syntax: \`for (init; condition; update) { code }\`
+
+* **Init:** Happens once at the very start (e.g., \`int i = 0\`).
+* **Condition:** Checked before every iteration. If false, the loop stops.
+* **Update:** Happens after every iteration (e.g., \`i++\`).
+
+A \`for\` loop is functionally equivalent to a \`while\` loop, but by putting initialization and update logic in one line, it is much harder to accidentally create an infinite loop. The counter variable \`i\` is also scoped to the loop — it does not exist outside the loop's curly braces.
+
+In modern C++ (C++11 and later), there is also a "range-based for loop" for iterating over collections like arrays and vectors:
+\`for (int x : myArray) { cout << x; }\`
+This reads as "for each x in myArray" and is both cleaner and safer than manually managing index variables.`,
       examples: [
         {
-          level: "beginner",
-          title: "Counting with For",
-          code: `
-#include <iostream>
+          title: 'Counting with For',
+          code: `#include <iostream>
 using namespace std;
 
 int main() {
-    // (Start at 1; Stop at 5; Add 1 each time)
+    // (Start at 1; Keep going while <= 5; Add 1 each time)
     for (int i = 1; i <= 5; i++) {
         cout << i << " ";
     }
+    
+    cout << endl << "Finished!" << endl;
     return 0;
-}
-          `,
-          explanation: "This does the exact same thing as our while loop example, but it's much shorter and harder to mess up."
+}`,
+          explanation: "This does the exact same thing as the while loop example, but it's much shorter and harder to mess up."
         }
       ],
       questions: [
         {
-          difficulty: "easy",
           question: "How many parts are inside a for loop's parentheses?",
-          answer: "Three (initialization, condition, and update)."
+          answer: "Three: initialization, condition, and update — separated by semicolons."
         },
         {
-          difficulty: "medium",
-          question: "In a for loop, what does 'i++' usually do?",
-          answer: "It increments the counter variable 'i' by one after each iteration."
+          question: "When should you choose a `for` loop over a `while` loop?",
+          answer: "Use a for loop when you know exactly how many iterations you need (like counting from 1 to 100). Use a while loop when the number of iterations is unknown and depends on a dynamic event."
         }
       ]
     },
     {
-      id: "if-statement-advanced",
-      title: 'Decisions: The if Statement (Advanced)',
-      description: "Technical overview of branching, if-else, and conditional logic.",
-      explanation: {
-        beginner: "This section explores how programs branch using 'if' and 'else' to make intelligent choices.",
-        intermediate: "Mastering the syntax of nested 'if' statements and the 'else if' ladder for complex logic.",
-        advanced: `Until now, our programs have run in a straight line from top to bottom. But real life requires choices. A program needs to act like a brain, taking different paths based on the situation.
+      id: "do-while-loop",
+      title: "The do...while Loop",
+      description: "A loop that always runs at least once before checking the condition.",
+      explanation: `The \`do...while\` loop is just like a \`while\` loop, but it asks the question at the **bottom** instead of the top. Because it checks at the bottom, the code inside is guaranteed to run **at least one time**, no matter what.
 
-### Relational Operators (Asking Questions)
-To make a choice, the computer must ask a True/False question. It does this by comparing values using relational operators:
-* \`==\` (Is exactly equal to? Note the double equals!)
-* \`!=\` (Is NOT equal to?)
-* \`>\` (Greater than?), \`<\` (Less than?)
-* \`>=\` (Greater than or equal?), \`<=\` (Less than or equal?)
+The syntax:
+\`\`\`
+do {
+    code
+} while (condition);
+\`\`\`
 
-### The \`if\` Statement (The Fork in the Road)
-The \`if\` statement is how we tell the computer to make a choice. 
-* If the question inside the parentheses is **True**, the computer will enter the curly braces \`{}\` and run the code inside.
-* If it is **False**, it ignores the braces entirely and skips to the next section.
+Notice the semicolon after the \`while(condition)\` — this is required because the \`while\` here acts as the closing statement of the \`do\` block.
 
-### The \`if...else\` Statement (Plan A and Plan B)
-Sometimes you want to say: *"If it's raining, take an umbrella. Otherwise, wear sunglasses."* 
-* The \`if\` block is Plan A.
-* The \`else\` block is Plan B. Only one of them will ever execute.`
-      },
+This loop is perfect for scenarios where you always need to do something at least once:
+* **Menu systems:** You want to show a menu first, then ask if the user wants to continue.
+* **Input validation:** You want to ask the user for a number first, then check if it's valid. If not, ask again.
+* **Game rounds:** You always play at least one round before asking "Play again?"
+
+The do-while loop is less common than for or while, but when you need "do first, ask later" behavior, it is the cleanest solution.`,
       examples: [
         {
-          level: "advanced",
-          title: 'The else if Ladder',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int score = 85;\n    \n    if (score >= 90) {\n        cout << "Grade: A" << endl;\n    } else if (score >= 80) {\n        cout << "Grade: B" << endl;\n    } else if (score >= 70) {\n        cout << "Grade: C" << endl;\n    } else {\n        cout << "Grade: F" << endl;\n    }\n    return 0;\n}`,
-          explanation: "Using an else-if ladder to check multiple conditions sequentially."
+          title: 'A Menu System',
+          code: `#include <iostream>
+using namespace std;
+
+int main() {
+    int choice;
+    do {
+        cout << "\\n1. Play Game\\n2. Exit\\nEnter choice: ";
+        cin >> choice;
+        
+        if (choice != 1 && choice != 2) {
+            cout << "Invalid choice." << endl;
+        }
+    } while (choice != 2); // Checks condition at the bottom
+    
+    cout << "Goodbye!" << endl;
+    return 0;
+}`,
+          explanation: "Perfect for menus — the menu is always shown at least once before checking if the user wants to exit."
         }
       ],
       questions: [
         {
-          difficulty: "hard",
-          question: 'What is the danger of using a single equal sign `=` inside an `if` statement? (e.g. `if(age = 18)`)',
-          answer: 'A single `=` assigns the value 18 to the variable `age`, instead of checking if it equals 18. This evaluates to true, causing a silent bug that forces the `if` block to always run.'
+          question: "How is a do-while loop different from a while loop?",
+          answer: "A do-while loop checks its condition at the bottom, guaranteeing the code runs at least once. A while loop checks at the top and might never run."
+        },
+        {
+          question: "Why does a `do...while` loop end with a semicolon while a standard `while` loop does not?",
+          answer: "Because the `while(condition)` acts as the closing statement for the `do` block, making it a complete syntactic instruction that must end with a semicolon."
         }
       ]
     },
     {
-      id: "looping-advanced",
-      title: 'Looping: Automating the Boring Stuff (Advanced)',
-      description: "Deep dive into while, for, and do-while loops with practical scenarios.",
-      explanation: {
-        beginner: "Computers never get tired. This section shows how to use loops to repeat tasks millions of times instantly.",
-        intermediate: "Understanding the difference between entry-controlled (while) and exit-controlled (do-while) loops.",
-        advanced: `Computers are incredibly fast and never get bored. If you want to print "Hello" a thousand times, you shouldn't write \`cout\` a thousand times. You use a **loop**.
+      id: "break-continue",
+      title: "break and continue — Loop Control",
+      description: "Learn how to exit a loop early or skip specific iterations.",
+      explanation: `Sometimes you need more control over your loops. Maybe you want to stop early because you found what you were looking for, or skip over a specific case without stopping the whole loop.
 
-### The \`while\` Loop (Loop until told to stop)
-A \`while\` loop is like saying: *"As long as this condition is true, keep doing this over and over."*
-* It checks the condition at the **top**.
-* If it's false immediately, the loop never runs even once.
+### \`break\` — Emergency Exit
+The \`break\` statement immediately terminates the loop and jumps to the code after it. It is like pulling the emergency brake.
 
-### The \`for\` Loop (Loop a specific number of times)
-When you know exactly how many times you want to loop (e.g., exactly 10 times), the \`for\` loop is the best tool. It packs three rules into one neat line:
-1. **Start:** Create a counter variable (e.g., \`int i = 0\`).
-2. **Stop:** The rule to keep going (e.g., \`i < 10\`).
-3. **Step:** How to count (e.g., \`i++\` means add 1 each time).
+Common use: You are searching through a list for a specific item. Once you find it, there is no reason to keep searching — \`break\` out immediately.
 
-### The \`do...while\` Loop (Shoot first, ask later)
-This is just like a \`while\` loop, but it asks the question at the **bottom**. 
-* Because it checks at the bottom, the code inside is guaranteed to run **at least one time**, no matter what.`
-      },
+### \`continue\` — Skip This One
+The \`continue\` statement skips the rest of the current iteration and jumps back to the top of the loop for the next iteration. It is like saying "never mind this one, move on."
+
+Common use: You are processing a list of numbers but want to skip negative ones. When you encounter a negative number, use \`continue\` to skip it and move to the next number.
+
+Both \`break\` and \`continue\` work with all three loop types (while, for, and do-while). They are powerful tools, but overusing them can make code harder to follow. A well-designed loop condition is usually cleaner than littering the loop body with breaks and continues.`,
       examples: [
         {
-          level: "advanced",
-          title: 'The do...while Menu',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int choice;\n    do {\n        cout << "\\n1. Play Game\\n2. Exit\\nEnter choice: ";\n        cin >> choice;\n    } while (choice != 2); \n    \n    cout << "Goodbye!" << endl;\n    return 0;\n}`,
-          explanation: "A do-while loop ensures the menu is displayed at least once before checking the exit condition."
+          title: 'break and continue in Action',
+          code: `#include <iostream>
+using namespace std;
+
+int main() {
+    // break: Stop at the first even number
+    for (int i = 1; i <= 10; i++) {
+        if (i % 2 == 0) {
+            cout << "Found even: " << i << endl;
+            break; // Exit the loop immediately
+        }
+    }
+    
+    // continue: Print only odd numbers
+    for (int i = 1; i <= 10; i++) {
+        if (i % 2 == 0) {
+            continue; // Skip even numbers
+        }
+        cout << i << " ";
+    }
+    
+    return 0;
+}`,
+          explanation: "'break' stops the loop entirely. 'continue' skips the rest of the current round and moves to the next."
         }
       ],
       questions: [
         {
-          difficulty: "hard",
-          question: 'When should you choose a `for` loop over a `while` loop?',
-          answer: 'Use a `for` loop when you know exactly how many iterations you need (like counting from 1 to 100). Use a \`while\` loop when the number of iterations is unknown and depends on a dynamic event.'
-        }
-      ]
-    },
-    {
-      id: "logical-operators-advanced",
-      title: 'Logical Operators and Switches (Advanced)',
-      description: "Combining conditions and handling multiple fixed-value cases efficiently.",
-      explanation: {
-        beginner: "Sometimes one condition isn't enough. Learn how to say 'if this AND that' or 'if this OR that'.",
-        intermediate: "Using the switch-case structure to replace long if-else ladders for efficiency.",
-        advanced: `Sometimes decisions are complex. You don't just want to know if someone is 18. You want to know if they are 18 **AND** they have a driver's license.
-
-### Logical Operators (Combining Questions)
-Logical operators let you combine multiple True/False questions into one big question:
-* **\`&&\` (AND):** The whole thing is true ONLY if both the left side and right side are true.
-* **\`||\` (OR):** The whole thing is true if at least *one* side is true.
-* **\`!\` (NOT):** Reverses the answer. If it was true, it becomes false.
-
-### The \`switch\` Statement
-If you are checking one single variable against a huge list of possible exact matches, writing 5 \`else if\` statements gets messy.
-* A \`switch\` statement looks at a variable and immediately jumps to the matching **\`case\`**.
-* You must write **\`break;\`** at the end of a case. This tells the computer to stop and exit the switch.`
-      },
-      examples: [
+          question: "What does 'break' do inside a loop?",
+          answer: "It immediately terminates the loop and jumps to the first line of code after the loop."
+        },
         {
-          level: "advanced",
-          title: 'Intentional Fall-Through',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    char grade = 'a';\n    \n    switch(grade) {\n        case 'A':\n        case 'a': \n            cout << "Excellent work!" << endl;\n            break;\n        default:\n            cout << "Keep trying." << endl;\n    }\n    return 0;\n}`,
-          explanation: "Omitting 'break' to allow multiple cases to share the same code block."
-        }
-      ],
-      questions: [
-        {
-          difficulty: "hard",
-          question: 'What is "short-circuit evaluation"?',
-          answer: 'When using `&&`, if the first condition is false, C++ knows the whole thing must be false, so it skips checking the second condition. The same happens with `||` if the first is true.'
+          question: "What does 'continue' do inside a loop?",
+          answer: "It skips the rest of the current iteration and jumps back to the top of the loop to start the next iteration."
         }
       ]
     }
