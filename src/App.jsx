@@ -11,6 +11,7 @@ import ProductPreview from './components/ProductPreview';
 import ChapterCard from './components/ChapterCard';
 import ChapterViewer from './components/ChapterViewer';
 import AnimateIn from './components/ui/AnimateIn';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   const [selectedChapter, setSelectedChapter] = useState(null);
@@ -69,6 +70,7 @@ function App() {
 
   return (
     <>
+      <CustomCursor />
       <Navbar onNavigateHome={handleNavigateHome} />
 
       <AnimatePresence mode="wait">

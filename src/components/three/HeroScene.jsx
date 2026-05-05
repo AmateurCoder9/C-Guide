@@ -24,13 +24,14 @@ export default function HeroScene() {
     <div className="absolute inset-0 z-0" style={{ pointerEvents: 'none' }}>
       <Canvas
         dpr={[1, 1.5]}
-        camera={{ position: [0, 0, 6], fov: 50 }}
+        camera={{ position: [0, 0, 8], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         style={{ background: 'transparent' }}
       >
         <AdaptiveDpr pixelated />
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 5, 5]} intensity={0.8} />
+        <ambientLight intensity={0.5} color="#1a0533" />
+        <directionalLight position={[5, 5, 5]} intensity={1} color="#4f46e5" />
+        <pointLight position={[-5, -5, -5]} intensity={0.5} color="#06b6d4" />
         <Suspense fallback={null}>
           <HeroObject />
         </Suspense>

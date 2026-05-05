@@ -1,55 +1,67 @@
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { ArrowRight, Terminal } from 'lucide-react';
 import TiltCard from './ui/TiltCard';
-
-const iconMap = {
-  BookOpen: '📘',
-  Database: '🗃️',
-  GitBranch: '🔀',
-  Code2: '⚡',
-  LayoutGrid: '📊',
-  Boxes: '🧩',
-  Rocket: '🚀',
-};
+import AnimateIn from './ui/AnimateIn';
 
 export default function ChapterCard({ chapter, index, onSelect }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <TiltCard>
-        <button
+    <AnimateIn delay={index * 0.08} direction="up" distance={40}>
+      <TiltCard className="h-full">
+        <div 
           onClick={() => onSelect(chapter.id)}
-          className="group w-full text-left glass-card glow-border-subtle p-6 rounded-2xl hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1 border border-slate-100 hover:border-primary/20"
-          id={`chapter-card-${chapter.id}`}
+          className="group relative h-full glass-card p-6 sm:p-8 cursor-none flex flex-col shimmer-sweep transition-all duration-300"
+          data-interactive
         >
-          <div className="flex items-start justify-between mb-4">
-            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${chapter.color} flex items-center justify-center text-xl shadow-lg`}>
-              {iconMap[chapter.icon] || '📄'}
+          {/* Internal Glow Overlay */}
+          <div className="absolute inset-0 rounded-[15px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(79,70,229,0.15)_0%,transparent_70%)]" />
+
+          {/* Header */}
+          <div className="flex items-start justify-between mb-6 relative z-10">
+            <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${
+              index % 2 === 0 
+                ? 'bg-gradient-to-br from-primary to-accent' 
+                : 'bg-gradient-to-br from-accent to-purple-600'
+            }`}>
+              <Terminal size={24} />
             </div>
-            <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
-              Ch. {chapter.id}
-            </span>
+            <div className="bg-[rgba(10,10,15,0.8)] border border-[rgba(129,140,248,0.2)] px-3 py-1 rounded-full flex items-center justify-center shadow-inner">
+              <span className="text-xs font-mono font-bold text-accent tracking-widest uppercase">
+                CH 0{chapter.id}
+              </span>
+            </div>
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">
-            {chapter.title}
-          </h3>
-          <p className="text-sm text-slate-500 leading-relaxed mb-4">
-            {chapter.description}
-          </p>
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-medium">
-              {chapter.topics.length} topics
-            </span>
-            <span className="text-primary flex items-center gap-1 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-              Explore <ArrowRight size={14} />
-            </span>
+
+          {/* Content */}
+          <div className="flex-1 relative z-10">
+            <h3 className="text-2xl font-extrabold text-white mb-3 tracking-tight group-hover:text-accent transition-colors duration-300">
+              {chapter.title}
+            </h3>
+            <p className="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+              {chapter.description}
+            </p>
           </div>
-        </button>
+
+          {/* Footer (Topics pill tags) */}
+          <div className="mt-auto pt-6 border-t border-[rgba(129,140,248,0.1)] flex items-center justify-between relative z-10">
+            <div className="flex items-center gap-2 overflow-hidden max-w-[70%]">
+              {chapter.topics.slice(0, 2).map((t, i) => (
+                <span key={i} className="text-xs bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-slate-300 px-2 py-1 rounded-full whitespace-nowrap">
+                  {t.title.split(' ')[0]}
+                </span>
+              ))}
+              {chapter.topics.length > 2 && (
+                <span className="text-xs bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-slate-400 px-2 py-1 rounded-full">
+                  +{chapter.topics.length - 2}
+                </span>
+              )}
+            </div>
+            
+            <div className="w-8 h-8 rounded-full bg-[rgba(79,70,229,0.1)] border border-[rgba(79,70,229,0.3)] flex items-center justify-center text-primary-light group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-300 transform group-hover:translate-x-1">
+              <ArrowRight size={16} />
+            </div>
+          </div>
+        </div>
       </TiltCard>
-    </motion.div>
+    </AnimateIn>
   );
 }

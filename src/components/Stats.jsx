@@ -1,72 +1,74 @@
+import { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import AnimateIn from './ui/AnimateIn';
 
-const stats = [
-  { value: 7, label: 'Chapters', suffix: '', prefix: '' },
-  { value: 35, label: 'Topics', suffix: '+', prefix: '' },
-  { value: 100, label: 'Code Examples', suffix: '+', prefix: '' },
-  { value: 0, label: 'Cost', suffix: '', prefix: '₹' },
-];
-
-function AnimatedNumber({ value, prefix = '', suffix = '' }) {
+function AnimatedNumber({ value }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const [display, setDisplay] = useState(0);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const duration = 1500;
-    const startTime = Date.now();
+    if (isInView) {
+      let start = 0;
+      const duration = 2000;
+      const startTime = performance.now();
 
-    const tick = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(eased * value));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
+      const updateNumber = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function (easeOutExpo)
+        const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        
+        setDisplayValue(Math.floor(easeProgress * value));
+
+        if (progress < 1) {
+          requestAnimationFrame(updateNumber);
+        } else {
+          setDisplayValue(value);
+        }
+      };
+
+      requestAnimationFrame(updateNumber);
+    }
   }, [isInView, value]);
 
-  return (
-    <span ref={ref}>
-      {prefix}{display}{suffix}
-    </span>
-  );
+  return <span ref={ref}>{displayValue}</span>;
 }
+
+const stats = [
+  { label: 'Core Chapters', value: 7, suffix: '' },
+  { label: 'Topics Covered', value: 30, suffix: '+' },
+  { label: 'Code Examples', value: 90, suffix: '+' },
+  { label: 'Cost', value: 0, suffix: '$' }
+];
 
 export default function Stats() {
   return (
-    <section className="section-padding bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
-      {/* Glow orbs */}
-      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl" />
+    <section className="py-20 relative overflow-hidden z-10">
+      <div className="absolute inset-0 bg-[#0d0d18] border-y border-[rgba(129,140,248,0.1)]" />
+      
+      {/* Glow Orbs */}
+      <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
+      <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-64 h-64 bg-accent/10 rounded-full blur-[80px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative">
-        <AnimateIn>
-          <div className="text-center mb-14">
-            <span className="text-sm font-semibold text-primary-light uppercase tracking-wider">By the numbers</span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold mt-3">
-              Built for serious learners
-            </h2>
-          </div>
-        </AnimateIn>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {stats.map((s, i) => (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 divide-x divide-[rgba(255,255,255,0.05)]">
+          {stats.map((stat, idx) => (
             <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.8 }}
+              key={idx}
+              initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, delay: idx * 0.1, type: "spring" }}
+              className="text-center px-4"
             >
-              <div className="text-center p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all hover:border-primary/30" id={`stat-${i}`}>
-                <div className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-primary-light to-cyan-400 bg-clip-text text-transparent mb-2">
-                  <AnimatedNumber value={s.value} prefix={s.prefix} suffix={s.suffix} />
-                </div>
-                <p className="text-slate-400 font-medium text-sm">{s.label}</p>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-2 tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                {stat.suffix === '$' && <span className="text-accent">$</span>}
+                <AnimatedNumber value={stat.value} />
+                {stat.suffix !== '$' && <span className="text-primary-light">{stat.suffix}</span>}
+              </div>
+              <div className="text-sm sm:text-base font-bold text-slate-400 uppercase tracking-widest">
+                {stat.label}
               </div>
             </motion.div>
           ))}
