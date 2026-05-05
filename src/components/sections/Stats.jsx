@@ -44,7 +44,7 @@ const stats = [
 export default function Stats() {
   return (
     <section className="py-24 sm:py-32 relative overflow-hidden z-10">
-      <div className="absolute inset-0 bg-white/40 border-y border-black/5 backdrop-blur-3xl" />
+      <div className="absolute inset-0 bg-white/5 border-y border-white/10" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">

@@ -132,11 +132,11 @@ export default function SpotlightSearch({ chapters, onSelectChapter, onSelectTop
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-              className="relative w-full max-w-xl bg-white/95 backdrop-blur-2xl rounded-[1.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.15)] border border-white/60 overflow-hidden"
+              className="relative w-full max-w-xl bg-white/20 backdrop-blur-3xl rounded-[1.5rem] border border-white/30 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Input */}
-              <div className="flex items-center gap-3 px-6 py-5 border-b border-black/5">
+              <div className="flex items-center gap-3 px-6 py-5 border-b border-white/10">
                 <Search size={20} className="text-text-muted flex-shrink-0" />
                 <input
                   ref={inputRef}
@@ -165,7 +165,7 @@ export default function SpotlightSearch({ chapters, onSelectChapter, onSelectTop
                       onClick={() => handleSelect(result)}
                       onMouseEnter={() => setSelectedIndex(idx)}
                       className={`w-full flex items-center gap-4 px-6 py-3.5 text-left transition-all cursor-none ${
-                        idx === selectedIndex ? 'bg-primary/10' : 'hover:bg-black/5'
+                        idx === selectedIndex ? 'bg-white/20' : 'hover:bg-white/10'
                       }`}
                       data-interactive
                     >
@@ -199,7 +199,7 @@ export default function SpotlightSearch({ chapters, onSelectChapter, onSelectTop
               )}
 
               {/* Footer */}
-              <div className="flex items-center justify-between px-6 py-3 border-t border-black/5 bg-black/[0.02]">
+              <div className="flex items-center justify-between px-6 py-3 border-t border-white/10 bg-white/5">
                 <div className="flex items-center gap-3 text-[11px] text-text-muted font-semibold">
                   <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded bg-black/5 font-bold">↑↓</kbd> Navigate</span>
                   <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 rounded bg-black/5 font-bold">↵</kbd> Open</span>

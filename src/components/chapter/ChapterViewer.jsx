@@ -198,14 +198,14 @@ export default function ChapterViewer({ chapter, onBack }) {
                 {/* Dynamic Island style progress */}
                 <motion.div
                   layout
-                  className="flex items-center gap-3 bg-[#1d1d1f] text-white px-4 py-2 rounded-full shadow-lg"
+                  className="flex items-center gap-3 bg-white/15 backdrop-blur-xl text-text px-4 py-2 rounded-full border border-white/20"
                 >
                   <span className="text-[11px] font-bold tracking-wider">
                     {activeTopic + 1} / {chapter.topics.length}
                   </span>
                   <div className="w-16 h-1.5 bg-white/20 rounded-full overflow-hidden">
                     <motion.div
-                      className="h-full bg-white rounded-full"
+                      className="h-full bg-text rounded-full"
                       animate={{ width: `${((activeTopic + 1) / chapter.topics.length) * 100}%` }}
                       transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
                     />
@@ -248,7 +248,7 @@ export default function ChapterViewer({ chapter, onBack }) {
                 </motion.h1>
 
                 {/* iOS Style Segmented Control */}
-                <div className="bg-black/[0.04] p-1 mb-10 flex rounded-2xl w-full max-w-md mx-auto shadow-inner">
+                <div className="bg-white/10 p-1 mb-10 flex rounded-2xl w-full max-w-md mx-auto border border-white/10">
                   {tabs.map((tab) => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -353,12 +353,12 @@ export default function ChapterViewer({ chapter, onBack }) {
                 </div>
 
                 {/* Bottom Navigation */}
-                <div className="mt-16 flex items-center justify-between border-t border-black/5 pt-8">
+                <div className="mt-16 flex items-center justify-between border-t border-white/10 pt-8">
                   <motion.button
                     onClick={isFirstTopic ? closeTopic : goToPrevTopic}
                     whileHover={{ x: -3 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-5 py-3 rounded-2xl glass-card text-text-secondary hover:text-text transition-all font-semibold cursor-none text-sm max-w-[45%]"
+                    className="flex items-center gap-2 px-5 py-3 rounded-2xl glass-card text-text-secondary hover:text-text transition-all font-bold cursor-none text-sm max-w-[45%]"
                     data-interactive
                   >
                     <ChevronLeft size={18} className="flex-shrink-0" />
@@ -370,7 +370,7 @@ export default function ChapterViewer({ chapter, onBack }) {
                       onClick={goToNextTopic}
                       whileHover={{ x: 3 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-primary text-white hover:bg-primary/90 transition-all font-semibold cursor-none text-sm shadow-md max-w-[45%]"
+                      className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-text text-white hover:opacity-90 transition-all font-bold cursor-none text-sm max-w-[45%]"
                       data-interactive
                     >
                       <span className="truncate">{chapter.topics[activeTopic + 1].title}</span>
@@ -381,7 +381,7 @@ export default function ChapterViewer({ chapter, onBack }) {
                       onClick={closeTopic}
                       whileHover={{ x: 3 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#34c759] text-white hover:bg-[#34c759]/90 transition-all font-semibold cursor-none text-sm shadow-md"
+                      className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#2d2a20] text-white hover:opacity-90 transition-all font-bold cursor-none text-sm"
                       data-interactive
                     >
                       Finish Chapter <CheckCircle2 size={18} />

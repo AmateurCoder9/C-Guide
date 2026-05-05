@@ -14,17 +14,17 @@ export default function ChapterCard({ chapter, index, onSelect, progress = 0 }) 
         >
           {/* Header */}
           <div className="flex items-start justify-between mb-8 relative z-10">
-            <div className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center text-white shadow-xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 ${
+            <div className={`w-16 h-16 rounded-[1.25rem] flex items-center justify-center text-white transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6 ${
               index % 2 === 0 
-                ? 'bg-gradient-to-br from-[#0066cc] to-[#47a1ff]' 
-                : 'bg-gradient-to-br from-[#ff3b30] to-[#ff9500]'
+                ? 'bg-gradient-to-br from-[#8b7d4b] to-[#C2B280]' 
+                : 'bg-gradient-to-br from-[#2d2a20] to-[#6e6754]'
             }`}>
               <Terminal size={28} />
             </div>
             <div className="flex items-center gap-3">
               {/* Activity Ring */}
               <ProgressRing progress={progress} size={44} />
-              <div className="bg-black/5 border border-black/5 px-4 py-1.5 rounded-full flex items-center justify-center shadow-sm">
+              <div className="bg-white/10 border border-white/20 px-4 py-1.5 rounded-full flex items-center justify-center">
                 <span className="text-xs font-bold text-text-secondary tracking-widest uppercase">
                   CH 0{chapter.id}
                 </span>
@@ -46,18 +46,18 @@ export default function ChapterCard({ chapter, index, onSelect, progress = 0 }) 
           <div className="mt-auto pt-6 border-t border-black/5 flex items-center justify-between relative z-10">
             <div className="flex items-center gap-2 overflow-hidden max-w-[75%]">
               {chapter.topics.slice(0, 2).map((t, i) => (
-                <span key={i} className="text-xs font-semibold bg-white/60 border border-black/5 text-text-secondary px-3 py-1.5 rounded-full whitespace-nowrap shadow-sm">
+                <span key={i} className="text-xs font-bold bg-white/10 border border-white/10 text-text-secondary px-3 py-1.5 rounded-full whitespace-nowrap">
                   {t.title.split(' ')[0]}
                 </span>
               ))}
               {chapter.topics.length > 2 && (
-                <span className="text-xs font-semibold bg-black/5 text-text-secondary px-3 py-1.5 rounded-full">
+                <span className="text-xs font-bold bg-white/5 text-text-secondary px-3 py-1.5 rounded-full">
                   +{chapter.topics.length - 2}
                 </span>
               )}
             </div>
             
-            <div className="w-10 h-10 rounded-full bg-white shadow-sm border border-black/5 flex items-center justify-center text-text-secondary group-hover:bg-primary group-hover:text-white transition-all duration-400 transform group-hover:translate-x-1 group-hover:shadow-md">
+            <div className="w-10 h-10 rounded-full bg-white/20 border border-white/20 flex items-center justify-center text-text-secondary group-hover:bg-text group-hover:text-white transition-all duration-400 transform group-hover:translate-x-1">
               <ArrowRight size={18} />
             </div>
           </div>

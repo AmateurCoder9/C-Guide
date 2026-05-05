@@ -20,7 +20,7 @@ export default function Hero({ onStartLearning, onBrowseChapters }) {
         <motion.div style={{ y, opacity }} className="max-w-4xl mx-auto flex flex-col items-center">
           
           <motion.div {...fadeUp(0)}>
-            <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md text-text-secondary text-sm font-semibold px-5 py-2 rounded-full mb-8 border border-black/5 shadow-sm">
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-text-secondary text-sm font-bold px-5 py-2 rounded-full mb-8 border border-white/30">
               <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
               Visionary C++ Engine
             </div>
@@ -69,7 +69,7 @@ export default function Hero({ onStartLearning, onBrowseChapters }) {
           transition={{ duration: 1, delay: 0.5 }}
           className="absolute top-1/4 left-10 hidden lg:block"
         >
-          <div className="glass-card p-4 rounded-3xl rotate-[-10deg] shadow-[0_20px_40px_rgba(0,0,0,0.05)]">
+          <div className="glass-card p-4 rounded-3xl rotate-[-10deg]">
             <div className="text-sm font-bold text-text mb-1">Performance</div>
             <div className="text-2xl font-bold gradient-text">O(1)</div>
           </div>
@@ -81,9 +81,9 @@ export default function Hero({ onStartLearning, onBrowseChapters }) {
           transition={{ duration: 1, delay: 0.6 }}
           className="absolute bottom-1/4 right-10 hidden lg:block"
         >
-          <div className="glass-card p-4 rounded-3xl rotate-[5deg] shadow-[0_20px_40px_rgba(0,0,0,0.05)]">
+          <div className="glass-card p-4 rounded-3xl rotate-[5deg]">
             <div className="text-sm font-bold text-text mb-1">Memory</div>
-            <div className="text-2xl font-bold gradient-text-warm">Allocated</div>
+            <div className="text-2xl font-bold text-accent">Allocated</div>
           </div>
         </motion.div>
       </div>
