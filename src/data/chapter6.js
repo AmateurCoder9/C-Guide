@@ -1,146 +1,196 @@
 const chapter6 = {
   id: 6,
   title: 'Objects and Classes',
-  description: 'The fundamental building blocks of OOP. Define classes, create objects, and understand constructors and destructors.',
+  description: 'The heart of C++. Learn how to build your own custom data types with bundled data and behavior — the foundation of Object-Oriented Programming.',
   topics: [
     {
-      title: 'Classes and Objects',
-      explanation: `A **class** is the core feature of C++ that supports object-oriented programming. It is a user-defined data type that binds data and functions together into a single unit.
+      title: 'Your First Class',
+      explanation: `In Chapter 4, we learned about \`struct\` — a way to group different variables together. A **class** is like a turbocharged struct. 
+
+The key difference: a class can also bundle in **functions** alongside the data.
+And it can **hide** that data from the outside world for safety.
 
 ### Defining a Class
-A class definition starts with the keyword \`class\` followed by the class name. The body is enclosed in braces and terminated by a semicolon. Inside the body, you define data members and member functions.
+A class definition starts with the keyword \`class\`. Inside the body (inside \`{}\`), you define the class's data members and function members.
 
-### Access Specifiers
-* \`private\`: Members declared here can **only** be accessed by member functions of the class. By default, all members of a class are private. This implements data hiding (encapsulation).
-* \`public\`: Members declared here can be accessed from outside the class anywhere the object is visible.
+### The Two Access Specifiers
+This is the critical concept that separates classes from structs:
+* **\`private:\`** (default for classes) — Data declared here is like a locked vault. **No code outside the class can touch it.** Only the class's own functions can read or modify it.
+* **\`public:\`** — Functions (and data) declared here are visible to the entire world. These are the "buttons on the outside of a vending machine" — a controlled interface.
 
 ### Creating Objects
-Once a class is defined, it acts as a blueprint. You create an object of that class exactly like you create a variable of a basic type (e.g., \`Car myCar;\`).
+Once you define a class blueprint, you create objects of it exactly like declaring any variable. Each object gets its own private copy of all the data members.
 
-### Accessing Members
-You use the dot operator (\`.\`) to call public member functions or access public data members of an object.`,
+### The Dot Operator
+Just like structs, you access the public members of an object using the dot operator (\`.\`).`,
       examples: [
         {
-          title: 'A Simple Class Definition',
-          description: 'Defining a class and creating an object to use its methods.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Rectangle {\nprivate:\n    int width;\n    int height;\npublic:\n    void setDimensions(int w, int h) {\n        width = w;\n        height = h;\n    }\n    int getArea() {\n        return width * height;\n    }\n};\n\nint main() {\n    Rectangle rect; // Create an object\n    rect.setDimensions(5, 10); // Access public method\n    // rect.width = 5; // ERROR: width is private\n    cout << "Area: " << rect.getArea() << endl;\n    return 0;\n}`
+          title: 'A Simple Class',
+          description: 'The classic example — a box with a number inside that only the box can change.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass SafeBox {\nprivate:\n    int secretNumber; // LOCKED. No one outside can touch this.\npublic:\n    void setNumber(int n) {   // A PUBLIC function to PUT data in\n        secretNumber = n;\n    }\n    int getNumber() {          // A PUBLIC function to GET data out\n        return secretNumber;\n    }\n};\n\nint main() {\n    SafeBox box;\n    box.setNumber(42);\n    // box.secretNumber = 99;  // ERROR: Cannot access private member\n    cout << box.getNumber() << endl;\n    return 0;\n}`
         },
         {
-          title: 'Multiple Objects',
-          description: 'Creating multiple instances of the same class. Each maintains its own internal state.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Counter {\nprivate:\n    int count;\npublic:\n    void init() { count = 0; }\n    void inc() { count++; }\n    int getCount() { return count; }\n};\n\nint main() {\n    Counter c1, c2;\n    c1.init();\n    c2.init();\n    \n    c1.inc();\n    c1.inc();\n    c2.inc();\n    \n    cout << "c1: " << c1.getCount() << endl; // Outputs 2\n    cout << "c2: " << c2.getCount() << endl; // Outputs 1\n    return 0;\n}`
+          title: 'Multiple Objects from One Blueprint',
+          description: 'Each object is its own independent copy of the blueprint.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Counter {\nprivate:\n    int count;\npublic:\n    void init()  { count = 0; }\n    void inc()   { count++;   }\n    int  get()   { return count; }\n};\n\nint main() {\n    Counter c1, c2; // Two separate counters\n    c1.init(); c2.init();\n    \n    c1.inc(); c1.inc(); // c1 incremented twice\n    c2.inc();           // c2 incremented once\n    \n    // They are completely independent!\n    cout << "c1 = " << c1.get() << endl; // 2\n    cout << "c2 = " << c2.get() << endl; // 1\n    return 0;\n}`
         },
         {
-          title: 'Classes with Internal Logic',
-          description: 'A class protecting its data through internal validation.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass BankAccount {\nprivate:\n    double balance;\npublic:\n    void init(double initial) {\n        if(initial >= 0) balance = initial;\n        else balance = 0;\n    }\n    void withdraw(double amount) {\n        if(amount <= balance) balance -= amount;\n        else cout << "Insufficient funds!" << endl;\n    }\n    double getBalance() { return balance; }\n};\n\nint main() {\n    BankAccount acc;\n    acc.init(100.0);\n    acc.withdraw(150.0); // Fails safely\n    cout << "$" << acc.getBalance() << endl;\n    return 0;\n}`
+          title: 'A Class with Validation Logic',
+          description: 'Using the private gate to enforce rules on data.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass BankAccount {\nprivate:\n    double balance;\npublic:\n    void init(double startingBalance) {\n        // Reject negative starting balances\n        balance = (startingBalance >= 0) ? startingBalance : 0;\n    }\n    void withdraw(double amount) {\n        if(amount <= balance && amount > 0) {\n            balance -= amount;\n        } else {\n            cout << "Transaction denied." << endl;\n        }\n    }\n    double getBalance() { return balance; }\n};\n\nint main() {\n    BankAccount acc;\n    acc.init(100.0);\n    acc.withdraw(150.0); // Denied\n    cout << "$" << acc.getBalance() << endl;\n    return 0;\n}`
         }
       ],
       questions: [
         {
           question: 'What is the default access specifier for members of a `class`?',
-          answer: 'Private. If you do not specify an access specifier, all data and functions defined in a class are private by default.'
+          answer: 'Private. If you don\'t specify either `private:` or `public:`, all members are private by default.'
         },
         {
-          question: 'How does a class differ from a C-style struct?',
-          answer: 'In C++, they are almost identical, but with one key difference: members of a `struct` are public by default, whereas members of a `class` are private by default.'
+          question: 'How does a `class` in C++ differ from a `struct`?',
+          answer: 'They are almost identical in capability, but the default access specifier is different: `struct` members are public by default, while `class` members are private by default. The convention is to use `class` for true OOP data types and `struct` for simple data containers.'
         },
         {
-          question: 'Can member functions access `private` variables of the class?',
-          answer: 'Yes, that is the core mechanism of encapsulation. Public member functions act as the "gateway" to the private data.'
+          question: 'Why would you make data private and provide `get` and `set` functions instead of just making the data public?',
+          answer: 'Control. A public function can include validation logic (e.g., "don\'t accept negative balances"). If data is public, anyone can set it to any value, including illegal ones, bypassing all your safety checks.'
         }
       ]
     },
     {
-      title: 'Constructors and Destructors',
-      explanation: `### Constructors
-When you create an object, you usually want to initialize its member variables immediately. C++ provides a special member function called a **constructor** that executes automatically when an object is created. 
-* It has the EXACT same name as the class.
-* It has NO return type (not even void).
+      title: 'Constructors: Automatic Setup',
+      explanation: `Every time you create a new object, you usually need to give its variables a sensible starting value. Without this, a variable might hold garbage data which causes very hard-to-find bugs.
+
+### The Problem
+Look at this code:
+\`\`\`
+BankAccount acc;
+acc.withdraw(50); // What is the balance? Garbage!
+\`\`\`
+Before calling \`init()\`, the balance is undefined garbage data. Forgetting to call \`init()\` is a very easy mistake to make.
+
+### The Constructor: Automatic Initialization
+A **constructor** is a special function that the computer calls **automatically and immediately** the moment an object is created. You can never forget to call it because the language calls it for you.
+
+### Rules of Constructors
+1. It must have the **exact same name** as the class.
+2. It has **no return type** — not even \`void\`.
+3. It can have parameters, allowing different initialization options.
 
 ### Overloaded Constructors
-You can define multiple constructors with different parameter lists, allowing objects to be initialized in different ways. If you provide no constructor, the compiler generates a default no-argument constructor.
-
-### Destructors
-A **destructor** is called automatically when an object is destroyed (when it goes out of scope or is explicitly deleted). It is used to free up resources (like memory or file handles) that the object acquired during its lifetime.
-* It has the same name as the class, preceded by a tilde (\`~\`).
-* It takes NO arguments and has NO return type.
-* There can only be ONE destructor per class.`,
+Just like regular functions, constructors can be overloaded. You can provide a no-argument constructor and a constructor that takes initial values.`,
       examples: [
         {
-          title: 'Basic Constructor',
-          description: 'Automatically initializing data upon object creation.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Counter {\nprivate:\n    int count;\npublic:\n    // Constructor\n    Counter() {\n        count = 0;\n        cout << "Counter initialized!" << endl;\n    }\n    int getCount() { return count; }\n};\n\nint main() {\n    Counter c1; // Constructor runs immediately here\n    cout << "Value: " << c1.getCount() << endl;\n    return 0;\n}`
+          title: 'Your First Constructor',
+          description: 'The bank account is now always safe because its balance is set to zero automatically.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass BankAccount {\nprivate:\n    double balance;\npublic:\n    // Constructor: same name as class, no return type\n    BankAccount() {\n        balance = 0.0;\n        cout << "Account created with $0." << endl;\n    }\n    void deposit(double amount) { balance += amount; }\n    double get() { return balance; }\n};\n\nint main() {\n    BankAccount acc;     // Constructor fires automatically here!\n    acc.deposit(100.0);\n    cout << "Balance: $" << acc.get() << endl;\n    return 0;\n}`
+        },
+        {
+          title: 'Constructor with Parameters',
+          description: 'Allowing initial values to be provided at creation time.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Player {\nprivate:\n    string name;\n    int health;\npublic:\n    // Parameterized constructor\n    Player(string playerName, int startHealth) {\n        name = playerName;\n        health = startHealth;\n    }\n    void showStats() {\n        cout << name << " | HP: " << health << endl;\n    }\n};\n\nint main() {\n    Player hero("Aragorn", 100);\n    Player villain("Sauron", 9999);\n    hero.showStats();\n    villain.showStats();\n    return 0;\n}`
         },
         {
           title: 'Overloaded Constructors',
-          description: 'Providing multiple ways to construct an object.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\nprivate:\n    int feet;\n    float inches;\npublic:\n    Distance() { // No-arg constructor\n        feet = 0; \n        inches = 0.0;\n    }\n    Distance(int ft, float in) { // Two-arg constructor\n        feet = ft;\n        inches = in;\n    }\n    void show() { cout << feet << "\\'-" << inches << "\\"" << endl; }\n};\n\nint main() {\n    Distance d1;          // Calls no-arg constructor\n    Distance d2(11, 6.0); // Calls two-arg constructor\n    d1.show();\n    d2.show();\n    return 0;\n}`
-        },
-        {
-          title: 'Destructor Example',
-          description: 'Showing when a destructor executes.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass FileHandler {\npublic:\n    FileHandler() { cout << "File opened." << endl; }\n    ~FileHandler() { cout << "File closed." << endl; } // Destructor\n};\n\nint main() {\n    cout << "Starting program." << endl;\n    {\n        FileHandler fh; // fh created, constructor runs\n        cout << "Doing work." << endl;\n    } // fh goes out of scope, destructor runs\n    cout << "Ending program." << endl;\n    return 0;\n}`
+          description: 'Providing multiple ways to create an object.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\nprivate:\n    int feet;\n    float inches;\npublic:\n    Distance() {               // No-arg: starts at zero\n        feet = 0;\n        inches = 0.0;\n    }\n    Distance(int f, float i) { // Two-arg: starts at given values\n        feet = f;\n        inches = i;\n    }\n    void show() { cout << feet << "' " << inches << "\"" << endl; }\n};\n\nint main() {\n    Distance d1;            // Calls no-arg constructor: 0' 0\"\n    Distance d2(11, 6.5);  // Calls two-arg constructor\n    d1.show();\n    d2.show();\n    return 0;\n}`
         }
       ],
       questions: [
         {
-          question: 'Can a constructor return a value?',
-          answer: 'No, constructors do not have a return type, not even `void`.'
+          question: 'Do you ever need to call a constructor manually?',
+          answer: 'No. Constructors are called automatically by the language when an object is created. You simply pass the arguments in the parentheses where you declare the object (e.g., `Player hero("Aragorn", 100);`).'
         },
         {
-          question: 'How many destructors can a class have?',
-          answer: 'Exactly one. Destructors cannot take arguments, so they cannot be overloaded.'
+          question: 'What happens if you define a class with no constructor at all?',
+          answer: 'The compiler automatically generates a default no-argument constructor for you. It does nothing except allocate the memory.'
         },
         {
-          question: 'What is a constructor initializer list?',
-          answer: 'It is a more efficient way to initialize class members before the constructor body executes. Example: `Distance() : feet(0), inches(0.0) {}`.'
+          question: 'What happens to the compiler\'s auto-generated default constructor if you write your OWN constructor?',
+          answer: 'The compiler stops generating the auto-default. If you write a parameterized constructor but want to also be able to create objects with no arguments, you MUST explicitly define a no-argument constructor yourself too.'
         }
       ]
     },
     {
-      title: 'Objects as Function Arguments and Returning Objects',
-      explanation: `Objects can be passed to functions and returned from functions just like standard variables.
+      title: 'Destructors and Object Lifetime',
+      explanation: `Just as objects are born (via constructors), they also die. When an object is destroyed, C++ automatically calls a special cleanup function called a **destructor**.
 
-### Passing Objects
-You can pass objects by value (a copy is made) or by reference (no copy is made, and the function can modify the original object). Passing by reference (specifically \`const\` reference) is heavily preferred for objects to avoid the performance penalty of copying large amounts of data.
+### When is an Object Destroyed?
+* When a local object's function ends and it goes out of scope.
+* When an object created with \`new\` is explicitly deleted.
 
-### The Default Copy Constructor
-When an object is passed by value, returned by value, or initialized with another object of the same class (e.g., \`Class obj2 = obj1;\`), C++ automatically uses the **copy constructor**. 
-* By default, the compiler provides a copy constructor that performs a shallow, member-wise copy of the data. 
-* If your class uses dynamic memory (pointers), you must write a custom copy constructor to perform a deep copy.
+### What is a Destructor?
+A destructor is the counterpart to a constructor. It runs automatically right before the object disappears from memory.
+* Same name as the class, but preceded by a tilde symbol **\`~\`**.
+* No return type, no parameters, and only ONE per class (cannot be overloaded).
 
-### Returning Objects
-A function can create a local object and return it. However, returning large objects by value can be slow, though modern C++ compilers heavily optimize this using Return Value Optimization (RVO).`,
+### Why Do We Need Them?
+For simple objects with basic integer/float data, destructors are often empty and the compiler handles cleanup automatically.
+But if your object opened a file, allocated extra memory with \`new\`, or locked a network port, the destructor is your one guaranteed chance to release those resources before the object disappears.`,
       examples: [
         {
-          title: 'Passing Objects to Functions',
-          description: 'Adding two Distance objects together.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\npublic:\n    int feet;\n    float inches;\n    Distance() : feet(0), inches(0.0) {}\n    Distance(int f, float i) : feet(f), inches(i) {}\n    \n    // Method that takes an object as an argument\n    void addDistance(Distance d2, Distance d3) {\n        inches = d2.inches + d3.inches;\n        feet = 0;\n        if(inches >= 12.0) {\n            inches -= 12.0;\n            feet++;\n        }\n        feet += d2.feet + d3.feet;\n    }\n};\n\nint main() {\n    Distance dist1(5, 6.0);\n    Distance dist2(4, 7.5);\n    Distance dist3;\n    \n    dist3.addDistance(dist1, dist2); // Pass objects\n    cout << dist3.feet << "\\'-" << dist3.inches << "\\"" << endl;\n    return 0;\n}`
+          title: 'Constructor and Destructor in Action',
+          description: 'Watching the lifecycle of an object.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Lifecycle {\npublic:\n    Lifecycle() {\n        cout << "Object Born: Constructor called." << endl;\n    }\n    ~Lifecycle() { // The destructor\n        cout << "Object Dying: Destructor called." << endl;\n    }\n};\n\nint main() {\n    cout << "--- Entering block ---" << endl;\n    {\n        Lifecycle obj; // Born here\n        cout << "--- Inside block ---" << endl;\n    } // Destroyed here when block ends\n    cout << "--- Exited block ---" << endl;\n    return 0;\n}`
         },
         {
-          title: 'Returning Objects from Functions',
-          description: 'A method that returns a new Distance object.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\npublic:\n    int feet;\n    float inches;\n    Distance(int f=0, float i=0.0) : feet(f), inches(i) {}\n    \n    // Returns a Distance object\n    Distance addDistance(Distance d2) {\n        Distance temp;\n        temp.inches = inches + d2.inches;\n        if(temp.inches >= 12.0) {\n            temp.inches -= 12.0;\n            temp.feet = 1;\n        }\n        temp.feet += feet + d2.feet;\n        return temp;\n    }\n};\n\nint main() {\n    Distance d1(5, 6.0), d2(4, 7.5);\n    Distance d3 = d1.addDistance(d2); // Returns object\n    cout << d3.feet << "\\'-" << d3.inches << "\\"" << endl;\n    return 0;\n}`
-        },
-        {
-          title: 'The Default Copy Constructor',
-          description: 'Initializing an object with another object.',
-          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\npublic:\n    int feet;\n    float inches;\n    Distance(int f, float i) : feet(f), inches(i) {}\n};\n\nint main() {\n    Distance dist1(11, 6.0);\n    // Uses the default copy constructor!\n    Distance dist2 = dist1; \n    \n    cout << dist2.feet << "\\'-" << dist2.inches << "\\"" << endl;\n    return 0;\n}`
+          title: 'Destructor for Resource Cleanup',
+          description: 'The destructor as a reliable safety net for cleanup tasks.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass NetworkSocket {\nprivate:\n    bool connected;\npublic:\n    NetworkSocket(string server) {\n        connected = true;\n        cout << "Connected to " << server << endl;\n    }\n    ~NetworkSocket() {\n        // Guaranteed to run no matter how the program exits the scope\n        if(connected) {\n            connected = false;\n            cout << "Connection closed safely." << endl;\n        }\n    }\n};\n\nint main() {\n    NetworkSocket sock("google.com"); // Opens connection\n    cout << "Doing work..." << endl;\n    // When main ends, the destructor fires and closes the connection\n    return 0;\n}`
         }
       ],
       questions: [
         {
-          question: 'What is the most efficient way to pass a large object into a function if the function only needs to read its data?',
-          answer: 'Pass it by `const` reference (e.g., `void func(const BigObject& obj)`). This avoids the overhead of copying the object, while `const` ensures the function cannot accidentally modify it.'
+          question: 'How many destructors can a class have?',
+          answer: 'Exactly one. Unlike constructors and regular functions, destructors cannot be overloaded because they take no arguments.'
         },
         {
-          question: 'When is the default copy constructor called?',
-          answer: 'It is called when a new object is created and initialized with an existing object of the same class (e.g., `Class obj2 = obj1;` or `Class obj2(obj1);`), or when passing/returning objects by value.'
+          question: 'In what order are destructors called for local objects defined in the same scope?',
+          answer: 'In the reverse order of construction. The last object created is the first one destroyed. This is the Last-In-First-Out (LIFO) principle.'
         },
         {
-          question: 'What is the difference between shallow copy and deep copy?',
-          answer: 'A shallow copy copies the exact memory bits of variables, meaning pointers will point to the same memory address in both objects. A deep copy allocates new memory for pointers and copies the actual underlying data.'
+          question: 'What is the most critical use case for a destructor?',
+          answer: 'Releasing dynamically allocated memory (preventing memory leaks). If a constructor used `new` to allocate heap memory, the destructor must use `delete` to free it, otherwise that memory is leaked and never returned to the system.'
+        }
+      ]
+    },
+    {
+      title: 'Objects as Function Arguments',
+      explanation: `Now that you understand classes and objects, let's combine them with what we learned about functions.
+
+### Passing Objects to Functions
+Objects can be passed to functions exactly like any other data type — by value or by reference.
+* **By value:** A full copy of the object is made. Slow for large objects, and changes don't affect the original.
+* **By reference:** The function works on the original object directly. Fast, and changes persist.
+* **By \`const\` reference:** Best practice for read-only access. Fast (no copy) and safe (cannot modify).
+
+### Returning Objects from Functions
+A function can also create and return a new object. This is very useful for creating functions like "add two distances" that return the result as a new Distance object rather than modifying an existing one.
+
+### The Copy Constructor
+When you pass an object by value, or initialize one object from another (e.g., \`Car car2 = car1;\`), a special constructor called the **Copy Constructor** runs automatically to make the copy. By default, C++ provides one that copies every data member.`,
+      examples: [
+        {
+          title: 'Passing Objects to a Function',
+          description: 'A function that reads two Distance objects to calculate a total.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\npublic:\n    int feet; float inches;\n    Distance(int f, float i) : feet(f), inches(i) {}\n    void show() { cout << feet << "' " << inches << "\"" << endl; }\n};\n\n// Receiving two objects by CONST reference (safe and fast)\nvoid displaySum(const Distance& d1, const Distance& d2) {\n    float totalInches = (d1.feet * 12 + d1.inches) \n                      + (d2.feet * 12 + d2.inches);\n    int totalFeet = (int)(totalInches / 12);\n    float remaining = totalInches - totalFeet * 12;\n    cout << "Sum: " << totalFeet << "' " << remaining << "\"" << endl;\n}\n\nint main() {\n    Distance d1(5, 6.5), d2(3, 8.0);\n    displaySum(d1, d2);\n    return 0;\n}`
+        },
+        {
+          title: 'Returning an Object from a Function',
+          description: 'A method that returns a new object as its result.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Rectangle {\npublic:\n    int width, height;\n    Rectangle(int w, int h) : width(w), height(h) {}\n    \n    // This method returns a new Rectangle that is scaled up\n    Rectangle scale(int factor) {\n        Rectangle result(width * factor, height * factor);\n        return result;\n    }\n};\n\nint main() {\n    Rectangle small(10, 5);\n    Rectangle large = small.scale(3);\n    cout << large.width << " x " << large.height << endl; // 30 x 15\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'What is the most efficient way to pass a large object to a function if the function only needs to read its data?',
+          answer: 'By `const` reference: `void func(const MyClass& obj)`. This avoids the slowness of making a full copy (pass by value) while the `const` keyword guarantees the function cannot modify the original.'
+        },
+        {
+          question: 'When is the copy constructor called?',
+          answer: 'It is called in three situations: (1) When a new object is initialized from an existing object (`Car car2 = car1`). (2) When an object is passed by value to a function. (3) When a function returns an object by value.'
+        },
+        {
+          question: 'What is the difference between a shallow copy and a deep copy?',
+          answer: 'A shallow copy (what the default copy constructor does) copies the exact values of all members, including pointers. If a pointer is copied, both objects now point to the SAME memory. A deep copy allocates new memory for the pointer and copies the data itself, so both objects are truly independent.'
         }
       ]
     }
