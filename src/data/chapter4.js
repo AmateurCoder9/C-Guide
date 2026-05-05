@@ -1,290 +1,83 @@
 const chapter4 = {
   id: 4,
-  title: 'Functions',
-  description: 'Learn to write reusable code with function definitions, parameters, overloading, recursion, and inline functions.',
-  icon: 'Code2',
-  color: 'from-amber-500 to-orange-600',
+  title: 'Structures',
+  description: 'Grouping related data items together. Define structures, access members, and understand nested structures and enumerations.',
   topics: [
     {
-      id: '4.1',
-      title: 'Function Declaration and Definition',
-      explanation: `A function is a reusable block of code that performs a specific task. Declaration (prototype) tells the compiler the function's name, return type, and parameters. Definition contains the actual body. Functions promote code reuse and modularity. The return type specifies what the function gives back; void means nothing is returned.`,
+      title: 'Defining and Accessing Structures',
+      explanation: 'A structure is a collection of simple variables. The variables in a structure can be of different types: some can be ints, some can be floats, and so on. The data items in a structure are called the members of the structure.\n\nDefining a Structure:\nThe `struct` keyword is used to define a structure. This definition acts as a blueprint. It does not allocate memory on its own; it merely creates a new data type that you can use to create variables.\n\nCreating Structure Variables:\nOnce defined, you can declare variables of this new type. Each variable will have its own set of the data members defined in the blueprint.\n\nAccessing Structure Members:\nOnce a structure variable is defined, its members are accessed using the dot operator (.), also known as the member access operator. For example, if you have a `part` structure named `part1`, you access its `partNumber` via `part1.partNumber`.',
       examples: [
         {
-          title: 'Basic Function',
-          code: `#include <iostream>
-using namespace std;
-
-// Function declaration (prototype)
-int add(int a, int b);
-
-int main() {
-    int result = add(10, 25);
-    cout << "10 + 25 = " << result << endl;
-    return 0;
-}
-
-// Function definition
-int add(int a, int b) {
-    return a + b;
-}`,
-          output: '10 + 25 = 35'
+          title: 'Defining and Using a Structure',
+          description: 'A simple program defining a part structure and accessing its members.',
+          code: `#include <iostream>\nusing namespace std;\n\nstruct part {\n    int modelnumber;\n    int partnumber;\n    float cost;\n};\n\nint main() {\n    part part1; // define a structure variable\n\n    part1.modelnumber = 6244;\n    part1.partnumber = 373;\n    part1.cost = 217.55f;\n\n    cout << "Model: " << part1.modelnumber << endl;\n    cout << "Part: " << part1.partnumber << endl;\n    cout << "Cost: $" << part1.cost << endl;\n    return 0;\n}`
         },
         {
-          title: 'void Function',
-          code: `#include <iostream>
-using namespace std;
-
-void printLine(int length) {
-    for (int i = 0; i < length; i++) {
-        cout << "-";
-    }
-    cout << endl;
-}
-
-int main() {
-    printLine(20);
-    cout << "  C++ Functions" << endl;
-    printLine(20);
-    return 0;
-}`,
-          output: `--------------------
-  C++ Functions
---------------------`
+          title: 'Structure Initialization',
+          description: 'Initializing a structure variable when it is defined.',
+          code: `#include <iostream>\nusing namespace std;\n\nstruct Distance {\n    int feet;\n    float inches;\n};\n\nint main() {\n    Distance d1 = { 15, 6.25 }; // Initialize during definition\n    Distance d2;\n    \n    d2 = d1; // Structure variables can be assigned to one another\n    \n    cout << d2.feet << "\\'-" << d2.inches << "\\"" << endl;\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'Does the definition of a `struct` allocate memory?',
+          answer: 'No, defining a struct only creates a blueprint (a new data type). Memory is only allocated when a variable of that struct type is actually declared in the program.'
         },
         {
-          title: 'Function with Multiple Returns',
-          code: `#include <iostream>
-using namespace std;
-
-string classify(int n) {
-    if (n > 0) return "positive";
-    if (n < 0) return "negative";
-    return "zero";
-}
-
-int main() {
-    cout << "15 is " << classify(15) << endl;
-    cout << "-7 is " << classify(-7) << endl;
-    cout << "0 is " << classify(0) << endl;
-    return 0;
-}`,
-          output: `15 is positive
--7 is negative
-0 is zero`
+          question: 'What operator is used to access individual members of a structure variable?',
+          answer: 'The dot operator (.), also known as the member access operator.'
         }
       ]
     },
     {
-      id: '4.2',
-      title: 'Pass by Value and Reference',
-      explanation: `Pass by value creates a copy of the argument — changes inside the function don't affect the original. Pass by reference (using &) passes the actual variable — changes inside the function modify the original. Use references to avoid copying large objects or when the function needs to modify the caller's data.`,
+      title: 'Nested Structures and Arrays of Structures',
+      explanation: 'Structures can contain other structures as members. This is called nesting. It allows for the creation of complex data models that accurately reflect real-world relationships.\n\nNested Structures:\nFor example, a `Room` structure might contain two `Distance` structures representing its length and width. To access nested members, you chain the dot operators together (e.g., `dining.length.feet`).\n\nStructures and Arrays:\nJust as you can have an array of integers, you can have an array of structures. This is highly useful for storing databases of records. You access a specific structure in the array using an index, and then access its members using the dot operator (e.g., `employees[0].salary`).',
       examples: [
         {
-          title: 'Pass by Value vs Reference',
-          code: `#include <iostream>
-using namespace std;
-
-void byValue(int x) { x = 100; }
-void byReference(int &x) { x = 100; }
-
-int main() {
-    int a = 5, b = 5;
-    
-    byValue(a);
-    cout << "After byValue: a = " << a << endl;
-    
-    byReference(b);
-    cout << "After byReference: b = " << b << endl;
-    return 0;
-}`,
-          output: `After byValue: a = 5
-After byReference: b = 100`
+          title: 'Nested Structures',
+          description: 'A structure within another structure.',
+          code: `#include <iostream>\nusing namespace std;\n\nstruct Distance {\n    int feet;\n    float inches;\n};\n\nstruct Room {\n    Distance length;\n    Distance width;\n};\n\nint main() {\n    Room dining;\n    dining.length.feet = 13;\n    dining.length.inches = 6.5;\n    dining.width.feet = 10;\n    dining.width.inches = 0.0;\n\n    float l = dining.length.feet + dining.length.inches / 12.0;\n    float w = dining.width.feet + dining.width.inches / 12.0;\n    cout << "Area: " << l * w << " sq ft" << endl;\n    return 0;\n}`
         },
         {
-          title: 'Swap Using References',
-          code: `#include <iostream>
-using namespace std;
-
-void swap(int &a, int &b) {
-    int temp = a;
-    a = b;
-    b = temp;
-}
-
-int main() {
-    int x = 10, y = 20;
-    cout << "Before: x=" << x << " y=" << y << endl;
-    swap(x, y);
-    cout << "After:  x=" << x << " y=" << y << endl;
-    return 0;
-}`,
-          output: `Before: x=10 y=20
-After:  x=20 y=10`
+          title: 'Arrays of Structures',
+          description: 'Managing multiple records in an array.',
+          code: `#include <iostream>\nusing namespace std;\n\nstruct Employee {\n    int id;\n    float salary;\n};\n\nint main() {\n    Employee roster[2];\n    \n    roster[0].id = 101;\n    roster[0].salary = 45000.0;\n    \n    roster[1].id = 102;\n    roster[1].salary = 52000.0;\n    \n    cout << "Emp 1 ID: " << roster[0].id << endl;\n    cout << "Emp 2 Salary: " << roster[1].salary << endl;\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'How do you access the `inches` member of the `width` member of a `Room` structure named `myRoom`?',
+          answer: 'By chaining the dot operator: `myRoom.width.inches`.'
         },
         {
-          title: 'Returning Multiple Values via Reference',
-          code: `#include <iostream>
-using namespace std;
-
-void minMax(int arr[], int n, int &mn, int &mx) {
-    mn = mx = arr[0];
-    for (int i = 1; i < n; i++) {
-        if (arr[i] < mn) mn = arr[i];
-        if (arr[i] > mx) mx = arr[i];
-    }
-}
-
-int main() {
-    int arr[] = {3, 7, 1, 9, 4};
-    int mn, mx;
-    minMax(arr, 5, mn, mx);
-    cout << "Min: " << mn << ", Max: " << mx << endl;
-    return 0;
-}`,
-          output: 'Min: 1, Max: 9'
+          question: 'Is it possible to assign the values of one nested structure to another directly?',
+          answer: 'Yes, just like normal structures, you can assign one structure variable to another of the same type, and it will perform a member-wise copy of all data, including nested structures.'
         }
       ]
     },
     {
-      id: '4.3',
-      title: 'Default Arguments and Overloading',
-      explanation: `Default arguments provide fallback values for parameters when no argument is supplied. They must be specified from right to left. Function overloading allows multiple functions with the same name but different parameter lists (number or type). The compiler selects the correct version based on the arguments used.`,
+      title: 'Enumerations',
+      explanation: 'An enumeration is a user-defined type consisting of a set of named integral constants known as enumerators. It provides a way to define and group related constant values in a safe, readable format.\n\nThe `enum` Keyword:\nTo define an enumeration, you use the `enum` keyword. By default, the first enumerator has the value 0, the second has 1, and so on. You can explicitly assign integer values to them if needed.\n\nWhy use enums?\nEnums are heavily used in C++ to represent states, days of the week, colors, or menu options. They make code much more readable than using raw "magic numbers" (like using `0` for Sunday and `1` for Monday).',
       examples: [
         {
-          title: 'Default Arguments',
-          code: `#include <iostream>
-using namespace std;
-
-void greet(string name, string greeting = "Hello") {
-    cout << greeting << ", " << name << "!" << endl;
-}
-
-int main() {
-    greet("Alice");              // Uses default
-    greet("Bob", "Good morning"); // Overrides default
-    greet("Charlie", "Hey");
-    return 0;
-}`,
-          output: `Hello, Alice!
-Good morning, Bob!
-Hey, Charlie!`
+          title: 'Basic Enumeration',
+          description: 'Defining and using an enum for days of the week.',
+          code: `#include <iostream>\nusing namespace std;\n\nenum days_of_week { sun, mon, tue, wed, thu, fri, sat };\n\nint main() {\n    days_of_week day1, day2;\n    day1 = mon;\n    day2 = thu;\n    \n    int diff = day2 - day1;\n    cout << "Days between: " << diff << endl; // Outputs 3\n    \n    if(day1 < day2) {\n        cout << "day1 comes before day2" << endl;\n    }\n    return 0;\n}`
         },
         {
-          title: 'Function Overloading',
-          code: `#include <iostream>
-using namespace std;
-
-int area(int side) {
-    return side * side;       // Square
-}
-double area(double r) {
-    return 3.14159 * r * r;   // Circle
-}
-int area(int l, int w) {
-    return l * w;             // Rectangle
-}
-
-int main() {
-    cout << "Square(5): " << area(5) << endl;
-    cout << "Circle(3.0): " << area(3.0) << endl;
-    cout << "Rectangle(4,6): " << area(4, 6) << endl;
-    return 0;
-}`,
-          output: `Square(5): 25
-Circle(3.0): 28.2743
-Rectangle(4,6): 24`
-        },
-        {
-          title: 'Power with Default Exponent',
-          code: `#include <iostream>
-using namespace std;
-
-double power(double base, int exp = 2) {
-    double result = 1;
-    for (int i = 0; i < exp; i++) result *= base;
-    return result;
-}
-
-int main() {
-    cout << "3^2 = " << power(3) << endl;
-    cout << "2^8 = " << power(2, 8) << endl;
-    cout << "5^3 = " << power(5, 3) << endl;
-    return 0;
-}`,
-          output: `3^2 = 9
-2^8 = 256
-5^3 = 125`
+          title: 'Assigning Specific Values',
+          description: 'Customizing the underlying integer values.',
+          code: `#include <iostream>\nusing namespace std;\n\nenum Status { Pending = 1, Approved = 2, Rejected = 99 };\n\nint main() {\n    Status currentStatus = Approved;\n    cout << "Status code: " << currentStatus << endl;\n    return 0;\n}`
         }
-      ]
-    },
-    {
-      id: '4.4',
-      title: 'Recursion',
-      explanation: `Recursion is when a function calls itself. Every recursive function needs a base case (stopping condition) and a recursive case. The call stack stores each function call until the base case is reached, then results are returned back up. Recursion is elegant for problems like factorial, Fibonacci, and tree traversal.`,
-      examples: [
+      ],
+      questions: [
         {
-          title: 'Factorial',
-          code: `#include <iostream>
-using namespace std;
-
-int factorial(int n) {
-    if (n <= 1) return 1;        // Base case
-    return n * factorial(n - 1); // Recursive case
-}
-
-int main() {
-    for (int i = 0; i <= 6; i++) {
-        cout << i << "! = " << factorial(i) << endl;
-    }
-    return 0;
-}`,
-          output: `0! = 1
-1! = 1
-2! = 2
-3! = 6
-4! = 24
-5! = 120
-6! = 720`
+          question: 'What is the underlying data type of a standard C++ `enum`?',
+          answer: 'The underlying data type is implicitly an integer. By default, it starts at 0 and increments by 1 for each subsequent enumerator.'
         },
         {
-          title: 'Fibonacci Sequence',
-          code: `#include <iostream>
-using namespace std;
-
-int fibonacci(int n) {
-    if (n <= 0) return 0;
-    if (n == 1) return 1;
-    return fibonacci(n - 1) + fibonacci(n - 2);
-}
-
-int main() {
-    cout << "Fibonacci sequence: ";
-    for (int i = 0; i < 10; i++) {
-        cout << fibonacci(i) << " ";
-    }
-    cout << endl;
-    return 0;
-}`,
-          output: 'Fibonacci sequence: 0 1 1 2 3 5 8 13 21 34'
-        },
-        {
-          title: 'Sum of Digits',
-          code: `#include <iostream>
-using namespace std;
-
-int digitSum(int n) {
-    if (n == 0) return 0;
-    return (n % 10) + digitSum(n / 10);
-}
-
-int main() {
-    cout << "Sum of digits of 12345: " << digitSum(12345) << endl;
-    cout << "Sum of digits of 9876: " << digitSum(9876) << endl;
-    return 0;
-}`,
-          output: `Sum of digits of 12345: 15
-Sum of digits of 9876: 30`
+          question: 'Can you input an enum directly using `cin >>`?',
+          answer: 'No, `cin` does not know how to read textual representations of enumerators. You must read an integer and cast it, or read a string and convert it via logic.'
         }
       ]
     }

@@ -1,137 +1,83 @@
 const chapter2 = {
   id: 2,
-  title: 'Control Structures',
-  description: 'Learn how to control the flow of execution in your programs using conditional statements, loops, and jump instructions.',
+  title: 'C++ Programming Basics',
+  description: 'Basic syntax, program construction, input/output operations, and understanding variables and basic arithmetic operators.',
   topics: [
     {
-      title: 'Conditional Statements (if, else, switch)',
-      explanation: 'Conditional statements allow a program to make decisions and execute different blocks of code based on certain conditions.\n\n1. if Statement: The most basic control flow statement. It evaluates a boolean condition; if true, the block of code inside the curly braces is executed.\n\n2. if-else Statement: Provides an alternative path. If the `if` condition is false, the `else` block executes.\n\n3. else if Ladder: Used to test multiple conditions sequentially. Once a true condition is found, its block executes and the rest of the ladder is skipped.\n\n4. switch Statement: An alternative to a long `else if` ladder when comparing a single integral or character variable against constant values. It evaluates the expression and jumps to the matching `case`. A `break` statement is required at the end of each case to prevent "fall-through" (where execution continues into the next case). The `default` case acts like a final `else`, executing if no cases match.\n\n5. Ternary Operator (?:): A shorthand, inline `if-else` statement. Syntax: `condition ? expression_if_true : expression_if_false`.',
+      title: 'Program Structure and Directives',
+      explanation: 'Every C++ program has a specific structure. It begins with preprocessor directives, followed by the `main()` function where execution starts.\n\nPreprocessor Directives:\nStatements starting with a `#` (like `#include <iostream>`) are preprocessor directives. They are instructions to the compiler to perform actions before the actual compilation begins. `#include` tells the compiler to insert the contents of another file into your source code. `<iostream>` is a header file that contains declarations for input/output operations.\n\nThe `using namespace std;` Directive:\nA namespace is a declarative region that provides a scope to the identifiers (the names of types, functions, variables, etc) inside it. The C++ Standard Library is housed in the `std` namespace. Using this directive allows you to write `cout` instead of `std::cout`.\n\nThe `main()` Function:\nThis is the entry point of every C++ program. The operating system calls `main()` to start execution. It returns an `int` value to the OS; a return of `0` typically indicates successful execution.',
       examples: [
         {
-          title: 'Basic if-else',
-          description: 'Checking if a number is positive, negative, or zero.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int num = -5;\n    if (num > 0) {\n        cout << "Positive" << endl;\n    } else if (num < 0) {\n        cout << "Negative" << endl;\n    } else {\n        cout << "Zero" << endl;\n    }\n    return 0;\n}`
+          title: 'A Minimal C++ Program',
+          description: 'The absolute bare minimum structure of a C++ program.',
+          code: `#include <iostream> // Preprocessor directive\nusing namespace std; // Namespace declaration\n\nint main() { // Entry point\n    cout << "Welcome to C++ Programming Basics!"; // Output statement\n    return 0; // Exit status\n}`
         },
         {
-          title: 'The switch Statement',
-          description: 'Using switch for menu selections or exact matches.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    char grade = 'B';\n    switch(grade) {\n        case 'A':\n            cout << "Excellent!" << endl;\n            break;\n        case 'B':\n            cout << "Good job!" << endl;\n            break;\n        case 'C':\n            cout << "Average." << endl;\n            break;\n        default:\n            cout << "Invalid grade." << endl;\n    }\n    return 0;\n}`
-        },
-        {
-          title: 'Ternary Operator',
-          description: 'A compact way to write simple if-else logic.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 10, b = 20;\n    int max = (a > b) ? a : b;\n    cout << "Maximum is " << max << endl;\n    return 0;\n}`
-        },
-        {
-          title: 'Switch Fall-through',
-          description: 'Intentionally omitting break statements.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int day = 2;\n    switch(day) {\n        case 1:\n        case 2:\n        case 3:\n        case 4:\n        case 5:\n            cout << "Weekday" << endl;\n            break;\n        case 6:\n        case 7:\n            cout << "Weekend" << endl;\n            break;\n    }\n    return 0;\n}`
+          title: 'Without the using directive',
+          description: 'How a program looks if you do not bring the std namespace into scope.',
+          code: `#include <iostream>\n\nint main() {\n    std::cout << "Notice the std:: prefix required here." << std::endl;\n    return 0;\n}`
         }
       ],
       questions: [
         {
-          question: 'What happens if you forget a `break` statement in a `switch` case?',
-          answer: 'Execution will "fall through" to the next case, executing its code regardless of whether that case condition matched or not, until a break is encountered or the switch block ends.'
+          question: 'What does the preprocessor do when it encounters `#include <iostream>`?',
+          answer: 'It physically inserts the contents of the `iostream` header file into the source code at that exact location before the compiler translates the code into machine language.'
         },
         {
-          question: 'Can you use a string in a switch statement in C++?',
-          answer: 'No, standard C++ switch statements only accept integral types (like int, char, enum). You must use if-else for string comparisons.'
-        },
-        {
-          question: 'What is the ternary operator equivalent to?',
-          answer: 'It is functionally equivalent to a simple if-else statement that assigns or returns a value.'
-        },
-        {
-          question: 'What is a nested if statement?',
-          answer: 'An if statement placed completely inside another if or else statement block, allowing for multi-layered conditional logic.'
+          question: 'Why is `return 0;` used at the end of the `main()` function?',
+          answer: 'It signals to the operating system that the program has executed successfully without any errors.'
         }
       ]
     },
     {
-      title: 'Looping Constructs (for, while, do-while)',
-      explanation: 'Loops execute a block of code repeatedly as long as a specified condition remains true.\n\n1. for Loop: Best used when the number of iterations is known beforehand. It consolidates initialization, condition checking, and iteration into a single line. Syntax: `for(initialization; condition; update) { ... }`.\n\n2. while Loop: Best used when the number of iterations is not known and depends on a dynamic condition. The condition is checked *before* the body executes, meaning the loop might never run if the condition is initially false.\n\n3. do-while Loop: Similar to a while loop, but the condition is checked *after* the body executes. This guarantees that the loop body will execute at least once, making it ideal for menu-driven programs or taking user input.\n\n4. Range-based for loop (C++11): A modern syntax used to iterate over elements in a container (like an array or vector) without needing explicit indices or iterators. Syntax: `for (type var : container) { ... }`.',
+      title: 'Variables, Constants, and Data Types',
+      explanation: 'Programs need to store data in memory, and variables are the names given to these memory locations.\n\nFundamental Data Types:\n- Integer Types: `int` (typically 4 bytes), `short` (2 bytes), `long` (4 or 8 bytes). Used for whole numbers.\n- Character Type: `char` (1 byte). Stores a single ASCII character (like \'A\').\n- Floating-Point Types: `float` (4 bytes, single precision), `double` (8 bytes, double precision). Used for numbers with fractional parts.\n- Boolean Type: `bool`. Can only hold `true` (1) or `false` (0).\n\nConstants:\nSometimes you want a variable whose value cannot be changed after initialization. You can use the `const` keyword. For example, `const float PI = 3.14159f;`.\n\nVariable Definition:\nVariables must be defined before they are used. The definition tells the compiler the type and name of the variable, allowing it to allocate the correct amount of memory.',
       examples: [
         {
-          title: 'Standard for Loop',
-          description: 'Printing numbers from 1 to 5.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 5; i++) {\n        cout << i << " ";\n    }\n    cout << endl;\n    return 0;\n}`
+          title: 'Variable Definition and Assignment',
+          description: 'Defining various types of variables and assigning them values.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int studentAge = 20;\n    char grade = 'A';\n    float gpa = 3.8f;\n    bool isPassing = true;\n\n    cout << "Age: " << studentAge << endl;\n    cout << "Grade: " << grade << " (" << gpa << ")" << endl;\n    return 0;\n}`
         },
         {
-          title: 'while Loop',
-          description: 'Looping until a condition is met.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int count = 5;\n    while (count > 0) {\n        cout << count << " ";\n        count--;\n    }\n    cout << "Ignition!" << endl;\n    return 0;\n}`
-        },
-        {
-          title: 'do-while Loop',
-          description: 'Ensuring at least one execution.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int input;\n    do {\n        cout << "Enter 0 to exit: ";\n        cin >> input;\n    } while (input != 0);\n    cout << "Exited." << endl;\n    return 0;\n}`
-        },
-        {
-          title: 'Range-based for Loop',
-          description: 'Iterating over an array easily.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int arr[] = {10, 20, 30, 40, 50};\n    for (int val : arr) {\n        cout << val << " ";\n    }\n    cout << endl;\n    return 0;\n}`
+          title: 'Using Constants',
+          description: 'Defining a constant to prevent accidental modification.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    const float PI = 3.14159f;\n    float radius = 5.0f;\n    float area = PI * radius * radius;\n    \n    // PI = 3.0f; // This would cause a compiler error!\n    \n    cout << "Area: " << area << endl;\n    return 0;\n}`
         }
       ],
       questions: [
         {
-          question: 'What is the main difference between a `while` loop and a `do-while` loop?',
-          answer: 'A `while` loop evaluates the condition before executing the block, so it might run zero times. A `do-while` loop evaluates the condition after executing the block, guaranteeing at least one execution.'
+          question: 'What is the difference between a character literal and a string literal?',
+          answer: 'A character literal (e.g., \'A\') uses single quotes and represents a single character (usually 1 byte). A string literal (e.g., "Hello") uses double quotes and represents an array of characters, ending with a hidden null terminator.'
         },
         {
-          question: 'When should you choose a `for` loop over a `while` loop?',
-          answer: 'A `for` loop is ideal when the exact number of iterations is known in advance, whereas a `while` loop is better when looping until an unpredictable event or dynamic condition changes.'
-        },
-        {
-          question: 'What happens if you omit the condition in a `for` loop (e.g., `for(;;)`)?',
-          answer: 'It creates an infinite loop, equivalent to `while(true)`.'
-        },
-        {
-          question: 'What is an infinite loop?',
-          answer: 'A loop whose terminating condition is never met, causing the program to execute the loop block endlessly until forced to stop by the OS.'
+          question: 'What is the purpose of the `const` qualifier?',
+          answer: 'It marks a variable as read-only. Once initialized, its value cannot be changed, protecting it from accidental modification during program execution.'
         }
       ]
     },
     {
-      title: 'Jump Statements (break, continue, goto)',
-      explanation: 'Jump statements forcefully alter the normal flow of control in a program.\n\n1. break: Immediately terminates the innermost enclosing loop or switch statement. Control jumps to the statement immediately following the terminated structure. It is commonly used to exit an infinite loop when a certain condition is met.\n\n2. continue: Skips the remaining code inside the current loop iteration and immediately jumps to the next iteration. In a `for` loop, it jumps to the update expression; in a `while` loop, it jumps to the condition check.\n\n3. return: Exits from the current function and returns control to where the function was called. It can optionally pass back a value.\n\n4. goto: Performs an unconditional jump to a labeled statement within the same function. Its use is heavily discouraged in modern programming because it creates "spaghetti code" that is difficult to read and maintain, but it exists in C++ for backward compatibility with C.',
+      title: 'Input, Output, and Manipulators',
+      explanation: 'C++ handles I/O via streams. The `iostream` library provides two main objects: `cout` and `cin`.\n\nOutput (`cout`):\nThe insertion operator `<<` is used to send data to the standard output stream (usually the screen). You can chain multiple insertion operators to print multiple items on a single line.\n\nInput (`cin`):\nThe extraction operator `>>` is used to pull data from the standard input stream (usually the keyboard) and store it into a variable. `cin` automatically converts the textual input into the correct data type of the variable receiving it.\n\nManipulators:\nManipulators are instructions sent to the stream to alter its formatting. \n- `endl`: Inserts a newline character and flushes the output buffer.\n- `setw()`: Defined in `<iomanip>`, it sets the width of the next field to be output. Useful for aligning columns of data.',
       examples: [
         {
-          title: 'Using break in a loop',
-          description: 'Exiting a loop prematurely.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 10; i++) {\n        if (i == 5) {\n            cout << "Breaking loop at 5" << endl;\n            break;\n        }\n        cout << i << " ";\n    }\n    return 0;\n}`
+          title: 'Basic Input and Output',
+          description: 'Taking an integer from the user and printing it.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int fahrenheit;\n    cout << "Enter temperature in Fahrenheit: ";\n    cin >> fahrenheit;\n    \n    int celsius = (fahrenheit - 32) * 5 / 9;\n    cout << "Temperature in Celsius: " << celsius << endl;\n    return 0;\n}`
         },
         {
-          title: 'Using continue',
-          description: 'Skipping even numbers.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 10; i++) {\n        if (i % 2 == 0) {\n            continue; // Skip the rest of the loop body for even numbers\n        }\n        cout << i << " ";\n    }\n    return 0;\n}`
-        },
-        {
-          title: 'Nested loops and break',
-          description: 'Showing that break only exits the innermost loop.',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 3; i++) {\n        for (int j = 1; j <= 3; j++) {\n            if (i == 2 && j == 2) break; \n            cout << i << "," << j << " ";\n        }\n        cout << endl;\n    }\n    return 0;\n}`
-        },
-        {
-          title: 'The dreaded goto',
-          description: 'An example of how goto works (use sparingly!).',
-          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int num = 0;\n    \n    start_loop:\n    cout << num << " ";\n    num++;\n    if (num < 5) {\n        goto start_loop;\n    }\n    \n    return 0;\n}`
+          title: 'Using setw() for Alignment',
+          description: 'Formatting output into clean columns.',
+          code: `#include <iostream>\n#include <iomanip>\nusing namespace std;\n\nint main() {\n    cout << setw(10) << "City" << setw(15) << "Population" << endl;\n    cout << "-------------------------" << endl;\n    cout << setw(10) << "London" << setw(15) << 8900000 << endl;\n    cout << setw(10) << "Tokyo" << setw(15) << 13900000 << endl;\n    return 0;\n}`
         }
       ],
       questions: [
         {
-          question: 'If `break` is used inside a nested loop, does it stop all loops?',
-          answer: 'No, `break` only terminates the innermost loop that directly encloses it.'
+          question: 'What does the extraction operator `>>` do when it encounters a space while reading a string?',
+          answer: 'It stops reading. `cin >>` uses whitespace (spaces, tabs, newlines) as delimiters, so it will only read a single word.'
         },
         {
-          question: 'How does `continue` behave differently in a `while` loop vs a `for` loop?',
-          answer: 'In a `for` loop, `continue` jumps directly to the update expression (e.g., i++). In a `while` loop, it jumps straight to the condition evaluation. (If the update in a while loop is skipped by continue, it can cause an infinite loop!).'
-        },
-        {
-          question: 'Why is `goto` considered bad practice?',
-          answer: 'Because it allows jumping arbitrarily around the codebase, bypassing logical structures and making the execution flow incredibly difficult to trace, debug, and maintain.'
-        },
-        {
-          question: 'What is the purpose of the `return` statement in `int main()`?',
-          answer: 'It terminates the execution of the program and passes an exit code back to the operating system (0 usually indicates successful execution).'
+          question: 'Why must you include `<iomanip>` to use `setw`?',
+          answer: 'Because `setw` is a parameterized manipulator, and the definitions for manipulators that take arguments are located in the `iomanip` (I/O manipulation) header, not the standard `iostream` header.'
         }
       ]
     }

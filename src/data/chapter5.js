@@ -1,317 +1,88 @@
 const chapter5 = {
   id: 5,
-  title: 'Arrays & Strings',
-  description: 'Work with one-dimensional and multi-dimensional arrays, C-strings, and the powerful std::string class.',
-  icon: 'LayoutGrid',
-  color: 'from-rose-500 to-pink-600',
+  title: 'Functions',
+  description: 'Modularizing code through functions. Learn declarations, definitions, passing arguments, overloading, inline functions, and storage classes.',
   topics: [
     {
-      id: '5.1',
-      title: 'One-Dimensional Arrays',
-      explanation: `An array stores multiple values of the same type in contiguous memory. Declare with type name[size]. Elements are accessed by index starting from 0. Arrays have a fixed size determined at compile time. You can initialize arrays at declaration using curly braces.`,
+      title: 'Function Fundamentals and Passing Arguments',
+      explanation: 'Functions break large computing tasks into smaller ones, and enable people to build on what others have done instead of starting over from scratch.\n\nStructure of a Function:\nA function must be declared (prototyped) before it is used, and defined with its actual code body. The prototype tells the compiler the return type, name, and parameter list.\n\nPassing by Value:\nBy default, arguments are passed by value. The function receives a copy of the actual variable. Modifying this copy inside the function does not affect the original variable in the calling code.\n\nPassing by Reference:\nC++ introduces the reference type, denoted by an ampersand (`&`). When an argument is passed by reference, the function accesses the original variable in the caller\'s memory space. This allows the function to modify the caller\'s variables and avoids the overhead of copying large data structures like structs or objects.',
       examples: [
         {
-          title: 'Array Declaration and Access',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int marks[5] = {85, 92, 78, 95, 88};
-    
-    cout << "All marks: ";
-    for (int i = 0; i < 5; i++) {
-        cout << marks[i] << " ";
-    }
-    cout << endl;
-    cout << "First: " << marks[0] << ", Last: " << marks[4] << endl;
-    return 0;
-}`,
-          output: `All marks: 85 92 78 95 88 
-First: 85, Last: 88`
+          title: 'Function Prototypes and Definitions',
+          description: 'A basic function separating prototype and definition.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid starline(); // Prototype\n\nint main() {\n    starline(); // Call\n    cout << "Data Type   Range" << endl;\n    starline(); // Call\n    return 0;\n}\n\nvoid starline() { // Definition\n    for(int j=0; j<20; j++) cout << '*';\n    cout << endl;\n}`
         },
         {
-          title: 'Array — Find Average',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    double temps[] = {36.5, 37.1, 36.8, 37.3, 36.9};
-    int n = sizeof(temps) / sizeof(temps[0]);
-    double sum = 0;
-    
-    for (int i = 0; i < n; i++) sum += temps[i];
-    
-    cout << "Average temperature: " << sum / n << endl;
-    return 0;
-}`,
-          output: 'Average temperature: 36.92'
+          title: 'Passing by Reference',
+          description: 'Using references to modify variables from the calling function.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid scaleData(float& data, float factor) {\n    data = data * factor; // Directly modifies the original variable\n}\n\nint main() {\n    float myData = 100.0f;\n    scaleData(myData, 2.5f);\n    cout << "Scaled Data: " << myData << endl; // Outputs 250\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'What is the main advantage of passing arguments by reference?',
+          answer: 'It avoids the performance overhead of copying data, and it allows the function to directly modify the caller\'s original variables, effectively allowing the function to "return" multiple values.'
         },
         {
-          title: 'Linear Search',
-          code: `#include <iostream>
-using namespace std;
-
-int search(int arr[], int n, int key) {
-    for (int i = 0; i < n; i++) {
-        if (arr[i] == key) return i;
-    }
-    return -1;
-}
-
-int main() {
-    int arr[] = {4, 2, 7, 1, 9, 3};
-    int idx = search(arr, 6, 7);
-    
-    if (idx != -1)
-        cout << "Found 7 at index " << idx << endl;
-    else
-        cout << "Not found" << endl;
-    return 0;
-}`,
-          output: 'Found 7 at index 2'
+          question: 'Why do we need function prototypes?',
+          answer: 'Because C++ compilers read code sequentially from top to bottom. A prototype tells the compiler that a function exists (and what its signature is) before it encounters the actual definition, preventing "undeclared identifier" errors.'
         }
       ]
     },
     {
-      id: '5.2',
-      title: 'Multi-Dimensional Arrays',
-      explanation: `A 2D array is an array of arrays, forming a grid of rows and columns. Declare as type name[rows][cols]. Access elements with two indices: arr[row][col]. Useful for matrices, tables, and grid-based problems. Nested loops are typically used to traverse 2D arrays.`,
+      title: 'Advanced Features: Overloading, Inline, and Defaults',
+      explanation: 'Modern C++ provides several advanced features to make functions more flexible and efficient.\n\nFunction Overloading:\nYou can have multiple functions with the same name, provided their parameter lists (signatures) are different. The compiler figures out which one to call based on the arguments you pass. Note that changing only the return type is not sufficient to overload a function.\n\nInline Functions:\nFunction calls have overhead (pushing arguments to the stack, jumping to the function, returning). For very small, frequently called functions, this overhead is significant. The `inline` keyword requests the compiler to insert the function\'s body directly into the calling code, eliminating the call overhead. This speeds up the program but increases compiled file size.\n\nDefault Arguments:\nA function can be defined with default values for its rightmost parameters. If the caller omits these arguments, the defaults are used automatically.',
       examples: [
         {
-          title: '2D Array — Matrix Display',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int matrix[3][3] = {
-        {1, 2, 3},
-        {4, 5, 6},
-        {7, 8, 9}
-    };
-    
-    cout << "Matrix:" << endl;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            cout << matrix[i][j] << " ";
+          title: 'Function Overloading',
+          description: 'Two functions with the same name doing different things based on arguments.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid repchar() { // Prints 45 asterisks\n    for(int j=0; j<45; j++) cout << '*';\n    cout << endl;\n}\n\nvoid repchar(char ch, int n) { // Prints 'ch', 'n' times\n    for(int j=0; j<n; j++) cout << ch;\n    cout << endl;\n}\n\nint main() {\n    repchar();\n    repchar('=', 30);\n    return 0;\n}`
+        },
+        {
+          title: 'Inline Functions',
+          description: 'Requesting the compiler to expand the function inline.',
+          code: `#include <iostream>\nusing namespace std;\n\n// Inline request\ninline float lbstokg(float pounds) {\n    return 0.453592 * pounds;\n}\n\nint main() {\n    float lbs = 150.0;\n    cout << lbs << " lbs is " << lbstokg(lbs) << " kg." << endl;\n    return 0;\n}`
+        },
+        {
+          title: 'Default Arguments',
+          description: 'Using default values for missing arguments.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid display(char ch = '*', int n = 10) {\n    for(int j=0; j<n; j++) cout << ch;\n    cout << endl;\n}\n\nint main() {\n    display(); // Uses '*' and 10\n    display('='); // Uses '=' and 10\n    display('-', 20); // Uses '-' and 20\n    return 0;\n}`
         }
-        cout << endl;
-    }
-    return 0;
-}`,
-          output: `Matrix:
-1 2 3 
-4 5 6 
-7 8 9`
+      ],
+      questions: [
+        {
+          question: 'Can you overload a function by only changing its return type? (e.g., `int func()` and `float func()`)',
+          answer: 'No. The compiler determines which overloaded function to call based solely on the argument list (types, number, and order). The return type is ignored for overload resolution.'
         },
         {
-          title: 'Matrix Addition',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int A[2][2] = {{1, 2}, {3, 4}};
-    int B[2][2] = {{5, 6}, {7, 8}};
-    int C[2][2];
-    
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 2; j++)
-            C[i][j] = A[i][j] + B[i][j];
-    
-    cout << "Sum matrix:" << endl;
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++)
-            cout << C[i][j] << " ";
-        cout << endl;
-    }
-    return 0;
-}`,
-          output: `Sum matrix:
-6 8 
-10 12`
-        },
-        {
-          title: 'Transpose of a Matrix',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int mat[2][3] = {{1, 2, 3}, {4, 5, 6}};
-    int trans[3][2];
-    
-    for (int i = 0; i < 2; i++)
-        for (int j = 0; j < 3; j++)
-            trans[j][i] = mat[i][j];
-    
-    cout << "Transpose:" << endl;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 2; j++)
-            cout << trans[i][j] << " ";
-        cout << endl;
-    }
-    return 0;
-}`,
-          output: `Transpose:
-1 4 
-2 5 
-3 6`
+          question: 'What is the trade-off of using `inline` functions?',
+          answer: 'Inline functions increase execution speed by eliminating function call overhead, but they increase the memory size of the compiled executable (code bloat) because the function code is duplicated everywhere it is called.'
         }
       ]
     },
     {
-      id: '5.3',
-      title: 'C-Style Strings',
-      explanation: `C-style strings are character arrays terminated by a null character ('\\0'). Functions from <cstring> operate on them: strlen (length), strcpy (copy), strcat (concatenate), strcmp (compare). They require careful buffer management to avoid overflow.`,
+      title: 'Storage Classes and Variable Scope',
+      explanation: 'Every variable in C++ has a storage class, which dictates its lifetime (how long it exists in memory) and its scope (where it can be accessed in the code).\n\n1. Automatic Variables (Local Scope):\nVariables defined inside a function. They are created when the function is called and destroyed when it exits. They are not initialized automatically and will contain garbage data if not set.\n\n2. External Variables (Global Scope):\nDefined outside of all functions. They exist for the lifetime of the program and can be accessed by any function defined after them. They are automatically initialized to 0.\n\n3. Static Variables:\nDefined inside a function with the `static` keyword. Like local variables, they are only visible within the function. However, like global variables, their lifetime is the entire duration of the program. They retain their value between function calls and are initialized only once (to 0 by default).',
       examples: [
         {
-          title: 'C-String Basics',
-          code: `#include <iostream>
-#include <cstring>
-using namespace std;
-
-int main() {
-    char name[20] = "Hello";
-    cout << "String: " << name << endl;
-    cout << "Length: " << strlen(name) << endl;
-    
-    char copy[20];
-    strcpy(copy, name);
-    cout << "Copy: " << copy << endl;
-    
-    strcat(name, " World");
-    cout << "Concatenated: " << name << endl;
-    return 0;
-}`,
-          output: `String: Hello
-Length: 5
-Copy: Hello
-Concatenated: Hello World`
+          title: 'Scope and Lifetime of Local Variables',
+          description: 'Demonstrating that local variables are destroyed upon function exit.',
+          code: `#include <iostream>\nusing namespace std;\n\nvoid someFunc() {\n    int a = 10; // Created here\n    cout << a << endl;\n} // 'a' is destroyed here\n\nint main() {\n    someFunc();\n    // cout << a; // ERROR: 'a' is not in scope\n    return 0;\n}`
         },
         {
-          title: 'String Comparison',
-          code: `#include <iostream>
-#include <cstring>
-using namespace std;
-
-int main() {
-    char s1[] = "apple";
-    char s2[] = "banana";
-    
-    int result = strcmp(s1, s2);
-    if (result < 0) cout << s1 << " comes before " << s2 << endl;
-    else if (result > 0) cout << s1 << " comes after " << s2 << endl;
-    else cout << "Both are equal" << endl;
-    return 0;
-}`,
-          output: 'apple comes before banana'
-        },
-        {
-          title: 'Character Analysis',
-          code: `#include <iostream>
-#include <cctype>
-using namespace std;
-
-int main() {
-    char str[] = "Hello World 123!";
-    int upper = 0, lower = 0, digits = 0, spaces = 0;
-    
-    for (int i = 0; str[i] != '\\0'; i++) {
-        if (isupper(str[i])) upper++;
-        else if (islower(str[i])) lower++;
-        else if (isdigit(str[i])) digits++;
-        else if (str[i] == ' ') spaces++;
-    }
-    
-    cout << "Upper: " << upper << ", Lower: " << lower << endl;
-    cout << "Digits: " << digits << ", Spaces: " << spaces << endl;
-    return 0;
-}`,
-          output: `Upper: 2, Lower: 8
-Digits: 3, Spaces: 2`
+          title: 'Static Variables',
+          description: 'A variable that remembers its state between calls.',
+          code: `#include <iostream>\nusing namespace std;\n\nint getNextID() {\n    static int id = 0; // Initialized ONLY ONCE\n    id++;\n    return id;\n}\n\nint main() {\n    cout << "ID 1: " << getNextID() << endl;\n    cout << "ID 2: " << getNextID() << endl;\n    cout << "ID 3: " << getNextID() << endl;\n    return 0;\n}`
         }
-      ]
-    },
-    {
-      id: '5.4',
-      title: 'std::string Class',
-      explanation: `The C++ string class from <string> provides safe, dynamic string handling. It supports concatenation with +, comparison with ==, substring with substr(), find(), length()/size(), and many more methods. Unlike C-strings, std::string manages memory automatically and resizes as needed.`,
-      examples: [
+      ],
+      questions: [
         {
-          title: 'String Operations',
-          code: `#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    string s1 = "Hello";
-    string s2 = " World";
-    string s3 = s1 + s2;       // Concatenation
-    
-    cout << "Combined: " << s3 << endl;
-    cout << "Length: " << s3.length() << endl;
-    cout << "Char at 0: " << s3[0] << endl;
-    cout << "Substring: " << s3.substr(0, 5) << endl;
-    cout << "Find 'World': " << s3.find("World") << endl;
-    return 0;
-}`,
-          output: `Combined: Hello World
-Length: 11
-Char at 0: H
-Substring: Hello
-Find 'World': 6`
+          question: 'What is the difference between a global variable and a static local variable?',
+          answer: 'Both exist for the entire lifetime of the program, but a global variable can be accessed by any function, whereas a static local variable can only be accessed from within the function where it is defined.'
         },
         {
-          title: 'String Methods',
-          code: `#include <iostream>
-#include <string>
-#include <algorithm>
-using namespace std;
-
-int main() {
-    string s = "C++ Programming";
-    
-    cout << "Original: " << s << endl;
-    cout << "Empty? " << (s.empty() ? "Yes" : "No") << endl;
-    
-    s.insert(3, " is");
-    cout << "After insert: " << s << endl;
-    
-    s.erase(3, 3);
-    cout << "After erase: " << s << endl;
-    
-    s.replace(4, 11, "Language");
-    cout << "After replace: " << s << endl;
-    return 0;
-}`,
-          output: `Original: C++ Programming
-Empty? No
-After insert: C++ is Programming
-After erase: C++ Programming
-After replace: C++ Language`
-        },
-        {
-          title: 'String Comparison and Iteration',
-          code: `#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    string a = "hello", b = "hello", c = "world";
-    
-    cout << (a == b ? "a == b" : "a != b") << endl;
-    cout << (a == c ? "a == c" : "a != c") << endl;
-    
-    // Range-based for loop
-    string word = "C++";
-    cout << "Characters: ";
-    for (char ch : word) {
-        cout << ch << " ";
-    }
-    cout << endl;
-    return 0;
-}`,
-          output: `a == b
-a != c
-Characters: C + +`
+          question: 'What value is an uninitialized static variable given by default?',
+          answer: 'Static variables (and global variables) are automatically initialized to zero by the compiler if no explicit initialization is provided. Local automatic variables, however, contain unpredictable garbage values.'
         }
       ]
     }

@@ -1,440 +1,93 @@
 const chapter7 = {
   id: 7,
-  title: 'Advanced C++ Concepts',
-  description: 'Explore pointers, dynamic memory, file handling, exception handling, templates, and the Standard Template Library.',
-  icon: 'Rocket',
-  color: 'from-cyan-500 to-teal-600',
+  title: 'Arrays and Strings',
+  description: 'Managing collections of data. Understand one-dimensional and multidimensional arrays, arrays of objects, and C-style strings versus modern C++ strings.',
   topics: [
     {
-      id: '7.1',
-      title: 'Pointers and Dynamic Memory',
-      explanation: `A pointer stores the memory address of a variable. Declare with type* name. Use & to get address, * to dereference. 'new' allocates heap memory, 'delete' frees it. 'new[]' and 'delete[]' handle arrays. Always delete allocated memory to prevent leaks.`,
+      title: 'Array Fundamentals',
+      explanation: 'An array is a data structure that can store a fixed-size sequential collection of elements of the same type. Arrays are used to store collections of data, making it easier to manage hundreds of variables of the same type.\n\nDefining Arrays:\nYou define an array by specifying the type of its elements and the number of elements required. Example: `int age[10];` reserves memory for 10 integers. The elements are stored in contiguous (adjacent) memory locations.\n\nAccessing Array Elements:\nArray elements are accessed using the index operator `[]`. The index of the first element is always 0. For an array of size N, the last element is accessed via index N-1.\n\nMultidimensional Arrays:\nArrays can have more than one dimension. The most common is the two-dimensional array, which can be thought of as a table with rows and columns. Example: `float table[4][5];` represents a table with 4 rows and 5 columns.\n\nPassing Arrays to Functions:\nWhen you pass an array to a function, you are actually passing the memory address (pointer) of the first element. Therefore, arrays are implicitly passed by reference. Any changes made to the array inside the function affect the original array.',
       examples: [
         {
-          title: 'Pointer Basics',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    int x = 42;
-    int* ptr = &x;  // ptr holds address of x
-    
-    cout << "Value: " << x << endl;
-    cout << "Address: " << ptr << endl;
-    cout << "Dereferenced: " << *ptr << endl;
-    
-    *ptr = 100;  // Modify via pointer
-    cout << "x after *ptr = 100: " << x << endl;
-    return 0;
-}`,
-          output: `Value: 42
-Address: 0x7ffd...
-Dereferenced: 42
-x after *ptr = 100: 100`
+          title: 'Initializing and Accessing an Array',
+          description: 'Basic 1D array operations.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Initialize with values\n    int days[12] = {31,28,31,30,31,30,31,31,30,31,30,31};\n    \n    for(int i = 0; i < 12; i++) {\n        cout << "Month " << (i+1) << " has " << days[i] << " days." << endl;\n    }\n    return 0;\n}`
         },
         {
-          title: 'Dynamic Memory Allocation',
-          code: `#include <iostream>
-using namespace std;
-
-int main() {
-    // Single variable
-    int* p = new int(25);
-    cout << "Dynamic int: " << *p << endl;
-    delete p;
-    
-    // Dynamic array
-    int n = 5;
-    int* arr = new int[n];
-    for (int i = 0; i < n; i++) arr[i] = (i + 1) * 10;
-    
-    cout << "Dynamic array: ";
-    for (int i = 0; i < n; i++) cout << arr[i] << " ";
-    cout << endl;
-    
-    delete[] arr;
-    return 0;
-}`,
-          output: `Dynamic int: 25
-Dynamic array: 10 20 30 40 50`
+          title: 'Two-Dimensional Array',
+          description: 'Creating a matrix.',
+          code: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // 3 rows, 4 columns\n    int matrix[3][4] = { {1,2,3,4}, {5,6,7,8}, {9,10,11,12} };\n    \n    for(int row = 0; row < 3; row++) {\n        for(int col = 0; col < 4; col++) {\n            cout << matrix[row][col] << "\\t";\n        }\n        cout << endl;\n    }\n    return 0;\n}`
         },
         {
-          title: 'Pointer to Object',
-          code: `#include <iostream>
-using namespace std;
-
-class Box {
-public:
-    double length;
-    Box(double l) : length(l) {}
-    double volume() { return length * length * length; }
-};
-
-int main() {
-    Box* b = new Box(3.0);
-    
-    cout << "Length: " << b->length << endl;
-    cout << "Volume: " << b->volume() << endl;
-    
-    delete b;
-    return 0;
-}`,
-          output: `Length: 3
-Volume: 27`
+          title: 'Passing Arrays to Functions',
+          description: 'Modifying an array via a function.',
+          code: `#include <iostream>\nusing namespace std;\n\n// Notice we must pass the size, because arrays decay to pointers\nvoid doubleValues(int arr[], int size) {\n    for(int i = 0; i < size; i++) {\n        arr[i] *= 2;\n    }\n}\n\nint main() {\n    int nums[3] = {10, 20, 30};\n    doubleValues(nums, 3);\n    cout << nums[0] << ", " << nums[1] << ", " << nums[2] << endl; // 20, 40, 60\n    return 0;\n}`
+        }
+      ],
+      questions: [
+        {
+          question: 'If you declare `int data[50];`, what is the valid range of index values you can use?',
+          answer: 'From 0 to 49. In C++, array indexing always begins at 0.'
+        },
+        {
+          question: 'What happens if you try to access an array out of bounds (e.g., `data[100]`)?',
+          answer: 'C++ does not perform bounds checking. The program will simply read or write to whatever memory is located at that offset, which can corrupt data, cause erratic behavior, or result in a segmentation fault (crash).'
         }
       ]
     },
     {
-      id: '7.2',
-      title: 'File Handling',
-      explanation: `C++ handles files via <fstream>: ofstream for writing, ifstream for reading, fstream for both. Open files with open() or via constructor. Check is_open() before operations. Use getline() for line-by-line reading. Always close files when done. File modes include ios::in, ios::out, ios::app, and ios::binary.`,
+      title: 'Arrays of Structures and Objects',
+      explanation: 'Just as you can create arrays of basic types like `int` or `float`, you can create arrays of user-defined types like `structs` or `classes`.\n\nArrays of Structures:\nThis is useful for creating simple databases. You can iterate through the array, and access members of each structure using the dot operator combined with the array index operator (e.g., `employees[i].salary`).\n\nArrays of Objects:\nWhen you declare an array of objects (e.g., `Car fleet[100];`), the default (no-argument) constructor of the class is called for each object in the array automatically upon creation. If your class does not have a default constructor, the compiler will throw an error when trying to create an array of that object type without explicit initialization.',
       examples: [
         {
-          title: 'Writing to a File',
-          code: `#include <iostream>
-#include <fstream>
-using namespace std;
-
-int main() {
-    ofstream outFile("data.txt");
-    
-    if (outFile.is_open()) {
-        outFile << "Line 1: Hello, File!" << endl;
-        outFile << "Line 2: C++ File I/O" << endl;
-        outFile << "Line 3: Writing complete." << endl;
-        outFile.close();
-        cout << "File written successfully." << endl;
-    } else {
-        cout << "Error opening file." << endl;
-    }
-    return 0;
-}`,
-          output: 'File written successfully.'
+          title: 'Array of Structures',
+          description: 'Managing a list of records.',
+          code: `#include <iostream>\nusing namespace std;\n\nstruct Part {\n    int modelNumber;\n    float cost;\n};\n\nint main() {\n    Part inventory[3]; // Array of 3 parts\n    \n    inventory[0].modelNumber = 101;\n    inventory[0].cost = 45.50;\n    \n    inventory[1].modelNumber = 202;\n    inventory[1].cost = 19.99;\n    \n    cout << "Part 2 cost: $" << inventory[1].cost << endl;\n    return 0;\n}`
         },
         {
-          title: 'Reading from a File',
-          code: `#include <iostream>
-#include <fstream>
-#include <string>
-using namespace std;
-
-int main() {
-    ofstream out("sample.txt");
-    out << "Alice 90\\nBob 85\\nCharlie 92" << endl;
-    out.close();
-    
-    ifstream inFile("sample.txt");
-    string line;
-    
-    if (inFile.is_open()) {
-        cout << "File contents:" << endl;
-        while (getline(inFile, line)) {
-            cout << "  " << line << endl;
+          title: 'Array of Objects',
+          description: 'Creating an array of class instances.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\nprivate:\n    int feet;\n    float inches;\npublic:\n    Distance() { feet = 0; inches = 0.0; } // Required for array creation\n    void getDist() {\n        cout << "Enter feet: "; cin >> feet;\n        cout << "Enter inches: "; cin >> inches;\n    }\n    void showDist() { cout << feet << "\\'-" << inches << "\\"" << endl; }\n};\n\nint main() {\n    Distance measurements[2]; // Default constructor runs twice\n    \n    for(int i = 0; i < 2; i++) {\n        cout << "Measurement " << (i+1) << ":\\n";\n        measurements[i].getDist();\n    }\n    \n    cout << "\\nYou entered:\\n";\n    for(int i = 0; i < 2; i++) {\n        measurements[i].showDist();\n    }\n    return 0;\n}`
         }
-        inFile.close();
-    }
-    return 0;
-}`,
-          output: `File contents:
-  Alice 90
-  Bob 85
-  Charlie 92`
+      ],
+      questions: [
+        {
+          question: 'Why is a default (no-argument) constructor essential when creating an array of objects?',
+          answer: 'When an array of objects is declared (like `Class array[10];`), C++ immediately instantiates 10 objects in memory. It must call a constructor for each one. If no default constructor exists, the compiler doesn\'t know how to initialize them, resulting in a compilation error.'
         },
         {
-          title: 'Append Mode',
-          code: `#include <iostream>
-#include <fstream>
-using namespace std;
-
-int main() {
-    // Create file
-    ofstream create("log.txt");
-    create << "Entry 1" << endl;
-    create.close();
-    
-    // Append to file
-    ofstream append("log.txt", ios::app);
-    append << "Entry 2" << endl;
-    append << "Entry 3" << endl;
-    append.close();
-    
-    // Read all
-    ifstream read("log.txt");
-    string line;
-    while (getline(read, line))
-        cout << line << endl;
-    read.close();
-    return 0;
-}`,
-          output: `Entry 1
-Entry 2
-Entry 3`
+          question: 'How do you call a member function `display()` on the 5th element of an object array named `items`?',
+          answer: '`items[4].display();` (Remember, index 4 is the 5th element).'
         }
       ]
     },
     {
-      id: '7.3',
-      title: 'Exception Handling',
-      explanation: `Exception handling manages runtime errors gracefully using try-catch-throw. Code that may fail goes in 'try'. 'throw' raises an exception. 'catch' handles it. Multiple catch blocks can handle different types. catch(...) catches all exceptions. Standard exceptions inherit from std::exception.`,
+      title: 'Strings: C-Style vs C++ String Class',
+      explanation: 'In C++, there are two primary ways to handle text (strings of characters).\n\nC-Style Strings:\nInherited from C, these are simply arrays of type `char` that are terminated by a special null character `\\0`. For example, the string "Hello" requires an array of 6 characters (5 letters + 1 null terminator). They are fast but dangerous, as they do not track their own length and rely heavily on library functions like `strcpy()` and `strlen()` defined in `<cstring>`.\n\nThe Standard C++ String Class:\nIntroduced to fix the headaches of C-style strings. Defined in the `<string>` header. It is an object-oriented approach to text. `std::string` objects automatically manage their own memory, know their own length, and can be manipulated using standard operators like `=` for assignment and `+` for concatenation. It is highly recommended to use `std::string` in modern C++ instead of C-style character arrays.',
       examples: [
         {
-          title: 'Basic try-catch',
-          code: `#include <iostream>
-using namespace std;
-
-double divide(double a, double b) {
-    if (b == 0) throw "Division by zero!";
-    return a / b;
-}
-
-int main() {
-    try {
-        cout << "10 / 3 = " << divide(10, 3) << endl;
-        cout << "10 / 0 = " << divide(10, 0) << endl;
-    } catch (const char* msg) {
-        cout << "Error: " << msg << endl;
-    }
-    cout << "Program continues..." << endl;
-    return 0;
-}`,
-          output: `10 / 3 = 3.33333
-Error: Division by zero!
-Program continues...`
+          title: 'C-Style Strings',
+          description: 'Working with raw character arrays.',
+          code: `#include <iostream>\n#include <cstring>\nusing namespace std;\n\nint main() {\n    char str1[20] = "Hello";\n    char str2[] = " World";\n    \n    // Cannot do str1 = str2 or str1 + str2\n    strcat(str1, str2); // Concatenates str2 onto str1\n    \n    cout << str1 << endl; // "Hello World"\n    cout << "Length: " << strlen(str1) << endl; // 11\n    return 0;\n}`
         },
         {
-          title: 'Multiple Catch Blocks',
-          code: `#include <iostream>
-#include <stdexcept>
-using namespace std;
-
-void checkAge(int age) {
-    if (age < 0) throw invalid_argument("Negative age");
-    if (age > 150) throw out_of_range("Age too large");
-    cout << "Age " << age << " is valid" << endl;
-}
-
-int main() {
-    try { checkAge(25); } 
-    catch (exception& e) { cout << "Error: " << e.what() << endl; }
-    
-    try { checkAge(-5); }
-    catch (exception& e) { cout << "Error: " << e.what() << endl; }
-    
-    try { checkAge(200); }
-    catch (exception& e) { cout << "Error: " << e.what() << endl; }
-    return 0;
-}`,
-          output: `Age 25 is valid
-Error: Negative age
-Error: Age too large`
+          title: 'The C++ String Class',
+          description: 'The modern, safe way to handle text.',
+          code: `#include <iostream>\n#include <string> // Required for string class\nusing namespace std;\n\nint main() {\n    string s1 = "Hello";\n    string s2 = " World";\n    \n    // Much easier manipulation\n    string s3 = s1 + s2;\n    \n    cout << s3 << endl; // "Hello World"\n    cout << "Length: " << s3.length() << endl; // 11\n    return 0;\n}`
         },
         {
-          title: 'Custom Exception Class',
-          code: `#include <iostream>
-#include <exception>
-using namespace std;
-
-class InsufficientFunds : public exception {
-    double amount;
-public:
-    InsufficientFunds(double a) : amount(a) {}
-    const char* what() const noexcept override {
-        return "Insufficient funds for withdrawal";
-    }
-    double getAmount() const { return amount; }
-};
-
-int main() {
-    double balance = 100;
-    double withdrawal = 150;
-    
-    try {
-        if (withdrawal > balance)
-            throw InsufficientFunds(withdrawal - balance);
-        balance -= withdrawal;
-    } catch (InsufficientFunds& e) {
-        cout << e.what() << endl;
-        cout << "Short by: $" << e.getAmount() << endl;
-    }
-    return 0;
-}`,
-          output: `Insufficient funds for withdrawal
-Short by: $50`
+          title: 'Reading Full Lines into String Class',
+          description: 'Using getline with std::string.',
+          code: `#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string fullName;\n    cout << "Enter your full name: ";\n    getline(cin, fullName);\n    cout << "Welcome, " << fullName << endl;\n    return 0;\n}`
         }
-      ]
-    },
-    {
-      id: '7.4',
-      title: 'Templates',
-      explanation: `Templates enable generic programming — writing code that works with any data type. Function templates use 'template<typename T>' before the function. Class templates create generic classes. The compiler generates specific versions when you use them with concrete types. Templates are the foundation of the STL.`,
-      examples: [
+      ],
+      questions: [
         {
-          title: 'Function Template',
-          code: `#include <iostream>
-using namespace std;
-
-template<typename T>
-T maximum(T a, T b) {
-    return (a > b) ? a : b;
-}
-
-int main() {
-    cout << "Max int: " << maximum(10, 20) << endl;
-    cout << "Max double: " << maximum(3.14, 2.72) << endl;
-    cout << "Max char: " << maximum('a', 'z') << endl;
-    return 0;
-}`,
-          output: `Max int: 20
-Max double: 3.14
-Max char: z`
+          question: 'What is the purpose of the null character `\\0` in a C-style string?',
+          answer: 'It marks the end of the string. Since C-style strings are just arrays without built-in length tracking, functions like `cout` or `strlen` read the memory character by character until they hit the `\\0`, which tells them to stop.'
         },
         {
-          title: 'Class Template',
-          code: `#include <iostream>
-using namespace std;
-
-template<typename T>
-class Pair {
-    T first, second;
-public:
-    Pair(T a, T b) : first(a), second(b) {}
-    T getMax() { return (first > second) ? first : second; }
-    void display() {
-        cout << "(" << first << ", " << second << ")" << endl;
-    }
-};
-
-int main() {
-    Pair<int> p1(10, 20);
-    p1.display();
-    cout << "Max: " << p1.getMax() << endl;
-    
-    Pair<string> p2("hello", "world");
-    p2.display();
-    cout << "Max: " << p2.getMax() << endl;
-    return 0;
-}`,
-          output: `(10, 20)
-Max: 20
-(hello, world)
-Max: world`
-        },
-        {
-          title: 'Template with Multiple Types',
-          code: `#include <iostream>
-using namespace std;
-
-template<typename T1, typename T2>
-class Entry {
-public:
-    T1 key;
-    T2 value;
-    Entry(T1 k, T2 v) : key(k), value(v) {}
-    void show() {
-        cout << key << " => " << value << endl;
-    }
-};
-
-int main() {
-    Entry<string, int> e1("age", 20);
-    Entry<int, string> e2(1, "Alice");
-    Entry<string, double> e3("pi", 3.14159);
-    
-    e1.show();
-    e2.show();
-    e3.show();
-    return 0;
-}`,
-          output: `age => 20
-1 => Alice
-pi => 3.14159`
-        }
-      ]
-    },
-    {
-      id: '7.5',
-      title: 'Standard Template Library (STL)',
-      explanation: `The STL provides generic containers (vector, map, set, stack, queue), algorithms (sort, find, count), and iterators. Vectors are dynamic arrays that resize automatically. Maps store key-value pairs. Algorithms work with iterators to operate on containers.`,
-      examples: [
-        {
-          title: 'Vector Operations',
-          code: `#include <iostream>
-#include <vector>
-#include <algorithm>
-using namespace std;
-
-int main() {
-    vector<int> v = {5, 2, 8, 1, 9, 3};
-    
-    v.push_back(7);
-    sort(v.begin(), v.end());
-    
-    cout << "Sorted: ";
-    for (int x : v) cout << x << " ";
-    cout << endl;
-    cout << "Size: " << v.size() << endl;
-    cout << "Front: " << v.front() << ", Back: " << v.back() << endl;
-    return 0;
-}`,
-          output: `Sorted: 1 2 3 5 7 8 9 
-Size: 7
-Front: 1, Back: 9`
-        },
-        {
-          title: 'Map (Key-Value Store)',
-          code: `#include <iostream>
-#include <map>
-using namespace std;
-
-int main() {
-    map<string, int> scores;
-    scores["Alice"] = 95;
-    scores["Bob"] = 87;
-    scores["Charlie"] = 92;
-    
-    cout << "Scores:" << endl;
-    for (auto& [name, score] : scores) {
-        cout << "  " << name << ": " << score << endl;
-    }
-    
-    cout << "Bob's score: " << scores["Bob"] << endl;
-    cout << "Total students: " << scores.size() << endl;
-    return 0;
-}`,
-          output: `Scores:
-  Alice: 95
-  Bob: 87
-  Charlie: 92
-Bob's score: 87
-Total students: 3`
-        },
-        {
-          title: 'Stack and Queue',
-          code: `#include <iostream>
-#include <stack>
-#include <queue>
-using namespace std;
-
-int main() {
-    // Stack (LIFO)
-    stack<int> s;
-    s.push(10); s.push(20); s.push(30);
-    cout << "Stack top: " << s.top() << endl;
-    s.pop();
-    cout << "After pop: " << s.top() << endl;
-    
-    // Queue (FIFO)
-    queue<string> q;
-    q.push("First"); q.push("Second"); q.push("Third");
-    cout << "Queue front: " << q.front() << endl;
-    q.pop();
-    cout << "After pop: " << q.front() << endl;
-    return 0;
-}`,
-          output: `Stack top: 30
-After pop: 20
-Queue front: First
-After pop: Second`
+          question: 'Why is `std::string` considered safer than a C-style char array?',
+          answer: '`std::string` automatically manages its own memory buffer, resizing dynamically as needed. C-style arrays have fixed sizes, and if you try to copy a string into an array that is too small, it will overwrite adjacent memory, leading to buffer overflows.'
         }
       ]
     }
