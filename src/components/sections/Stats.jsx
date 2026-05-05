@@ -36,8 +36,8 @@ function AnimatedNumber({ value }) {
 
 const stats = [
   { label: 'Core Chapters', value: 7, suffix: '' },
-  { label: 'Topics Covered', value: 30, suffix: '+' },
-  { label: 'Code Examples', value: 90, suffix: '+' },
+  { label: 'Topics Covered', value: 43, suffix: '+' },
+  { label: 'Code Examples', value: 60, suffix: '+' },
   { label: 'Cost', value: 0, suffix: '$' }
 ];
 

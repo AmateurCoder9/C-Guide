@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, Code2, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, BookOpen, Code2, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import CodeBlock from '../ui/CodeBlock';
