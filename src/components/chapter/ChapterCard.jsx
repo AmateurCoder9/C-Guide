@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Terminal } from 'lucide-react';
-import TiltCard from './ui/TiltCard';
-import AnimateIn from './ui/AnimateIn';
+import TiltCard from '../ui/TiltCard';
+import AnimateIn from '../ui/AnimateIn';
 
 export default function ChapterCard({ chapter, index, onSelect }) {
   return (

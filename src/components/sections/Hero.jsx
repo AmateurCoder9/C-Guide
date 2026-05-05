@@ -1,7 +1,7 @@
 import { ArrowRight, Code } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import MagneticButton from './ui/MagneticButton';
-import AnimateIn from './ui/AnimateIn';
+import MagneticButton from '../ui/MagneticButton';
+import AnimateIn from '../ui/AnimateIn';
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 40 },

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import AnimateIn from './ui/AnimateIn';
+import AnimateIn from '../ui/AnimateIn';
 
 export default function ProductPreview() {
   return (

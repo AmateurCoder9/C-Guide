@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import AnimateIn from './ui/AnimateIn';
+import AnimateIn from '../ui/AnimateIn';
 
 const faqs = [
   {

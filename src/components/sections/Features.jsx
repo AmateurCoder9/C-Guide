@@ -1,6 +1,6 @@
 import { BookOpen, Code2, Shield, Zap, Terminal, BrainCircuit } from 'lucide-react';
-import TiltCard from './ui/TiltCard';
-import AnimateIn from './ui/AnimateIn';
+import TiltCard from '../ui/TiltCard';
+import AnimateIn from '../ui/AnimateIn';
 
 const features = [
   { title: 'Core Syntax', description: 'Master data types, variables, and operators with precision.', icon: Code2, color: '#0066cc' },

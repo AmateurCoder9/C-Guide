@@ -1,86 +1,8 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, BookOpen, Code2, HelpCircle, Check, Copy, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, BookOpen, Code2, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-function CodeBlock({ code }) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div className="relative rounded-[2rem] overflow-hidden mt-4 group border border-black/5 shadow-sm bg-white/80 backdrop-blur-xl">
-      <div className="bg-black/5 px-6 py-4 flex items-center justify-between border-b border-black/5">
-        <div className="flex items-center gap-2">
-          <span className="w-3 h-3 rounded-full bg-[#ff3b30]" />
-          <span className="w-3 h-3 rounded-full bg-[#ffcc00]" />
-          <span className="w-3 h-3 rounded-full bg-[#34c759]" />
-        </div>
-        <button
-          onClick={handleCopy}
-          className="text-text-secondary hover:text-text transition-colors p-1"
-          title="Copy code"
-          data-interactive
-        >
-          {copied ? <Check size={18} className="text-[#34c759]" /> : <Copy size={18} />}
-        </button>
-      </div>
-      <div className="relative">
-        <pre className="p-6 text-sm font-mono text-text overflow-x-auto whitespace-pre-wrap leading-relaxed relative z-10">
-          <code>{code}</code>
-        </pre>
-      </div>
-    </div>
-  );
-}
-
-function QuestionCard({ q, index }) {
-  const [showAnswer, setShowAnswer] = useState(false);
-
-  return (
-    <div className="relative">
-      <motion.div
-        layout
-        className="glass-card p-6 sm:p-8 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-shadow"
-      >
-        <div className="flex gap-4 items-start">
-          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#0066cc]/10 flex items-center justify-center text-primary font-bold text-sm">
-            {index + 1}
-          </div>
-          <div className="flex-1">
-            <h4 className="text-xl font-bold text-text mb-4 leading-snug">{q.question}</h4>
-            <button
-              onClick={() => setShowAnswer(!showAnswer)}
-              className="text-sm text-primary font-bold flex items-center gap-1 transition-opacity hover:opacity-70 mb-4 cursor-none"
-              data-interactive
-            >
-              {showAnswer ? 'Hide Answer' : 'Show Answer'}
-              {showAnswer ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
-
-            <AnimatePresence>
-              {showAnswer && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden"
-                >
-                  <div className="p-5 bg-black/5 rounded-[1.5rem] mt-2 text-text-secondary text-base leading-relaxed font-medium">
-                    {q.answer}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
+import CodeBlock from '../ui/CodeBlock';
+import QuestionCard from '../ui/QuestionCard';
 
 export default function ChapterViewer({ chapter, onBack }) {
   const [activeTopic, setActiveTopic] = useState(0);
