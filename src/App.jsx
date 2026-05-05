@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { chapters } from './data/chapters';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
-import Stats from './components/sections/Stats';
-import FAQ from './components/sections/FAQ';
 import Footer from './components/layout/Footer';
 import ChapterCard from './components/chapter/ChapterCard';
 import ChapterViewer from './components/chapter/ChapterViewer';
 import AnimateIn from './components/ui/AnimateIn';
 import SpotlightSearch from './components/ui/SpotlightSearch';
+
+const AuraBackground = lazy(() => import('./components/3d/AuraBackground'));
 
 // Progress helper
 const getChapterProgress = (chapterId, totalTopics) => {
@@ -96,6 +96,11 @@ function App() {
           />
         }
       />
+
+      {/* 3D Background — Lazy loaded */}
+      <Suspense fallback={null}>
+        <AuraBackground />
+      </Suspense>
 
       <AnimatePresence mode="wait">
         {selectedChapter ? (
