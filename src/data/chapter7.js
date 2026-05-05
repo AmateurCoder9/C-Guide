@@ -5,7 +5,26 @@ const chapter7 = {
   topics: [
     {
       title: 'Array Fundamentals',
-      explanation: 'An array is a data structure that can store a fixed-size sequential collection of elements of the same type. Arrays are used to store collections of data, making it easier to manage hundreds of variables of the same type.\n\nDefining Arrays:\nYou define an array by specifying the type of its elements and the number of elements required. Example: `int age[10];` reserves memory for 10 integers. The elements are stored in contiguous (adjacent) memory locations.\n\nAccessing Array Elements:\nArray elements are accessed using the index operator `[]`. The index of the first element is always 0. For an array of size N, the last element is accessed via index N-1.\n\nMultidimensional Arrays:\nArrays can have more than one dimension. The most common is the two-dimensional array, which can be thought of as a table with rows and columns. Example: `float table[4][5];` represents a table with 4 rows and 5 columns.\n\nPassing Arrays to Functions:\nWhen you pass an array to a function, you are actually passing the memory address (pointer) of the first element. Therefore, arrays are implicitly passed by reference. Any changes made to the array inside the function affect the original array.',
+      explanation: `An array is a data structure that can store a fixed-size sequential collection of elements of the same type. Arrays are used to store collections of data, making it easier to manage hundreds of variables.
+
+### Defining Arrays
+You define an array by specifying the type of its elements and the number of elements required. 
+* Example: \`int age[10];\` reserves memory for 10 integers. 
+* The elements are stored in contiguous (adjacent) memory locations.
+
+### Accessing Array Elements
+Array elements are accessed using the index operator \`[]\`. 
+* The index of the first element is always \`0\`. 
+* For an array of size N, the last element is accessed via index \`N-1\`.
+
+### Multidimensional Arrays
+Arrays can have more than one dimension. The most common is the two-dimensional array, which can be thought of as a table with rows and columns. 
+* Example: \`float table[4][5];\` represents a table with 4 rows and 5 columns.
+
+### Passing Arrays to Functions
+When you pass an array to a function, you are actually passing the memory address (pointer) of the first element. 
+* Therefore, arrays are implicitly passed by **reference**. 
+* Any changes made to the array inside the function affect the original array.`,
       examples: [
         {
           title: 'Initializing and Accessing an Array',
@@ -31,12 +50,25 @@ const chapter7 = {
         {
           question: 'What happens if you try to access an array out of bounds (e.g., `data[100]`)?',
           answer: 'C++ does not perform bounds checking. The program will simply read or write to whatever memory is located at that offset, which can corrupt data, cause erratic behavior, or result in a segmentation fault (crash).'
+        },
+        {
+          question: 'Why must you pass the size of the array to a function along with the array itself?',
+          answer: 'Because arrays decay into pointers when passed to functions. The function only receives the memory address of the first element, so it has no way of knowing how many elements the array contains.'
         }
       ]
     },
     {
       title: 'Arrays of Structures and Objects',
-      explanation: 'Just as you can create arrays of basic types like `int` or `float`, you can create arrays of user-defined types like `structs` or `classes`.\n\nArrays of Structures:\nThis is useful for creating simple databases. You can iterate through the array, and access members of each structure using the dot operator combined with the array index operator (e.g., `employees[i].salary`).\n\nArrays of Objects:\nWhen you declare an array of objects (e.g., `Car fleet[100];`), the default (no-argument) constructor of the class is called for each object in the array automatically upon creation. If your class does not have a default constructor, the compiler will throw an error when trying to create an array of that object type without explicit initialization.',
+      explanation: `Just as you can create arrays of basic types like \`int\` or \`float\`, you can create arrays of user-defined types like \`structs\` or \`classes\`.
+
+### Arrays of Structures
+This is useful for creating simple databases. 
+* You can iterate through the array, and access members of each structure using the dot operator combined with the array index operator.
+* Example: \`employees[i].salary\`.
+
+### Arrays of Objects
+When you declare an array of objects (e.g., \`Car fleet[100];\`), the default (no-argument) constructor of the class is called for **each object** in the array automatically upon creation. 
+* If your class does not have a default constructor, the compiler will throw an error when trying to create an array of that object type without explicit initialization.`,
       examples: [
         {
           title: 'Array of Structures',
@@ -47,6 +79,11 @@ const chapter7 = {
           title: 'Array of Objects',
           description: 'Creating an array of class instances.',
           code: `#include <iostream>\nusing namespace std;\n\nclass Distance {\nprivate:\n    int feet;\n    float inches;\npublic:\n    Distance() { feet = 0; inches = 0.0; } // Required for array creation\n    void getDist() {\n        cout << "Enter feet: "; cin >> feet;\n        cout << "Enter inches: "; cin >> inches;\n    }\n    void showDist() { cout << feet << "\\'-" << inches << "\\"" << endl; }\n};\n\nint main() {\n    Distance measurements[2]; // Default constructor runs twice\n    \n    for(int i = 0; i < 2; i++) {\n        cout << "Measurement " << (i+1) << ":\\n";\n        measurements[i].getDist();\n    }\n    \n    cout << "\\nYou entered:\\n";\n    for(int i = 0; i < 2; i++) {\n        measurements[i].showDist();\n    }\n    return 0;\n}`
+        },
+        {
+          title: 'Array of Objects (Hard)',
+          description: 'Initializing an array of objects with parameterized constructors.',
+          code: `#include <iostream>\nusing namespace std;\n\nclass Point {\nprivate:\n    int x, y;\npublic:\n    Point(int xVal, int yVal) { x = xVal; y = yVal; }\n    void display() { cout << "(" << x << "," << y << ")" << endl; }\n};\n\nint main() {\n    // Initialize directly without needing a default constructor\n    Point path[3] = { Point(1,1), Point(2,4), Point(3,9) };\n    \n    for(int i=0; i<3; i++) {\n        path[i].display();\n    }\n    return 0;\n}`
         }
       ],
       questions: [
@@ -57,12 +94,27 @@ const chapter7 = {
         {
           question: 'How do you call a member function `display()` on the 5th element of an object array named `items`?',
           answer: '`items[4].display();` (Remember, index 4 is the 5th element).'
+        },
+        {
+          question: 'Are the objects in an array of objects stored contiguously in memory?',
+          answer: 'Yes. An array guarantees that its elements are placed sequentially in memory, meaning object 2 immediately follows object 1.'
         }
       ]
     },
     {
       title: 'Strings: C-Style vs C++ String Class',
-      explanation: 'In C++, there are two primary ways to handle text (strings of characters).\n\nC-Style Strings:\nInherited from C, these are simply arrays of type `char` that are terminated by a special null character `\\0`. For example, the string "Hello" requires an array of 6 characters (5 letters + 1 null terminator). They are fast but dangerous, as they do not track their own length and rely heavily on library functions like `strcpy()` and `strlen()` defined in `<cstring>`.\n\nThe Standard C++ String Class:\nIntroduced to fix the headaches of C-style strings. Defined in the `<string>` header. It is an object-oriented approach to text. `std::string` objects automatically manage their own memory, know their own length, and can be manipulated using standard operators like `=` for assignment and `+` for concatenation. It is highly recommended to use `std::string` in modern C++ instead of C-style character arrays.',
+      explanation: `In C++, there are two primary ways to handle text (strings of characters).
+
+### C-Style Strings
+Inherited from C, these are simply arrays of type \`char\` that are terminated by a special null character \`\\0\`. 
+* For example, the string "Hello" requires an array of 6 characters (5 letters + 1 null terminator). 
+* They are fast but dangerous, as they do not track their own length and rely heavily on library functions like \`strcpy()\` and \`strlen()\` defined in \`<cstring>\`.
+
+### The Standard C++ String Class
+Introduced to fix the headaches of C-style strings. Defined in the \`<string>\` header. 
+* It is an object-oriented approach to text. 
+* \`std::string\` objects automatically manage their own memory, know their own length, and can be manipulated using standard operators like \`=\` for assignment and \`+\` for concatenation. 
+* It is highly recommended to use \`std::string\` in modern C++ instead of C-style character arrays.`,
       examples: [
         {
           title: 'C-Style Strings',
@@ -88,6 +140,10 @@ const chapter7 = {
         {
           question: 'Why is `std::string` considered safer than a C-style char array?',
           answer: '`std::string` automatically manages its own memory buffer, resizing dynamically as needed. C-style arrays have fixed sizes, and if you try to copy a string into an array that is too small, it will overwrite adjacent memory, leading to buffer overflows.'
+        },
+        {
+          question: 'Can you compare two C-style strings using `==`?',
+          answer: 'No. Using `==` on two C-style strings simply compares their memory addresses (because arrays decay to pointers). You must use `strcmp()`. However, `std::string` overloads `==`, so you can safely use `==` with `std::string` objects.'
         }
       ]
     }
