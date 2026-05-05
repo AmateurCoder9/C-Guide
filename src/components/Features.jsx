@@ -1,5 +1,7 @@
 import { BookMarked, Code, Unlock, Heart, Smartphone, Users } from 'lucide-react';
-import ScrollReveal from './ScrollReveal';
+import { motion } from 'framer-motion';
+import TiltCard from './ui/TiltCard';
+import AnimateIn from './ui/AnimateIn';
 
 const features = [
   { icon: BookMarked, title: 'Structured Learning', desc: 'Seven carefully organized chapters from basics to advanced C++ concepts.', color: 'from-blue-500 to-blue-600' },
@@ -12,9 +14,12 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="section-padding bg-white">
-      <div className="max-w-7xl mx-auto">
-        <ScrollReveal>
+    <section id="features" className="section-padding bg-white relative overflow-hidden">
+      {/* Subtle gradient overlay */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-primary/5 to-transparent rounded-full blur-3xl" />
+
+      <div className="max-w-7xl mx-auto relative">
+        <AnimateIn>
           <div className="text-center mb-14">
             <span className="text-sm font-semibold text-primary uppercase tracking-wider">Why choose us</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 mb-4">
@@ -24,19 +29,27 @@ export default function Features() {
               A thoughtfully crafted learning experience with no distractions.
             </p>
           </div>
-        </ScrollReveal>
+        </AnimateIn>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <ScrollReveal key={i} delay={i * 80}>
-              <div className="group glass-card p-6 rounded-2xl hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 h-full" id={`feature-${i}`}>
-                <div className={`w-12 h-12 bg-gradient-to-br ${f.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                  <f.icon size={22} className="text-white" />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <TiltCard>
+                <div className="group glass-card glow-border-subtle p-6 rounded-2xl hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 h-full" id={`feature-${i}`}>
+                  <div className={`w-12 h-12 bg-gradient-to-br ${f.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <f.icon size={22} className="text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{f.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{f.title}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">{f.desc}</p>
-              </div>
-            </ScrollReveal>
+              </TiltCard>
+            </motion.div>
           ))}
         </div>
       </div>
