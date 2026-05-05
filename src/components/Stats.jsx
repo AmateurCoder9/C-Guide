@@ -16,7 +16,6 @@ function AnimatedNumber({ value }) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Easing function (easeOutExpo)
         const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
         
         setDisplayValue(Math.floor(easeProgress * value));
@@ -44,30 +43,26 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section className="py-20 relative overflow-hidden z-10">
-      <div className="absolute inset-0 bg-[#0d0d18] border-y border-[rgba(129,140,248,0.1)]" />
+    <section className="py-24 sm:py-32 relative overflow-hidden z-10">
+      <div className="absolute inset-0 bg-white/40 border-y border-black/5 backdrop-blur-3xl" />
       
-      {/* Glow Orbs */}
-      <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
-      <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-64 h-64 bg-accent/10 rounded-full blur-[80px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 divide-x divide-[rgba(255,255,255,0.05)]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
           {stats.map((stat, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, scale: 0.5 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1, type: "spring" }}
+              transition={{ duration: 0.6, delay: idx * 0.1, type: "spring", bounce: 0.4 }}
               className="text-center px-4"
             >
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-2 tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-                {stat.suffix === '$' && <span className="text-accent">$</span>}
+              <div className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-text mb-4 tracking-tighter" style={{ letterSpacing: '-0.05em' }}>
+                {stat.suffix === '$' && <span className="text-primary">$</span>}
                 <AnimatedNumber value={stat.value} />
                 {stat.suffix !== '$' && <span className="text-primary-light">{stat.suffix}</span>}
               </div>
-              <div className="text-sm sm:text-base font-bold text-slate-400 uppercase tracking-widest">
+              <div className="text-base font-bold text-text-secondary uppercase tracking-widest">
                 {stat.label}
               </div>
             </motion.div>

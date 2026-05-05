@@ -68,36 +68,35 @@ void main() {
   vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
   vec2 st = uv * aspect;
   
-  // Mouse influence (liquid lens warp)
+  // Mouse influence (gentle warp)
   vec2 mouse = uMouse * aspect;
   float dist = distance(st, mouse);
-  float warp = smoothstep(0.8, 0.0, dist) * 0.15;
+  float warp = smoothstep(1.2, 0.0, dist) * 0.05;
   st += warp * normalize(st - mouse);
   
-  // Layered noise
-  float t = uTime * 0.08;
-  float n1 = snoise(vec3(st * 1.5, t)) * 0.5 + 0.5;
-  float n2 = snoise(vec3(st * 3.0 + 10.0, t * 1.3)) * 0.5 + 0.5;
-  float n3 = snoise(vec3(st * 6.0 + 20.0, t * 0.7)) * 0.5 + 0.5;
-  float n = n1 * 0.6 + n2 * 0.3 + n3 * 0.1;
+  // Layered noise for soft pastel clouds
+  float t = uTime * 0.05;
+  float n1 = snoise(vec3(st * 1.0, t)) * 0.5 + 0.5;
+  float n2 = snoise(vec3(st * 2.0 + 10.0, t * 1.1)) * 0.5 + 0.5;
+  float n3 = snoise(vec3(st * 4.0 + 20.0, t * 0.8)) * 0.5 + 0.5;
   
-  // Deep space colors
-  vec3 deepBlack = vec3(0.04, 0.03, 0.06);
-  vec3 indigo = vec3(0.10, 0.02, 0.27);
-  vec3 violet = vec3(0.18, 0.05, 0.35);
-  vec3 cyan = vec3(0.02, 0.45, 0.52);
+  // iOS 26 Light Palette
+  vec3 eggshell = vec3(0.96, 0.96, 0.98);
+  vec3 softBlue = vec3(0.85, 0.92, 1.0);
+  vec3 softPeach = vec3(1.0, 0.90, 0.85);
+  vec3 pureWhite = vec3(1.0, 1.0, 1.0);
   
-  vec3 col = mix(deepBlack, indigo, n * 0.8);
-  col = mix(col, violet, pow(n2, 2.0) * 0.4);
-  col = mix(col, cyan, pow(n3, 3.0) * 0.15);
+  vec3 col = mix(eggshell, pureWhite, n1 * 0.8);
+  col = mix(col, softBlue, n2 * 0.4);
+  col = mix(col, softPeach, pow(n3, 2.0) * 0.2);
   
-  // Cursor highlight
-  float cursorGlow = smoothstep(0.5, 0.0, dist) * 0.12;
-  col += vec3(0.2, 0.15, 0.5) * cursorGlow;
+  // Cursor soft glow
+  float cursorGlow = smoothstep(0.8, 0.0, dist) * 0.15;
+  col += vec3(0.0, 0.2, 0.8) * cursorGlow;
   
-  // Vignette
-  float vig = 1.0 - smoothstep(0.3, 1.2, length(uv - 0.5));
-  col *= vig * 0.9 + 0.1;
+  // Subtle bright vignette to keep edges clean
+  float vig = smoothstep(0.0, 1.5, length(uv - 0.5));
+  col = mix(col, pureWhite, vig * 0.3);
   
   gl_FragColor = vec4(col, 1.0);
 }

@@ -1,9 +1,8 @@
 import { Suspense, lazy, useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Preload, AdaptiveDpr, AdaptiveEvents, PerformanceMonitor } from '@react-three/drei';
-import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
-import * as THREE from 'three';
 
 const ParticleField = lazy(() => import('./ParticleField'));
 const ShaderBackground = lazy(() => import('./ShaderBackground'));
@@ -13,7 +12,7 @@ function isMobile() {
   return window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent);
 }
 
-// Cursor-following light
+// Cursor-following light (soft blue)
 function CursorLight() {
   const lightRef = useRef();
   useFrame((state) => {
@@ -21,7 +20,7 @@ function CursorLight() {
     lightRef.current.position.x += (state.pointer.x * 8 - lightRef.current.position.x) * 0.1;
     lightRef.current.position.y += (state.pointer.y * 5 - lightRef.current.position.y) * 0.1;
   });
-  return <pointLight ref={lightRef} color="#06b6d4" intensity={2} distance={15} />;
+  return <pointLight ref={lightRef} color="#47a1ff" intensity={1} distance={15} />;
 }
 
 export default function Scene3D({ className = '', showParticles = true }) {
@@ -42,7 +41,7 @@ export default function Scene3D({ className = '', showParticles = true }) {
         dpr={dpr}
         camera={{ position: [0, 0, 8], fov: 45 }}
         gl={{
-          antialias: false, // Disabled for postprocessing
+          antialias: false,
           alpha: true,
           powerPreference: 'high-performance',
           stencil: false,
@@ -54,30 +53,25 @@ export default function Scene3D({ className = '', showParticles = true }) {
         <AdaptiveDpr pixelated />
         <AdaptiveEvents />
         
-        <ambientLight intensity={0.2} color="#1a0533" />
+        <ambientLight intensity={1.5} color="#ffffff" />
         <CursorLight />
 
         <Suspense fallback={null}>
           <ShaderBackground />
           {showParticles && (
-            <ParticleField count={mobile ? 800 : 4000} />
+            <ParticleField count={mobile ? 800 : 3000} />
           )}
           
           {!mobile && (
             <EffectComposer disableNormalPass multisampling={0}>
               <Bloom 
-                luminanceThreshold={0.4} 
+                luminanceThreshold={0.8} 
                 mipmapBlur 
-                intensity={1.8} 
+                intensity={0.4} 
               />
               <ChromaticAberration 
                 blendFunction={BlendFunction.NORMAL} 
-                offset={[0.003, 0.003]} 
-              />
-              <Vignette 
-                eskil={false} 
-                offset={0.1} 
-                darkness={0.6} 
+                offset={[0.001, 0.001]} 
               />
             </EffectComposer>
           )}

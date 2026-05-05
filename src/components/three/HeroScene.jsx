@@ -1,6 +1,6 @@
 import { Suspense, lazy, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { AdaptiveDpr } from '@react-three/drei';
+import { AdaptiveDpr, Environment } from '@react-three/drei';
 
 const HeroObject = lazy(() => import('./HeroObject'));
 
@@ -29,9 +29,15 @@ export default function HeroScene() {
         style={{ background: 'transparent' }}
       >
         <AdaptiveDpr pixelated />
-        <ambientLight intensity={0.5} color="#1a0533" />
-        <directionalLight position={[5, 5, 5]} intensity={1} color="#4f46e5" />
-        <pointLight position={[-5, -5, -5]} intensity={0.5} color="#06b6d4" />
+        
+        {/* Soft, airy studio lighting */}
+        <ambientLight intensity={1.2} color="#ffffff" />
+        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#ffffff" castShadow />
+        <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#e0e0e0" />
+        <pointLight position={[0, 5, 5]} intensity={1} color="#0066cc" />
+        
+        <Environment preset="city" />
+
         <Suspense fallback={null}>
           <HeroObject />
         </Suspense>

@@ -38,12 +38,10 @@ export default function FAQ() {
       <div className="max-w-3xl mx-auto">
         <AnimateIn>
           <div className="text-center mb-16">
-            <span className="text-accent text-sm font-bold tracking-widest uppercase mb-4 block">
-              SYSTEM LOGS
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 tracking-tight">
-              Frequently Asked <span className="gradient-text">Questions</span>
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
+              Frequently Asked Questions
             </h2>
+            <p className="text-xl text-text-secondary font-medium">Everything you need to know.</p>
           </div>
         </AnimateIn>
 
@@ -53,24 +51,24 @@ export default function FAQ() {
             return (
               <AnimateIn key={index} delay={index * 0.1}>
                 <div 
-                  className={`glass-card overflow-hidden transition-all duration-300 ${
-                    isOpen ? 'border-primary shadow-[0_0_20px_rgba(79,70,229,0.2)]' : 'hover:border-white/20'
+                  className={`glass-card overflow-hidden transition-all duration-400 ${
+                    isOpen ? 'shadow-md border-black/10 bg-white/80' : 'hover:bg-white/60'
                   }`}
                 >
                   <button
                     onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                    className="w-full px-6 py-5 flex items-center justify-between text-left cursor-none"
+                    className="w-full px-8 py-6 flex items-center justify-between text-left cursor-none"
                     data-interactive
                   >
-                    <span className={`font-bold transition-colors ${isOpen ? 'text-white' : 'text-slate-300'}`}>
+                    <span className={`text-lg font-bold transition-colors ${isOpen ? 'text-text' : 'text-text-secondary hover:text-text'}`}>
                       {faq.question}
                     </span>
                     <motion.div
                       animate={{ rotate: isOpen ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
-                      className={`flex-shrink-0 ml-4 ${isOpen ? 'text-accent' : 'text-slate-500'}`}
+                      className={`flex-shrink-0 ml-4 ${isOpen ? 'text-primary' : 'text-text-muted'}`}
                     >
-                      <ChevronDown size={20} />
+                      <ChevronDown size={24} />
                     </motion.div>
                   </button>
                   
@@ -80,9 +78,9 @@ export default function FAQ() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
                       >
-                        <div className="px-6 pb-5 text-slate-400 leading-relaxed font-medium">
+                        <div className="px-8 pb-6 text-text-secondary text-lg leading-relaxed font-medium">
                           {faq.answer}
                         </div>
                       </motion.div>

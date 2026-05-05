@@ -76,13 +76,13 @@ export default function ParticleField({ count = 3000 }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.025}
-        color="#818cf8"
+        size={0.03}
+        color="#0066cc" // Apple blue for particles
         transparent
-        opacity={0.5}
+        opacity={0.4}
         sizeAttenuation
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
+        blending={THREE.NormalBlending} // Normal blending looks better on light bgs
       />
     </points>
   );

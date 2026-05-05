@@ -46,14 +46,14 @@ export default function CustomCursor() {
 
     let raf;
     const tick = () => {
-      ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.12;
-      ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.12;
+      ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.15; // Faster spring for iOS feel
+      ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.15;
 
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${pos.current.x - 3}px, ${pos.current.y - 3}px)`;
+        dotRef.current.style.transform = `translate(${pos.current.x - 4}px, ${pos.current.y - 4}px)`;
       }
       if (ringRef.current) {
-        const size = hovering ? 48 : 28;
+        const size = hovering ? 56 : 32;
         ringRef.current.style.width = `${size}px`;
         ringRef.current.style.height = `${size}px`;
         ringRef.current.style.transform = `translate(${ringPos.current.x - size / 2}px, ${ringPos.current.y - size / 2}px)`;
@@ -74,39 +74,43 @@ export default function CustomCursor() {
 
   return (
     <>
+      {/* Center dot - iOS black */}
       <div
         ref={dotRef}
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 6,
-          height: 6,
+          width: 8,
+          height: 8,
           borderRadius: '50%',
-          background: '#818cf8',
+          background: '#1d1d1f',
           pointerEvents: 'none',
           zIndex: 99999,
-          mixBlendMode: 'difference',
           transition: 'background 0.2s',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
         }}
       />
+      {/* Outer ring - soft glass */}
       <div
         ref={ringRef}
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
-          width: 28,
-          height: 28,
+          width: 32,
+          height: 32,
           borderRadius: '50%',
-          border: hovering ? '2px solid rgba(34, 211, 238, 0.8)' : '1.5px solid rgba(129, 140, 248, 0.6)',
-          background: hovering ? 'rgba(79, 70, 229, 0.15)' : 'transparent',
+          border: hovering ? '1px solid rgba(0, 0, 0, 0.05)' : '1px solid rgba(0, 0, 0, 0.1)',
+          background: hovering ? 'rgba(255, 255, 255, 0.5)' : 'transparent',
+          backdropFilter: hovering ? 'blur(8px)' : 'none',
+          WebkitBackdropFilter: hovering ? 'blur(8px)' : 'none',
           pointerEvents: 'none',
           zIndex: 99998,
-          transition: 'width 0.3s ease, height 0.3s ease, border 0.3s ease, background 0.3s ease',
+          transition: 'width 0.4s cubic-bezier(0.32, 0.72, 0, 1), height 0.4s cubic-bezier(0.32, 0.72, 0, 1), background 0.3s ease, backdrop-filter 0.3s ease',
           boxShadow: hovering
-            ? '0 0 20px rgba(34, 211, 238, 0.3)'
-            : '0 0 8px rgba(129, 140, 248, 0.2)',
+            ? '0 8px 32px rgba(0, 0, 0, 0.08)'
+            : 'none',
         }}
       />
     </>
