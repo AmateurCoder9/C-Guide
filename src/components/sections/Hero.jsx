@@ -44,47 +44,22 @@ export default function Hero({ onStartLearning, onBrowseChapters }) {
             An immersive, spatial study environment. Seven comprehensive chapters. Master memory, logic, and systems.
           </motion.p>
 
-          <motion.div {...fadeUp(0.3)} className="flex flex-col sm:flex-row items-center gap-4">
+          <motion.div {...fadeUp(0.3)} className="flex flex-col sm:flex-row items-center gap-6">
             <MagneticButton
               onClick={onStartLearning}
-              className="btn-primary gap-2 text-lg px-8 py-4 cursor-none w-full sm:w-auto"
+              className="btn-primary gap-3 text-lg px-10 py-5 cursor-none w-full sm:w-auto"
               data-interactive
             >
-              Start Experience <ArrowRight size={20} />
+              Begin Journey <ArrowRight size={22} />
             </MagneticButton>
             <MagneticButton
               onClick={onBrowseChapters}
-              className="btn-secondary gap-2 text-lg px-8 py-4 cursor-none w-full sm:w-auto"
+              className="btn-secondary gap-3 text-lg px-10 py-5 cursor-none w-full sm:w-auto"
               data-interactive
             >
-              <Code size={20} /> Browse Index
+              <Code size={22} /> Curriculum Index
             </MagneticButton>
           </motion.div>
-        </motion.div>
-
-        {/* Floating holographic elements around the center */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="absolute top-1/4 left-10 hidden lg:block"
-        >
-          <div className="glass-card p-4 rounded-3xl rotate-[-10deg]">
-            <div className="text-sm font-bold text-text mb-1">Performance</div>
-            <div className="text-2xl font-bold gradient-text">O(1)</div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
-          className="absolute bottom-1/4 right-10 hidden lg:block"
-        >
-          <div className="glass-card p-4 rounded-3xl rotate-[5deg]">
-            <div className="text-sm font-bold text-text mb-1">Memory</div>
-            <div className="text-2xl font-bold text-accent">Allocated</div>
-          </div>
         </motion.div>
       </div>
       

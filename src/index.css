@@ -68,8 +68,8 @@
     backdrop-filter: blur(40px) saturate(180%);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 2.5rem;
-    box-shadow: none; /* Clean look */
+    border-radius: 3rem; /* Max Rounded */
+    box-shadow: none;
   }
   .glass-card:hover {
     background: rgba(255, 255, 255, 0.22);
@@ -81,6 +81,7 @@
     backdrop-filter: blur(30px) saturate(160%);
     -webkit-backdrop-filter: blur(30px) saturate(160%);
     border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2.5rem;
     box-shadow: none;
   }
 
@@ -96,7 +97,7 @@
   }
 
   .code-block {
-    @apply rounded-[2.5rem] overflow-x-auto text-sm leading-relaxed font-mono;
+    @apply rounded-[3rem] overflow-x-auto text-sm leading-relaxed font-mono;
     background: rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);

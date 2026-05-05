@@ -103,8 +103,8 @@ export default function ChapterViewer({ chapter, onBack }) {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-16 text-center">
-          <div className="inline-block bg-black/5 px-4 py-1.5 rounded-full text-sm font-bold text-text-secondary mb-6 shadow-sm">
-            CHAPTER 0{chapter.id}
+          <div className="inline-block bg-white/10 border border-white/20 px-6 py-2 rounded-2xl text-[11px] font-black text-text-muted tracking-[0.25em] mb-8 shadow-inner uppercase">
+            Module 0{chapter.id}
           </div>
           <h1 className="text-5xl sm:text-6xl font-extrabold text-text mb-6 tracking-tight" style={{ letterSpacing: '-0.03em' }}>
             {chapter.title}
@@ -137,9 +137,9 @@ export default function ChapterViewer({ chapter, onBack }) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.04, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ scale: 1.015, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="glass-card p-5 cursor-none hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] transition-all flex items-center justify-between group"
+                whileHover={{ scale: 1.015, y: -4 }}
+                whileTap={{ scale: 0.96 }}
+                className="glass-card p-6 cursor-none hover:shadow-xl transition-all flex items-center justify-between group border-white/20"
                 onClick={() => openTopic(idx)}
                 data-interactive
               >
@@ -200,8 +200,8 @@ export default function ChapterViewer({ chapter, onBack }) {
                   layout
                   className="flex items-center gap-3 bg-white/15 backdrop-blur-xl text-text px-4 py-2 rounded-full border border-white/20"
                 >
-                  <span className="text-[11px] font-bold tracking-wider">
-                    {activeTopic + 1} / {chapter.topics.length}
+                  <span className="text-[10px] font-black text-text-muted tracking-[0.15em] uppercase">
+                    Section {activeTopic + 1} / {chapter.topics.length}
                   </span>
                   <div className="w-16 h-1.5 bg-white/20 rounded-full overflow-hidden">
                     <motion.div

@@ -3,11 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { chapters } from './data/chapters';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
-import Features from './components/sections/Features';
 import Stats from './components/sections/Stats';
 import FAQ from './components/sections/FAQ';
 import Footer from './components/layout/Footer';
-import ProductPreview from './components/sections/ProductPreview';
 import ChapterCard from './components/chapter/ChapterCard';
 import ChapterViewer from './components/chapter/ChapterViewer';
 import AnimateIn from './components/ui/AnimateIn';
@@ -154,10 +152,6 @@ function App() {
               </div>
             </section>
 
-            <Features />
-            <ProductPreview />
-            <Stats />
-            <FAQ />
           </motion.div>
         )}
       </AnimatePresence>
