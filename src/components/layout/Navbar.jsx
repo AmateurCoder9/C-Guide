@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Chapters', href: '#chapters' },
-  { label: 'Features', href: '#features' },
-  { label: 'FAQ', href: '#faq' },
 ];
 
 export default function Navbar({ onNavigateHome, searchSlot }) {
