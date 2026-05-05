@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
 import { ArrowRight, Terminal } from 'lucide-react';
 import TiltCard from '../ui/TiltCard';
 import AnimateIn from '../ui/AnimateIn';
+import ProgressRing from '../ui/ProgressRing';
 
-export default function ChapterCard({ chapter, index, onSelect }) {
+export default function ChapterCard({ chapter, index, onSelect, progress = 0 }) {
   return (
     <AnimateIn delay={index * 0.08} direction="up" distance={40}>
       <TiltCard className="h-full">
@@ -21,10 +21,14 @@ export default function ChapterCard({ chapter, index, onSelect }) {
             }`}>
               <Terminal size={28} />
             </div>
-            <div className="bg-black/5 border border-black/5 px-4 py-1.5 rounded-full flex items-center justify-center shadow-sm">
-              <span className="text-xs font-bold text-text-secondary tracking-widest uppercase">
-                CH 0{chapter.id}
-              </span>
+            <div className="flex items-center gap-3">
+              {/* Activity Ring */}
+              <ProgressRing progress={progress} size={44} />
+              <div className="bg-black/5 border border-black/5 px-4 py-1.5 rounded-full flex items-center justify-center shadow-sm">
+                <span className="text-xs font-bold text-text-secondary tracking-widest uppercase">
+                  CH 0{chapter.id}
+                </span>
+              </div>
             </div>
           </div>
 

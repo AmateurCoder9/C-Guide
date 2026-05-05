@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { chapters } from './data/chapters';
 import Navbar from './components/layout/Navbar';
@@ -11,28 +11,47 @@ import ProductPreview from './components/sections/ProductPreview';
 import ChapterCard from './components/chapter/ChapterCard';
 import ChapterViewer from './components/chapter/ChapterViewer';
 import AnimateIn from './components/ui/AnimateIn';
+import SpotlightSearch from './components/ui/SpotlightSearch';
+
+// Progress helper
+const getChapterProgress = (chapterId, totalTopics) => {
+  try {
+    const data = JSON.parse(localStorage.getItem('cpp-progress') || '{}');
+    const viewed = data[chapterId] || [];
+    return Math.round((viewed.length / totalTopics) * 100);
+  } catch { return 0; }
+};
 
 function App() {
   const [selectedChapter, setSelectedChapter] = useState(null);
+  const [progressKey, setProgressKey] = useState(0); // Force re-render on progress change
 
-  const handleSelectChapter = (chapterId) => {
+  const handleSelectChapter = useCallback((chapterId) => {
     const chapter = chapters.find((c) => c.id === chapterId);
     setSelectedChapter(chapter);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  const handleBack = () => {
+  const handleSelectTopic = useCallback((chapterId, topicIdx) => {
+    const chapter = chapters.find((c) => c.id === chapterId);
+    setSelectedChapter(chapter);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // We'll let ChapterViewer handle opening the topic via a prop
+  }, []);
+
+  const handleBack = useCallback(() => {
     setSelectedChapter(null);
-    // Scroll to chapters section after returning
+    setProgressKey((k) => k + 1); // Refresh progress rings
     setTimeout(() => {
       const el = document.getElementById('chapters');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }, 100);
-  };
+  }, []);
 
-  const handleNavigateHome = (href) => {
+  const handleNavigateHome = useCallback((href) => {
     if (selectedChapter) {
       setSelectedChapter(null);
+      setProgressKey((k) => k + 1);
       if (href !== '#home') {
         setTimeout(() => {
           const id = href.replace('#', '');
@@ -51,7 +70,7 @@ function App() {
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  };
+  }, [selectedChapter]);
 
   const handleStartLearning = () => handleSelectChapter(1);
 
@@ -69,7 +88,16 @@ function App() {
 
   return (
     <>
-      <Navbar onNavigateHome={handleNavigateHome} />
+      <Navbar
+        onNavigateHome={handleNavigateHome}
+        searchSlot={
+          <SpotlightSearch
+            chapters={chapters}
+            onSelectChapter={handleSelectChapter}
+            onSelectTopic={handleSelectTopic}
+          />
+        }
+      />
 
       <AnimatePresence mode="wait">
         {selectedChapter ? (
@@ -115,10 +143,11 @@ function App() {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {chapters.map((chapter, idx) => (
                     <ChapterCard
-                      key={chapter.id}
+                      key={`${chapter.id}-${progressKey}`}
                       chapter={chapter}
                       index={idx}
                       onSelect={handleSelectChapter}
+                      progress={getChapterProgress(chapter.id, chapter.topics.length)}
                     />
                   ))}
                 </div>

@@ -11,7 +11,7 @@ export default function CodeBlock({ code }) {
   };
 
   return (
-    <div className="relative rounded-[2rem] overflow-hidden mt-4 group border border-black/5 shadow-sm bg-white/80 backdrop-blur-xl">
+    <div className="relative rounded-[2rem] overflow-hidden mt-4 group border border-black/5 shadow-sm bg-white/80 backdrop-blur-xl code-glow">
       <div className="bg-black/5 px-6 py-4 flex items-center justify-between border-b border-black/5">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-[#ff3b30]" />

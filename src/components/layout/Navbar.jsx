@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
 ];
 
-export default function Navbar({ onNavigateHome }) {
+export default function Navbar({ onNavigateHome, searchSlot }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('#home');
@@ -89,6 +89,7 @@ export default function Navbar({ onNavigateHome }) {
                 {link.label}
               </a>
             ))}
+            {searchSlot && <div className="ml-2">{searchSlot}</div>}
           </div>
 
           {/* Mobile toggle */}
